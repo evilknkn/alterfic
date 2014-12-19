@@ -1,0 +1,8 @@
+[22-Sep-2014 02:21:06 UTC] PHP Fatal error:  require_once(): Failed opening required '/home/omarkabadmin/public_html/admin/system/database/drivers/mysql/mysql_driver.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/omarkabadmin/public_html/admin/system/database/DB.php on line 140
+[22-Sep-2014 02:21:17 UTC] PHP Fatal error:  require_once(): Failed opening required '/home/omarkabadmin/public_html/admin/system/database/drivers/mysql/mysql_driver.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/omarkabadmin/public_html/admin/system/database/DB.php on line 140
+[22-Sep-2014 02:54:53 UTC] PHP Parse error:  syntax error, unexpected 'nombre' (T_STRING) in /home/omarkabadmin/public_html/admin/application/controllers/catalogos/banks.php on line 46
+[22-Sep-2014 02:55:11 UTC] PHP Parse error:  syntax error, unexpected 'nombre_banco' (T_STRING) in /home/omarkabadmin/public_html/admin/application/controllers/catalogos/banks.php on line 46
+[22-Sep-2014 02:55:18 UTC] PHP Parse error:  syntax error, unexpected 'nombre_banco' (T_STRING) in /home/omarkabadmin/public_html/admin/application/controllers/catalogos/banks.php on line 46
+[22-Sep-2014 02:55:28 UTC] PHP Parse error:  syntax error, unexpected 'nombre_banco' (T_STRING) in /home/omarkabadmin/public_html/admin/application/controllers/catalogos/banks.php on line 46
+[26-Oct-2014 04:10:51 UTC] PHP Fatal error:  Call to undefined method Detalle_cuenta_model::salidas_cuenta() in /home/omarkabadmin/public_html/admin/application/controllers/cuentas/gastos.php on line 44
+[28-Oct-2014 04:48:55 UTC] PHP Fatal error:  Call to undefined method Resumen_model::lista_movimiento() in /home/omarkabadmin/public_html/admin/application/helpers/funciones_externas_helper.php on line 34
