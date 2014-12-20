@@ -10,7 +10,7 @@ class Dashboard extends CI_Controller
             redirect( base_url() . 'login/index?r='.urlencode($regresar) );
         }
     }
-	
+
 	public function index()
 	{	
 		$this->load->model('cuentas/resumen_model');
@@ -118,6 +118,7 @@ class Dashboard extends CI_Controller
 		
 		$data['menu'] 	= 'menu/menu_admin';
 		$data['body']	= 'admin/home';
+
 		$this->load->view('layer/layerout', $data);
 	}
 }

@@ -1,6 +1,6 @@
 <ul class="list-unstyled side-menu">
     <li>
-        <a class="" href="<?=base_url($this->session->userdata('base_perfil'))?>">
+        <a class="" href="<?=base_url('admin/dashboard')?>">
             <i class="glyphicon glyphicon-home fa-lg" style="margin-top:10px"></i>
             <span class="menu-item">Inicio</span>
         </a>
