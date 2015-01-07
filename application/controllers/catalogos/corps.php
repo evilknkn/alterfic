@@ -33,7 +33,7 @@ class Corps extends CI_Controller
 		$data['empresas'] = $this->empresas_model->catalogo_empresas();
 		$data['db']		= $this->empresas_model;
 
-			$this->load->view('layer/layerout', $data);
+		$this->load->view('layer/layerout', $data);
 	}
 
 	public function add_empresa_persona()

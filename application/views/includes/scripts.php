@@ -45,3 +45,16 @@
         <!-- ace scripts -->
         <script src="<?=base_url('assets/js/ace-elements.min.js');?>"></script>
         <script src="<?=base_url('assets/js/ace.min.js');?>"></script>
+        <script src="<?=base_url()?>/assets/js/date-time/bootstrap-datepicker.min.js"></script>
+        <script src="<?=base_url()?>/assets/js/date-time/bootstrap-timepicker.min.js"></script>
+        <script src="<?=base_url()?>/assets/js/date-time/daterangepicker.min.js"></script>
+
+        <script type="text/javascript">
+        
+        jQuery(function($) {
+            
+            $('.date-picker').datepicker({autoclose:true}).next().on(ace.click_event, function(){
+                    $(this).prev().focus();
+                });
+        });
+        </script>

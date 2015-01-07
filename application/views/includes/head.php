@@ -19,6 +19,9 @@
         <link rel="stylesheet" href="<?=base_url()?>/assets/css/ace.min.css" />
         <link rel="stylesheet" href="<?=base_url()?>/assets/css/ace-rtl.min.css" />
         <link rel="stylesheet" href="<?=base_url()?>/assets/css/ace-skins.min.css" />
+        <link rel="stylesheet" href="<?=base_url()?>/assets/css/datepicker.css" />
+        <link rel="stylesheet" href="<?=base_url()?>/assets/css/daterangepicker.css" />
+        <link rel="stylesheet" href="<?=base_url()?>/assets/css/bootstrap-timepicker.css" />
 
         <!--[if lte IE 8]>
           <link rel="stylesheet" href="<?=base_url()?>/assets/css/ace-ie.min.css" />
@@ -29,6 +32,7 @@
         <!-- ace settings handler -->
 
         <script src="<?=base_url()?>/assets/js/ace-extra.min.js"></script>
+         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 

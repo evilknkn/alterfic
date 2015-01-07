@@ -17,7 +17,8 @@ class Caja_chica extends CI_Controller
 
 		$filtro = array('adc.id_empresa' => $datos_empresa->id_empresa, 'adc.id_banco' => $datos_empresa->id_banco);
 
-		$data['movimientos'] 	= $this->movimiento_model->lista_movimientos($filtro, $fecha_ini, $fecha_fin);
+		//$data['movimientos'] 	= $this->movimiento_model->lista_movimientos($filtro, $fecha_ini, $fecha_fin);
+		$data['movimientos'] 	= $this->movimiento_model->lista_movimientos($filtro, '', '');
 		$data['db_mov'] 	= $this->movimiento_model;
 		$data['menu'] 		= 'menu/menu_admin';
 		$data['empresa']	= $datos_empresa;

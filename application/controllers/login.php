@@ -2,16 +2,15 @@
 
 class Login extends CI_Controller {
 
-	var $usuario_recuperar;
+    var $usuario_recuperar;
 
-	function __construct()
-	{
-		parent::__construct();
-	}
+    function __construct()
+    {
+        parent::__construct();
+    }
 
-	public function index()
-	{	
-        
+    public function index()
+    {   
         $this->form_validation->set_rules('username','nombre de usuario', 'required');
         $this->form_validation->set_rules('password', 'contraseña', 'required|callback_valida_usuario');
 
@@ -39,6 +38,12 @@ class Login extends CI_Controller {
 
             switch ($user->id_perfil) {
                 case '1':
+                    if ($user->consult_mov_int == 1):
+                        $this->session->set_userdata('consulta', 'active');
+                    else:
+                        $this->session->set_userdata('consulta', 'inactive');
+                    endif;
+
                         $this->session->set_userdata(array('base_perfil' => 'admin/dashboard'));
                         redirect(base_url('admin/dashboard'));
                     break;
@@ -49,9 +54,9 @@ class Login extends CI_Controller {
             }
 
         else:
-		  $this->load->view('login');	
+          $this->load->view('login');   
         endif;
-	}
+    }
 
     public function  logout()
     {   
@@ -69,15 +74,15 @@ class Login extends CI_Controller {
 
 ############################ CALLBACK ######################################
 
-	function valida_usuario ($password){
+    function valida_usuario ($password){
 
         $username = $this->input->post('username');
         $filtro = array('username' => $username  , 'password' => sha1($password));
 
-		$datos = $this->login_model->datos_usuario($filtro);
+        $datos = $this->login_model->datos_usuario($filtro);
         if(count($datos)!=0)
         {
-    		if ($datos->username == $username and sha1($password) == $datos->password)
+            if ($datos->username == $username and sha1($password) == $datos->password)
             {
                  return TRUE; 
             }else
@@ -92,6 +97,6 @@ class Login extends CI_Controller {
             return FALSE;
         }
 
-	}
+    }
 
 }
