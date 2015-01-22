@@ -111,7 +111,7 @@ class Depositos extends CI_controller
 		endif;	
 	}
 
-	public function editar_deposito($id_empresa, $id_banco, $id_deposito)
+	public function editar_deposito($id_empresa, $id_banco, $id_detalle, $id_deposito)
 	{
 		$this->load->model('cuentas/depositos_model');
 		$this->load->model('cuentas/detalle_cuenta_model');
@@ -125,14 +125,15 @@ class Depositos extends CI_controller
 
 		if($this->form_validation->run()):
 
-			$dt_depositos = array(	'fecha_movimiento' 	=>  formato_fecha_ddmmaaaa($this->input->post('fecha_depto')));
+			$dt_depositos = array(	'fecha_movimiento' 	=>  formato_fecha_ddmmaaaa($this->input->post('fecha_depto')), 'folio_mov' => $this->input->post('folio_depto'));
 
-			$this->depositos_model->actualiza_detalle_cuenta($dt_depositos, $this->input->post('id_detalle'));
+			$this->depositos_model->actualiza_detalle_cuenta($dt_depositos, $id_detalle);
 
-			$deposito 	= array('fecha_deposito' => formato_fecha_ddmmaaaa($this->input->post('fecha_depto')),
-								'monto_deposito' => $this->input->post('monto_depto'));
+			$deposito 	= array('fecha_deposito' 	=> formato_fecha_ddmmaaaa($this->input->post('fecha_depto')),
+								'monto_deposito' 	=> $this->input->post('monto_depto'),
+								'folio_depto'  		=> $this->input->post('folio_depto'));
 
-			$this->depositos_model->actualiza_deposito($deposito, $this->input->post('id_deposito'));
+			$this->depositos_model->actualiza_deposito($deposito, $id_deposito);
 
 			$array  = array('id_user'   =>  $this->session->userdata('ID_USER') ,
                             'accion'    =>  'El usuario '.$this->session->userdata('USERNAME'). ' modificó el deposito con folio '.$this->input->post('folio_depto').' los datos anteriores eran: no. folio '.$dt_deposito->folio_depto.', monto '.$dt_deposito->monto_deposito.', fecha deldepto '.$dt_deposito->folio_depto.' de la empresa '. $dt_deposito->nombre_empresa.' en banco '. $dt_deposito->nombre_banco.'.' ,
@@ -142,15 +143,15 @@ class Depositos extends CI_controller
             $this->bitacora_model->insert_log($array);
 
             $this->session->set_flashdata('success', 'Deposito actualizado correctamente.');
-            redirect(base_url('cuentas/depositos/editar_deposito/'.$id_empresa.'/'.$id_banco.'/'.$id_deposito));
+            redirect(base_url('cuentas/depositos/editar_deposito/'.$id_empresa.'/'.$id_banco.'/'.$id_detalle.'/'.$id_deposito));
 		else:
 			$data = array(	'menu' 	=>  'menu/menu_admin',
 							'body'	=>	'admin/cuentas/deposito/editar_deposito');
 			
 			$data['id_empresa'] = $id_empresa;
 			$data['id_banco']	= $id_banco;
-			$data['empresa'] = $empresa;
-			$data['deposito'] = $dt_deposito;
+			$data['empresa'] 	= $empresa;
+			$data['deposito'] 	= $dt_deposito;
 
 			$this->load->view('layer/layerout', $data);
 		endif;

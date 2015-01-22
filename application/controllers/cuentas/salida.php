@@ -82,7 +82,7 @@ class Salida extends CI_Controller
 			$this->salida_model->update_salida($array, $id_salida);
 
 			$datos = array(	'fecha_movimiento'	=> 	formato_fecha_ddmmaaaa($this->input->post('fecha_salida')),
-							'folio_mov'			=> 	trim($this->input->post('folio_salida')) );
+							'folio_mov'			=> 	trim($this->input->post('folio_salida')));
 
 			$this->salida_model->update_movimiento($datos, $this->input->post('id_detalle'));
 

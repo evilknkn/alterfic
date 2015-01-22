@@ -29,6 +29,7 @@
                                 <th>Total depósito</th>
                                 <th>Total salida</th>
                                 <th>Saldo</th>
+                                <th>Saldo al mes</th>
                                 <th class="tex-center">Detalle</th>
                             </tr>
                         </thead>
@@ -58,6 +59,8 @@
                                 <td>$<?=convierte_moneda($total_salida)?></td>
 
                                 <td>$<?=convierte_moneda($saldo)?></td>
+                                <td class="text-center"><a data-toggle="modal" href="#modalSaldosPorMes" onclick="saldoPorMes(<?php echo $empresa->id_empresa?>, <?php echo $empresa->id_banco?>)" class="btn btn-info">Consultar</a></td>
+                              
                                 <td class="tex-center">
                                     <a href="<?=base_url('cuentas/depositos/detalle_cuenta/'.$empresa->id_empresa.'/'.$empresa->id_banco)?>">
                                         <i class="fa fa-search fa-lg"></i>
@@ -67,8 +70,10 @@
                             <?php endforeach;?>
                         </tbody>
                     </table>
+
                 </div>
             </div>
+            
             <!-- PAGE CONTENT ENDS -->
         </div><!-- /.col -->
     </div><!-- /.row -->
@@ -80,9 +85,10 @@ jQuery(function($) {
     var oTable1 = $('#sample-table-2').dataTable( {
     "aoColumns": [
       { "bSortable": true },
-        null, null, null, null,
+        null, null, null, null, null,
       { "bSortable": false }
     ] } );
         
 });
 </script>
+<?=$this->load->view('admin/cuentas/deposito/modal_saldos_mes')?>

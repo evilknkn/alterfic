@@ -40,7 +40,7 @@
                 <span class="menu-text"> Inicio </span>
             </a>
         </li>
-
+<?php if($this->session->userdata('consulta')== 'inactive'): ?>
         <li>
             <a href="<?=base_url('catalogos/banks')?>">
                 <i class="icon-credit-card"></i>
@@ -134,7 +134,7 @@
               
             </ul>
         </li>
-
+<?php endif;?>
     </ul><!-- /.nav-list -->
 
     <div class="sidebar-collapse" id="sidebar-collapse">

@@ -16,9 +16,24 @@
     <div class="row">
         <div class="col-xs-12">
         	<!-- PAGE CONTENT BEGINS -->
-      
+                <div class="page-header">
+                    <h1>Pendiente de retorno</h1>
+                </div><!-- /.page-header -->
 
 			<!-- PAGE CONTENT ENDS -->
         </div><!-- /.col -->
     </div><!-- /.row -->
 </div><!-- /.page-content -->
+<script src="<?php echo base_url()?>assets/js/jquery.dataTables.min.js"></script>
+<script src="<?php echo base_url()?>assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+jQuery(function($) {
+    var oTable1 = $('#sample-table-2').dataTable( {
+    "aoColumns": [
+      { "bSortable": true },
+        null, null, null, 
+      { "bSortable": false }
+    ] } );
+        
+});
+</script>
