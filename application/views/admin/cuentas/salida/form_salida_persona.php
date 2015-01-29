@@ -59,8 +59,8 @@
 		</div>
 
 		<div class="clearfix text-center">
-			<button class="btn"> <i class="fa fa-save "></i> Guardar</button>
-			<a href="<?=base_url('cuentas/deposito_persona/detalle_cuenta/'.$empresa->id_empresa.'/'.$id_banco)?>" style="margin-left:15px" class="btn"> <i class="fa fa-undo"></i> Regresar</a>
+			<button class="btn btn-info"> <i class="fa fa-save "></i> Guardar</button>
+			<a href="<?=base_url('cuentas/deposito_persona/detalle_cuenta/'.$empresa->id_empresa.'/'.$id_banco)?>" style="margin-left:15px" class="btn btn-grey"> <i class="fa fa-undo"></i> Regresar</a>
 		</div>
 
 		<?=form_close()?>

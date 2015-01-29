@@ -59,7 +59,8 @@
                                 <td>$<?=convierte_moneda($total_salida)?></td>
 
                                 <td>$<?=convierte_moneda($saldo)?></td>
-                                <td class="text-center"><a data-toggle="modal" href="#modalSaldosPorMes" onclick="saldoPorMes(<?php echo $empresa->id_empresa?>, <?php echo $empresa->id_banco?>)" class="btn btn-info">Consultar</a></td>
+                                <td class="text-center">
+                                    <a data-toggle="modal" href="#modalSaldosPorMes" onclick="saldoPorMes(<?php echo $empresa->id_empresa?>, <?php echo $empresa->id_banco?>)" class="btn btn-info">Consultar</a></td>
                               
                                 <td class="tex-center">
                                     <a href="<?=base_url('cuentas/depositos/detalle_cuenta/'.$empresa->id_empresa.'/'.$empresa->id_banco)?>">

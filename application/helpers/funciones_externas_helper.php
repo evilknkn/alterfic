@@ -173,6 +173,23 @@ function fechas_rango_inicio($month)
 	return $fecha;
 }
 
+function fechas_rango_mes($month)
+{
+	if($month == '01' or $month == '03' or $month =='04' or $month == '07' or $month == '08' or $month == '10' or $month == '12')
+	{
+		$fecha['fecha_inicio'] = '01';
+		$fecha['fecha_fin'] = '31';
+	}elseif($month == '04' or $month == '06' or $month == '09' or $month == '11'){
+		$fecha['fecha_inicio'] = '01';
+		$fecha['fecha_fin'] = '30';
+	}else{
+		$fecha['fecha_inicio'] = '01';
+		$fecha['fecha_fin'] = '28';
+	}
+
+	return $fecha;
+}
+
 function cliente_asignado_deposito($db, $id_cliente)
 {
 	$res = $db->cliente_asignado_depto(array('id_cliente'=>$id_cliente));
@@ -190,3 +207,47 @@ function depositos_pendiente_retorno_gral($db, $id_empresa, $id_banco)
 	$depositos = $db->detalle_retorno($filtro);
 	return $depositos;
 }
+
+function buscar_mes_txt($month)
+{
+	switch ($month) {
+		case 1:
+			$mes = 'Enero';
+			break;
+		case 2:
+			$mes = 'Febrero';
+			break;
+		case 3:
+			$mes = 'Marzo';
+			break;
+		case 4:
+			$mes = 'Abril';
+			break;
+		case 5:
+			$mes = 'Mayo ';
+			break;
+		case 6:
+			$mes = 'Junio';
+			break;
+		case 7:
+			$mes = 'Julio';
+			break;
+		case 8:
+			$mes = 'Agosto';
+			break;
+		case 9:
+			$mes = 'Septiembre';
+			break;
+		case 10:
+			$mes = 'Octubre';
+			break;
+		case 12:
+			$mes = 'Noviembre';
+			break;
+		case 12:
+			$mes = 'Diciembre';
+			break;
+	}
+	return $mes;
+}
+

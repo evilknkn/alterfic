@@ -1,12 +1,12 @@
 <div class="modal fade" id="modalSaldosPorMes" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content" style="width:1000px">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title">Saldo al mes de <?=buscar_mes_txt(date('m'))?> en la empresa <span id="nombre-empresa"></span> / <span id="nombre-banco"></span></h4>
             </div>
             <div class="modal-body">
-                <div class="row">
+               <div class="row">
                         <div class="form-group">
                             <label class="control-label col-sm-2 col-xs-2 no-padding-rigth">Consultar</label>
                             <div class="col-sm-4 col-xs-4">
@@ -54,6 +54,7 @@
                             <td id="total-saldo"> </td>
                         </tr>
                 </table>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm" data-dismiss="modal">Cerrar</button>
@@ -83,6 +84,7 @@ function saldoPorMes(id_empresa, id_banco)
             }
           });//fin accion ajax
 }
+
 $('#ver-resultado').click(function(){
     $.ajax({
             type: "POST",

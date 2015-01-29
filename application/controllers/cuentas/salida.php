@@ -232,7 +232,7 @@ class Salida extends CI_Controller
 
 		else:
 			$data = array(	'menu' 	=>  'menu/menu_admin',
-							'body'	=>	'admin/cuentas/salida/form_salida_persona');
+							'body'	=>	'admin/cuentas/salida/form_salida_caja');
 
 			$data['id_banco']	= $id_banco;
 			$data['empresa']	= $empresa;
