@@ -73,11 +73,12 @@
                     <tfoot>
                         <tr>
                             <td></td>
-                            <td></td>
+                            
                             <td class="text-right" >Total </td>
                             <td class="">$<?=convierte_moneda($total_depto)?></td>
                             <td class="">$<?=convierte_moneda($total_salida)?></td>
                             <td class="">$<?=convierte_moneda($total_saldo)?></td>
+                            <td></td>
                         </tr>
                     </tfoot>
                 </table>
