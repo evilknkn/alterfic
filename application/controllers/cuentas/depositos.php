@@ -205,7 +205,9 @@ class Depositos extends CI_controller
 		$this->form_validation->set_message('required', 'El campo %s es requerido');
 
 		if($this->form_validation->run()):
+			$info_depto = $this->depositos_model->info_deposito($id_deposito);
 
+			# Inserta deposito a la tabla ad_deposito_pago
 			$array = array('id_empresa' 			=> 	$id_empresa,
 							'id_banco' 				=> 	$id_banco,
 							'id_deposito'			=> 	$id_deposito,
@@ -218,9 +220,11 @@ class Depositos extends CI_controller
 
 			$this->depositos_model->insert_pago($array);
 
+			# Agregamos la salida con los id de empresa de retorno  a la tabla ad_salidas
 			$array = array('fecha_salida' => formato_fecha_ddmmaaaa($this->input->post('fecha_pago')),
 							'monto_salida' => $this->input->post('monto'),
-							'folio_salida'	=> 	trim($this->input->post('folio_pago')));
+							'folio_salida'	=> 	trim($this->input->post('folio_pago')),
+							'detalle_salida' => 'Se realizó un pago a la empresa '.$empresa->nombre_empresa.' en el banco '.$empresa->nombre_banco.' por la cantidad de '.$this->input->post('monto'). ' al depósito con folio '.$info_depto->folio_depto );
 
 			$reg = $this->depositos_model->insert_salida($array);
 
@@ -271,23 +275,23 @@ class Depositos extends CI_controller
 		$total = 0;
 		$cont = 1 ;
 		for($i=0; $i<sizeof($pagos); $i++):
-			$cont = $cont + $i;
+			//$cont = $cont + $i;
 			$pago = convierte_moneda($pagos[$i]->monto_pago);
 			$fecha = formato_fecha_ddmmaaaa($pagos[$i]->fecha_pago);
 
 			$total = $total + $pagos[$i]->monto_pago;
 			echo "<tr>
-				<td class='text-center'> Pago ".$cont."</td>
+				<td class='text-center'> Pago ".($i+1)."</td>
 				<td class='text-center'>".$pago."</td>
 				<td class='text-center'>".$fecha."</td>
-				<td class='text-center'><a href='".base_url($pagos[$i]->ruta_comprobante)."' target='_blank' class='btn'>Ver comprobante</a></td>
+				<td class='text-center'><a href='".base_url($pagos[$i]->ruta_comprobante)."' target='_blank' class='btn btn-yellow'>Ver comprobante</a></td>
 				<td class='text-center'>
 				<a onclick='abre_ventana(".$pagos[$i]->id_pago.")' style ='cursor:pointer' >
 					<i class='fa fa-search' ></i>
 				</a>
 				</td>
 				<td class='text-center'>
-					<a href='".base_url('cuentas/mov_delete/pago/'.$pagos[$i]->id_pago)."'>
+					<a href='".base_url('cuentas/mov_delete/pago/'.$this->input->post('id_empresa').'/'.$this->input->post('id_banco').'/'.$pagos[$i]->id_pago)."'>
 						<i class='fa fa-trash fa-lg'></i>
 					</a>
 				</td>

@@ -53,29 +53,6 @@ class Mov_delete extends CI_Controller
 		redirect(base_url('cuentas/depositos/detalle_cuenta/'.$id_empresa.'/'.$id_banco));
 	}
 
-	public function pago($id_pago)
-	{
-		$this->load->model('cuentas/delete_movimiento_model', 'mov_model');
-		$this->load->model('cuentas/depositos_model');
-
-		$dt_pago = $this->depositos_model->detalle_pago($id_pago);
-
-		$pago = $this->mov_model->datos_pago(array('id_pago' =>$id_pago));
-		$salida = $this->mov_model->datos_salida(array('folio_salida' => $pago->folio_pago));
-
-		$this->mov_model->elimina_pago($pago->folio_pago, $pago->empresa_retorno, $pago->banco_retorno, $id_pago, $salida->id_salida);
-
-		$array  = array('id_user'   =>  $this->session->userdata('ID_USER') ,
-                        'accion'    =>  'El usuario '.$this->session->userdata('USERNAME'). ' eliminó un pago con monto de'.$dt_pago->monto_pago.' del depósito con folio '. $dt_pago->folio_depto.' de la empresa '. $dt_pago->nombre_empresa.' del banco '.$dt_pago->nombre_banco.'.' ,
-                        'lugar'     =>  'Pago eliminado',
-                        'usuario'   =>  $this->session->userdata('USERNAME'));
-
-        $this->bitacora_model->insert_log($array);
-		
-		$this->session->set_flashdata('success', 'Pago eliminado correctamente');
-		redirect(base_url('cuentas/depositos/detalle_cuenta/'.$pago->id_empresa.'/'.$pago->id_banco));
-	}
-
 	public function movimiento_interno($id_empresa, $id_banco, $id_movimiento)
 	{
 		$this->load->model('cuentas/movimientos_internos_model', 'movimientos_model');
@@ -109,4 +86,29 @@ class Mov_delete extends CI_Controller
 		redirect(base_url('cuentas/movimientos_internos/lista/'.$id_empresa.'/'.$id_banco));
 
 	}*/
+
+	public function pago($id_empresa, $id_banco, $id_pago)
+	{
+		$this->load->model('cuentas/delete_movimiento_model', 'mov_model');
+		$this->load->model('cuentas/depositos_model');
+		
+		$dt_pago = $this->depositos_model->pago_info(array('id_pago'=>$id_pago));
+
+		$pagoInfo = $this->depositos_model->detalle_pago($id_pago);
+
+		$this->mov_model->delete_registro('ad_deposito_pago', array('id_pago' =>$id_pago)); 
+		$this->mov_model->delete_registro('ad_salidas', array('id_salida' =>$dt_pago->id_movimiento)); 
+		$this->mov_model->delete_registro('ad_detalle_cuenta', array('id_detalle' =>$dt_pago->id_detalle)); 
+
+		$array  = array('id_user'   =>  $this->session->userdata('ID_USER') ,
+                        'accion'    =>  'El usuario '.$this->session->userdata('USERNAME'). ' eliminó un pago con monto de'.$pagoInfo->monto_pago.' del depósito con folio '. $pagoInfo->folio_depto.' de la empresa '. $pagoInfo->nombre_empresa.' del banco '.$pagoInfo->nombre_banco.'.' ,
+                        'lugar'     =>  'Pago eliminado',
+                        'usuario'   =>  $this->session->userdata('USERNAME'));
+
+        $this->bitacora_model->insert_log($array);
+		
+		$this->session->set_flashdata('success', 'Pago eliminado correctamente');
+		redirect(base_url('cuentas/depositos/detalle_cuenta/'.$id_empresa.'/'.$id_banco));
+	}
+
 }

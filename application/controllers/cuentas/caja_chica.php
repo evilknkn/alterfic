@@ -12,13 +12,14 @@ class Caja_chica extends CI_Controller
 
 		$fecha = fechas_rango_inicio(date('m'));
 
+
 		$fecha_ini = ($this->input->post('fecha_inicio')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_inicio')) : $fecha['fecha_inicio'] ;
 		$fecha_fin = ($this->input->post('fecha_final')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_final')) : $fecha['fecha_fin'] ;
-
+		
 		$filtro = array('adc.id_empresa' => $datos_empresa->id_empresa, 'adc.id_banco' => $datos_empresa->id_banco);
 
 		//$data['movimientos'] 	= $this->movimiento_model->lista_movimientos($filtro, $fecha_ini, $fecha_fin);
-		$data['movimientos'] 	= $this->movimiento_model->lista_movimientos($filtro, '', '');
+		$data['movimientos'] 	= $this->movimiento_model->lista_movimientos($filtro, $fecha_ini, $fecha_fin);
 		$data['db_mov'] 	= $this->movimiento_model;
 		$data['menu'] 		= 'menu/menu_admin';
 		$data['empresa']	= $datos_empresa;
@@ -50,6 +51,7 @@ class Caja_chica extends CI_Controller
 			$array = array('fecha_deposito' => formato_fecha_ddmmaaaa($this->input->post('fecha_depto')),
 			 				'monto_deposito' => $this->input->post('monto_depto'),
 			 				'folio_depto'	=> 	$folio_mov);
+
 			$reg = $this->depositos_model->registra_depto($array);
 
 			$datos = array(	'id_empresa'		=>	$id_empresa,

@@ -35,21 +35,26 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2 col-xs-2 no-padding-rigth">Fecha incio</label>
                         <div class="col-sm-2 col-xs-2">
+
                             <div class="input-icon datetime-pick date-only">
-                                <input data-format="dd-MM-yyyy" type="text" name="fecha_inicio" class="form-control input-sm" placeholder="dd/mm/aaaa" value="<?=set_value('fecha_inicio')?>" required />
-                                <span class="add-on">
-                                    <i class="sa-plus"></i>
-                                </span>
+                                <div class="input-group">
+                                    <input class="form-control date-picker input-xxlarge" id="id-date-picker-1" name="fecha_inicio" required type="text" data-date-format="dd-mm-yyyy" value="<?=set_value('fecha_inicio')?>"  placeholder="dd/mm/aaaa"/>
+                                    <span class="input-group-addon">
+                                    <i class="icon-calendar bigger-110"></i>
+                                    </span>
+                                </div>
                             </div>
                         </div>
 
                         <label class="control-label col-sm-2 col-xs-2">Fecha final</label>
                         <div class="col-sm-2 col-xs-2">
                             <div class="input-icon datetime-pick date-only">
-                                <input data-format="dd-MM-yyyy" type="text" name="fecha_final" class="form-control input-sm" placeholder="dd/mm/aaaa" value="<?=set_value('fecha_final')?>" required />
-                                <span class="add-on">
-                                    <i class="sa-plus"></i>
-                                </span>
+                                <div class="input-group">
+                                    <input class="form-control date-picker input-xxlarge" id="id-date-picker-1" name="fecha_final" required type="text" data-date-format="dd-mm-yyyy" value="<?=set_value('fecha_final')?>"  placeholder="dd/mm/aaaa"/>
+                                    <span class="input-group-addon">
+                                    <i class="icon-calendar bigger-110"></i>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         <div class="col-sm-2 col-xs-2">
