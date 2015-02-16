@@ -29,8 +29,11 @@
 
 
             <div class="row">
-                <a href="<?=base_url('cuentas/movimientos_internos/add_mov_interno/'.$id_empresa.'/'.$id_banco)?>" class="btn btn-primary">Agregar movimiento</a>
-                <br><br>
+                <?php if($this->session->userdata('consulta') == 'active'): ?>
+                    <a href="<?=base_url('cuentas/movimientos_internos/add_mov_interno/'.$id_empresa.'/'.$id_banco)?>" class="btn btn-primary">Agregar movimiento</a>
+                    <br><br>
+                <?php endif; ?>
+                
                 <table id="sample-table-2" class="table table-striped table-bordered table-hover">
                     <thead>
                         <tr>
@@ -58,7 +61,7 @@
                                     </a>
                                 </td>
                                 <td class="text-center">
-                                    <a href="<?=base_url('cuentas/mov_delete/movimiento_interno/'.$id_empresa.'/'.$id_banco.'/'.$movimiento->id_movimiento)?>">
+                                    <a href="<?=base_url('cuentas/mov_delete/movimiento_interno/'.$id_empresa.'/'.$id_banco.'/'.$movimiento->id_movimiento)?>" onclick="return confirm('¿Esta seguro que quiere eliminar el movimiento interno?');"> 
                                         <i class="fa fa-trash fa-2x"></i>
                                     </a>
                                 </td>
@@ -72,9 +75,15 @@
                     </tbody>
                 </table>
             </div>
+            <?php if($this->session->userdata('consulta') == 'active'): ?>
             <div class="text-center" style="margin-top:20px">
                 <a class="btn btn-grey " href="<?=base_url('cuentas/depositos/detalle_cuenta/'.$id_empresa.'/'.$id_banco)?>"> <i class="fa fa-undo"></i> Regresar</a>
             </div>
+            <?php else:?>
+                <div class="text-center" style="margin-top:20px">
+                <a class="btn btn-grey " href="<?=base_url('admin/dashboard')?>"> <i class="fa fa-undo"></i> Regresar</a>
+            </div>
+            <?php endif;?>
             <!-- PAGE CONTENT ENDS -->
         </div><!-- /.col -->
     </div><!-- /.row -->

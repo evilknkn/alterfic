@@ -100,7 +100,7 @@ class Movimientos_internos extends CI_Controller
 			$data['id_empresa'] = $id_empresa;
 			$data['id_banco']	= $id_banco;
 			$data['nombre_empresa'] = $empresa_data->nombre_empresa;
-			$data['empresas']	= $this->empresas_model->lista_empresas();
+			$data['empresas']	= $this->empresas_model->lista_empresas_mov_interno();
 
 
 			$this->load->view('layer/layerout', $data);
@@ -129,12 +129,13 @@ class Movimientos_internos extends CI_Controller
 		$salida_int = $this->movimientos_model->detalle_salida($detalle->folio_salida);
 		// Deposito internos
 		$depo_int = $this->movimientos_model->detalle_deposito($detalle->folio_entrada);
-
+		
 		$this->form_validation->set_rules('empresa', 'empresa', 'required');
 		$this->form_validation->set_rules('id_banco', 'banco', 'required');
 		$this->form_validation->set_rules('monto', 'fecha', 'required');
 		$this->form_validation->set_rules('fecha', 'empresa', 'required|callback_fecha_limite');
-		$this->form_validation->set_rules('folio_entrada', 'folio de entrada', 'required|callback_unique_folio_other['.$depo_int->id_detalle.']');
+		# validación de folios 
+		//$this->form_validation->set_rules('folio_entrada', 'folio de entrada', 'required|callback_unique_folio_other['.$depo_int->id_detalle.']');
 		$this->form_validation->set_rules('folio_salida', 'folio de salida', 'required|callback_unique_folio_other['.$salida_int->id_detalle.']');
 
 		if($this->form_validation->run()):
@@ -149,8 +150,8 @@ class Movimientos_internos extends CI_Controller
 			 				'folio_salida' 		=> $this->input->post('folio_salida'));
 
 			$this->movimientos_model->update_movimiento_int($datos, $filtro_int);
-
-			$filtro_salida = array('id_salida' => $salida_int->id_salida);
+			
+			$filtro_salida = array('id_salida' => $salida_int->id_movimiento);
 			
 			$array= array(	'fecha_salida' 	=>	formato_fecha_ddmmaaaa($this->input->post('fecha')), 
 			 				'monto_salida'	=>	$this->input->post('monto'),
@@ -175,7 +176,9 @@ class Movimientos_internos extends CI_Controller
 
 			$filtro_dt_depto = array('id_detalle' => $depo_int->id_detalle);
 			$datos_depto = array(	'fecha_movimiento'	=> 	formato_fecha_ddmmaaaa($this->input->post('fecha')),
-					 				'folio_mov'			=>	$this->input->post('folio_entrada'));
+					 				'folio_mov'			=>	$this->input->post('folio_entrada'),
+					 				'id_empresa'		=> 	$this->input->post('empresa'),
+					 				'id_banco' 			=> 	$this->input->post('id_banco'));
 
 			$this->movimientos_model->update_movimiento_detalle($datos_depto, $filtro_dt_depto);
 
@@ -191,7 +194,7 @@ class Movimientos_internos extends CI_Controller
 			$data['no_banco']	= $id_banco;
 
 			$data['nombre_empresa'] = $empresa_data->nombre_empresa;
-			$data['empresas']	= $this->empresas_model->lista_empresas();
+			$data['empresas']	= $this->empresas_model->lista_empresas_mov_interno();
 			$data['detalle']	= $detalle;
 
 

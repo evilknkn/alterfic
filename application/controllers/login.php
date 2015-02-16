@@ -39,9 +39,9 @@ class Login extends CI_Controller {
             switch ($user->id_perfil) {
                 case '1':
                     if ($user->consult_mov_int == 1):
-                        $this->session->set_userdata('consulta', 'active');
-                    else:
                         $this->session->set_userdata('consulta', 'inactive');
+                    else:
+                        $this->session->set_userdata('consulta', 'active');
                     endif;
 
                         $this->session->set_userdata(array('base_perfil' => 'admin/dashboard'));

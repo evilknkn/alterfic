@@ -19,7 +19,7 @@ class Dashboard extends CI_Controller
 		$this->load->helper('funciones_externas');
 		$this->load->helper('cuentas');
 
-		if($this->session->userdata('consulta')=='inactive'):
+		if($this->session->userdata('consulta')=='active'):
 			$depositos = $this->resumen_model->total_depositos();
 			//lista de empresas
 			$empresas = $this->retorno_model->lista_empresas(array('ace.tipo_usuario' => 1));

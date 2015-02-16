@@ -40,7 +40,7 @@
                 <span class="menu-text"> Inicio </span>
             </a>
         </li>
-<?php if($this->session->userdata('consulta')== 'inactive'): ?>
+<?php if($this->session->userdata('consulta') == 'active'): ?>
         <li>
             <a href="<?=base_url('catalogos/banks')?>">
                 <i class="icon-credit-card"></i>

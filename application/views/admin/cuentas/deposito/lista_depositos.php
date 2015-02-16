@@ -20,7 +20,11 @@
                 <div class="page-header">
                     <h1>Lista de depósitos</h1>
                 </div><!-- /.page-header -->
+                <br><br>
+                
                 <div class="col-xs-12 col-sm-12">
+                    <a href="<?=base_url()?>excel/exportaExcel/depositos" class="btn btn-success" target="_blank"> <i class="icon-file"></i> Exportar a excel</a>
+                    <br><br>
                     <table id="sample-table-2" class="table table-striped table-bordered table-hover">
                         <thead>
                             <tr>
