@@ -173,6 +173,23 @@ function fechas_rango_inicio($month)
 	return $fecha;
 }
 
+function fechas_rango_mes($month)
+{
+	if($month == '01' or $month == '03' or $month =='04' or $month == '07' or $month == '08' or $month == '10' or $month == '12')
+	{
+		$fecha['fecha_inicio'] = '01';
+		$fecha['fecha_fin'] = '31';
+	}elseif($month == '04' or $month == '06' or $month == '09' or $month == '11'){
+		$fecha['fecha_inicio'] = '01';
+		$fecha['fecha_fin'] = '30';
+	}else{
+		$fecha['fecha_inicio'] = '01';
+		$fecha['fecha_fin'] = '28';
+	}
+
+	return $fecha;
+}
+
 function cliente_asignado_deposito($db, $id_cliente)
 {
 	$res = $db->cliente_asignado_depto(array('id_cliente'=>$id_cliente));

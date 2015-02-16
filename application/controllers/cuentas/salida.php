@@ -82,7 +82,7 @@ class Salida extends CI_Controller
 			$this->salida_model->update_salida($array, $id_salida);
 
 			$datos = array(	'fecha_movimiento'	=> 	formato_fecha_ddmmaaaa($this->input->post('fecha_salida')),
-							'folio_mov'			=> 	trim($this->input->post('folio_salida')) );
+							'folio_mov'			=> 	trim($this->input->post('folio_salida')));
 
 			$this->salida_model->update_movimiento($datos, $this->input->post('id_detalle'));
 
@@ -232,7 +232,7 @@ class Salida extends CI_Controller
 
 		else:
 			$data = array(	'menu' 	=>  'menu/menu_admin',
-							'body'	=>	'admin/cuentas/salida/form_salida_persona');
+							'body'	=>	'admin/cuentas/salida/form_salida_caja');
 
 			$data['id_banco']	= $id_banco;
 			$data['empresa']	= $empresa;

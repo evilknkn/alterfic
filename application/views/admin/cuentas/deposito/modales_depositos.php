@@ -90,8 +90,8 @@ function pagos(id_empresa, id_banco, id_deposito)
                 </table>
             </div>
             <div class="modal-footer">
-                <a id="agregar_pago" class="btn btn-sm" >Agregar pago</a>
-                <button type="button" class="btn btn-sm" data-dismiss="modal">Cerrar</button>
+                <a id="agregar_pago" class="btn btn-info" >Agregar pago</a>
+                <button type="button" class="btn btn-grey" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

@@ -146,4 +146,19 @@ class  Depositos_model extends CI_Model
 		
 		return $this->db->count_all_results();
 	}
+
+	public function pago_info($arrayIdPago)
+	{
+		$this->db->from('ad_deposito_pago adp');
+		$this->db->join('ad_detalle_cuenta adc', 'adc.folio_mov = adp.folio_pago', 'inner');
+		$this->db->where($arrayIdPago);
+		$query = $this->db->get();
+		return $query->row();
+	}
+
+	public function info_deposito($id_deposito)
+	{
+		$query = $this->db->get_where('ad_depositos', array('id_deposito' => $id_deposito) );
+		return $query->row();
+	}
 }

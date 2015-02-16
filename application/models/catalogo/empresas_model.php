@@ -6,6 +6,15 @@ class Empresas_model extends CI_Model
 		$query = $this->db->get_where('ad_catalogo_empresa',array('estatus'=>1));
 		return $query->result();
 	}
+	public function lista_empresas_mov_interno()
+	{
+		$this->db->from('ad_catalogo_empresa');
+		$this->db->where('estatus', 1);
+		$this->db->where('tipo_usuario', 1);
+		$this->db->order_by('nombre_empresa', 'asc');
+		$query = $this->db->get();
+		return $query->result();
+	}
 
 	public function  insert_empresa($array)
 	{

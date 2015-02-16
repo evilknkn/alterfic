@@ -16,77 +16,63 @@
     <div class="row">
         <div class="col-xs-12">
             <!-- PAGE CONTENT BEGINS -->
-                <div class="col-xs-12 col-sm-12">
-                    <div class="page-header">
-                        <h1>Lista de clientes</h1>
-                    </div><!-- /.page-header -->
+            <div class="page-header">
+                <h1>Lista de clientes</h1>
+            </div><!-- /.page-header -->
 
-                    <?php if($this->session->flashdata('success')):?>
-                    <div class="text-center col-sm-12 col-xs-12">
-                        <div class="alert alert-success text-success text-center col-xs-6 col-sm-6"> <?php echo $this->session->flashdata('success');?></div>
-                    </div>
-                    <?php endif;?>
-
-                    <div class="col-xs-12 col-sm-12">
-                        <table id="sample-table-2" class="table table-striped table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Nombre Cliente</th>
-                                    <th>Total comisión</th>
-                                    <th class="text-center">Detalle</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php $total_salida = 0 ;
-                                foreach($clientes as $cliente): 
-                                $total_comisiones= genera_comision_total($db_com, $cliente->id_cliente, $cliente->comision);
-                                $total_salida = $total_salida + $total_comisiones;
-                                ?>
-                                <tr>
-                                    <td><?=$cliente->nombre_cliente?></td>
-                                    <td>$<?=convierte_moneda($total_comisiones);?></td>
-                                    <td class="text-center">
-                                        <a href="<?=base_url('cuentas/comisiones/detalle_comision/'.$cliente->id_cliente)?>">
-                                            <i class="fa fa-search fa-lg"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <?php endforeach;?>
-                            </tbody>
-                            <!--<tfoot> 
-                                <td class="text-right">Total</td>
-                                <td>$<?=convierte_moneda($total_salida);?></td>
-                            </tfoot>-->
-                        </table>
-                    </div>
-
-                    <div class="col-sm-12 col-xs-12" style="margin-top:20px; margin-bottom:20px;">
-                        <a href="<?=base_url('cuentas/comisiones/salida_comision')?>" class="btn btn-info">Ver lista de retiros</a>
-                    </div>
-                    
-                    <div class="col-sm-5 col-xs-5">
-                    <table id="sample-table-1" class="table table-striped table-bordered table-hover">
-                        <?php   $retiro = total_retiros($db_com); 
+            <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Nombre Cliente</th>
+                        <th>Total comisión</th>
+                        <th class="text-center">Detalle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $total_salida = 0 ;
+                    foreach($clientes as $cliente): 
+                    $total_comisiones= genera_comision_total($db_com, $cliente->id_cliente, $cliente->comision);
+                    $total_salida = $total_salida + $total_comisiones;
+                    ?>
+                    <tr>
+                        <td><?=$cliente->nombre_cliente?></td>
+                        <td>$<?=convierte_moneda($total_comisiones);?></td>
+                        <td class="text-center">
+                            <a href="<?=base_url('cuentas/comisiones/detalle_comision/'.$cliente->id_cliente)?>">
+                                <i class="fa fa-search fa-lg"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <?php endforeach;?>
+                </tbody>
+                <!--<tfoot> 
+                    <td class="text-right">Total</td>
+                    <td>$<?=convierte_moneda($total_salida);?></td>
+                </tfoot>-->
+            </table>
+            <br>
+            <a href="<?=base_url('cuentas/comisiones/salida_comision')?>" class="btn btn-info">Ver lista de retiros</a>
+            <br><br>
+            <table class="table tile col-sm-5 col-xs-5">
+                <?php   $retiro = total_retiros($db_com); 
                         $total_retiro  = $total_salida - $gastos - $retiro; ?>
-                        <tr>
-                            <th>Total comisiones</th>
-                            <td style="margin-left:15px">$<?=convierte_moneda($total_salida);?></td>
-                        </tr>
-                        <tr>
-                            <th>Total retiros</th>
-                            <td style="margin-left:15px">$<?=convierte_moneda($retiro)?></td>
-                        </tr>
-                        <tr>
-                            <th>Total gastos</th>
-                            <td style="margin-left:15px">$<?=convierte_moneda($gastos)?></td>
-                        </tr>
-                        <tr>
-                            <th>Total comisión</th>
-                            <td style="margin-left:15px">$<?=convierte_moneda($total_retiro);?></td>
-                        </tr>
-                    </table>
-                    </div>
-                </div>
+                <tr>
+                    <th>Total comisiones</th>
+                    <td style="margin-left:15px">$<?=convierte_moneda($total_salida);?></td>
+                </tr>
+                <tr>
+                    <th>Total retiros</th>
+                    <td style="margin-left:15px">$<?=convierte_moneda($retiro)?></td>
+                </tr>
+                <tr>
+                    <th>Total gastos</th>
+                    <td style="margin-left:15px">$<?=convierte_moneda($gastos)?></td>
+                </tr>
+                <tr>
+                    <th>Total comisión</th>
+                    <td style="margin-left:15px">$<?=convierte_moneda($total_retiro);?></td>
+                </tr>
+            </table>
             <!-- PAGE CONTENT ENDS -->
         </div><!-- /.col -->
     </div><!-- /.row -->
@@ -97,7 +83,7 @@
 jQuery(function($) {
     var oTable1 = $('#sample-table-2').dataTable( {
     "aoColumns": [
-      { "bSortable": false },
+      { "bSortable": true },
         null, 
       { "bSortable": false }
     ] } );
