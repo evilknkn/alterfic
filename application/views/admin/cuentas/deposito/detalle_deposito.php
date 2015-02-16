@@ -76,6 +76,8 @@
                 <div class="page-header">
                     <h1><?=$empresa->nombre_empresa?>/ <?=$empresa->nombre_banco?></h1>
                 </div><!-- /.page-header -->
+                <a href="<?=base_url('excel/exportaExcel/detalle_depositos/'.$id_empresa.'/'.$id_banco)?>" class="btn btn-success"><i class="icon-file"></i> Exporar a excel</a>
+                <br><br>
                 <table id="sample-table-2" class="table table-striped table-bordered table-hover">
                     <thead>
                         <tr>
@@ -110,15 +112,15 @@
                     <?php if($type_mov == 'deposito')
                     {
                     
-                    $deposito = lista_depositos($db_mov, $movimiento->folio_mov ); //print_r($deposito );exit;
-                    //print_r($deposito);
-                    $cantidad_deposito = $deposito->monto_deposito; 
-                    $cliente_asig = cliente_asignado($db_mov, $deposito->id_deposito);
-                    $total_depto = $total_depto + $deposito->monto_deposito;
-                    $comisio_cliente = genera_comision($db_cliente, $cliente_asig, $deposito->monto_deposito);
-                    $catidad_retornar = ($cantidad_deposito) - ($comisio_cliente) ;
-                    $pagos = total_pagos($db_mov, $id_empresa, $id_banco, $deposito->id_deposito);
-                    $pendiente=$catidad_retornar - $pagos;?>
+                        $deposito = lista_depositos($db_mov, $movimiento->folio_mov ); //print_r($deposito );exit;
+                        //print_r($deposito);
+                        $cantidad_deposito = $deposito->monto_deposito; 
+                        $cliente_asig = cliente_asignado($db_mov, $deposito->id_deposito);
+                        $total_depto = $total_depto + $deposito->monto_deposito;
+                        $comisio_cliente = genera_comision($db_cliente, $cliente_asig, $deposito->monto_deposito);
+                        $catidad_retornar = ($cantidad_deposito) - ($comisio_cliente) ;
+                        $pagos = total_pagos($db_mov, $id_empresa, $id_banco, $deposito->id_deposito);
+                        $pendiente=$catidad_retornar - $pagos;?>
                        <tr>
                             <td><?=formato_fecha_ddmmaaaa($movimiento->fecha_movimiento)?></td>
                             <td>$<?=convierte_moneda($cantidad_deposito)?></td>
@@ -155,26 +157,26 @@
                        </tr>
                 <?php }else if( $type_mov == 'deposito_interno' )
                     {
-                         $deposito = lista_depositos($db_mov, $movimiento->folio_mov ); 
+                        $deposito = lista_depositos($db_mov, $movimiento->folio_mov ); 
                         //print_r($movimiento->folio_mov);exit;
                         $cantidad_deposito = $deposito->monto_deposito;
                         $total_depto = $total_depto + $cantidad_deposito;?>
-                    <tr>
-                        <td><?=formato_fecha_ddmmaaaa($movimiento->fecha_movimiento)?></td>
-                        
-                        <td class="text-center">$<?=convierte_moneda($cantidad_deposito)?></td>
-                        <td></td>
-                        <td class="text-center"><?=$movimiento->folio_mov?></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                        <td></td>
-                        <td>Movimiento depósito interno</td>
-                        <td></td>
-                        <td></td>
-                   </tr>
+                        <tr>
+                            <td><?=formato_fecha_ddmmaaaa($movimiento->fecha_movimiento)?></td>
+                            
+                            <td class="text-center">$<?=convierte_moneda($cantidad_deposito)?></td>
+                            <td></td>
+                            <td class="text-center"><?=$movimiento->folio_mov?></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            
+                            <td></td>
+                            <td>Movimiento depósito interno</td>
+                            <td></td>
+                            <td></td>
+                       </tr>
 
                 <?php }else
                         {
@@ -202,7 +204,7 @@
                             </td>
                             <td class="text-center">
                                 <?php if($type_mov == 'salida'){?>
-                                <a href="<?=base_url('cuentas/mov_delete/salida/'.$id_empresa.'/'.$id_banco.'/'.$salida->id_salida)?>" onclick="return confirm('¿Esta seguro que quiere eliminar esta salida?');" data-toggle-title="Haga clic aquí para borrar depósito">
+                                <a href="<?=base_url('cuentas/mov_delete/salida/'.$id_empresa.'/'.$id_banco.'/'.$movimiento->id_detalle.'/'.$salida->id_salida)?>" onclick="return confirm('¿Esta seguro que quiere eliminar esta salida?');" data-toggle-title="Haga clic aquí para borrar depósito">
                                     <i class="fa fa-trash fa-lg"></i>
                                 </a>
                                <?php }?>
@@ -239,7 +241,7 @@
 jQuery(function($) {
     var oTable1 = $('#sample-table-2').dataTable( {
     "aoColumns": [
-      { "bSortable": false },
+      { "bSortable": true },
         null, null, null, null, null, null, null, null, null, null,
       { "bSortable": false }
     ] } );

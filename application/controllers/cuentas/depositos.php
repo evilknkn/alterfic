@@ -45,6 +45,9 @@ class Depositos extends CI_controller
 
 		$fecha_ini = ($this->input->post('fecha_inicio')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_inicio')) : $fecha['fecha_inicio'] ;
 		$fecha_fin = ($this->input->post('fecha_final')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_final')) : $fecha['fecha_fin'] ;
+		# creamos la session con la fecha de detalle para generar el archivo excel 
+		$array_session = array('fecha_ini_depositos' => $fecha_ini, 'fecha_fin_depositos' => $fecha_fin);
+		$this->session->set_userdata($array_session);
 
 		$datos_empresa = $this->depositos_model->empresa(array('ace.id_empresa' => $id_empresa, 'acb.id_banco' => $id_banco));
 		$data['empresa'] = $datos_empresa;

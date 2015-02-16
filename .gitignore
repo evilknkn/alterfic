@@ -1,0 +1,4 @@
+application/config/database.php.orig
+application/controllers/cuentas/mov_delete.php.orig
+application/controllers/excel/exportaExcel.php.orig
+application/views/admin/cuentas/deposito_persona/detalle_deposito.php.orig

@@ -3,7 +3,7 @@
         <div class="modal-content" style="width:1000px">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Saldo al mes de <?=buscar_mes_txt(date('m'))?> en la empresa <span id="nombre-empresa"></span> / <span id="nombre-banco"></span></h4>
+                <h4 class="modal-title">Saldo al mes de </h4>
             </div>
             <div class="modal-body">
                <div class="row">
