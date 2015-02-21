@@ -240,6 +240,8 @@
 <script type="text/javascript">
 jQuery(function($) {
     var oTable1 = $('#sample-table-2').dataTable( {
+        'aaSorting' : [[3, 'desc']],
+        "PageLength" : 50,
     "aoColumns": [
       { "bSortable": true },
         null, null, null, null, null, null, null, null, null, null,

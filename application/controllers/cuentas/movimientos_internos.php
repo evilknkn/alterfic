@@ -21,6 +21,15 @@ class Movimientos_internos extends CI_Controller
 		$data = array(	'menu' 	=>  'menu/menu_admin',
 						'body'	=>	'admin/cuentas/movimientos/lista_movimientos');
 
+		$fecha = fechas_rango_inicio(date('m'));
+
+		$fecha_ini = ($this->input->post('fecha_inicio')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_inicio')) : $fecha['fecha_inicio'] ;
+		$fecha_fin = ($this->input->post('fecha_final')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_final')) : $fecha['fecha_fin'] ;
+		# creamos la session con la fecha de detalle para generar el archivo excel 
+		$array_session = array('fecha_ini_mov_int' => $fecha_ini, 'fecha_fin_mov_int' => $fecha_fin);
+		$this->session->set_userdata($array_session);
+
+
 		$empresa_data = $this->empresas_model->empresa(array('id_empresa'=>$id_empresa));
 
 		$data['id_empresa'] = $id_empresa;
@@ -28,7 +37,7 @@ class Movimientos_internos extends CI_Controller
 		$data['nombre_empresa'] = $empresa_data->nombre_empresa;
 		$data['db']	= $this->empresas_model;
 
-		$filtro = array('id_empresa'=> $id_empresa, 'id_banco' => $id_banco);
+		$filtro = array('id_empresa'=> $id_empresa, 'id_banco' => $id_banco, 'fecha_mov >=' => $fecha_ini, 'fecha_mov <= ' => $fecha_fin ) ;
 		$data['movimientos'] = $this->movimientos_model->lista_movimientos($filtro);
 		$this->load->view('layer/layerout', $data);
 	}

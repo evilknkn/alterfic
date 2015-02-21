@@ -134,7 +134,7 @@ class Pagos extends CI_Controller
 
 			$total = $total + $pagos[$i]->monto_pago;
 			echo "<tr>
-				<td class='text-center'> Pago ".$cont."</td>
+				<td class='text-center'> Pago ".($i+1)."</td>
 				<td class='text-center'>".$pago."</td>
 				<td class='text-center'>".$fecha."</td>
 				<td class='text-center'><a href='".base_url($pagos[$i]->ruta_comprobante)."' class='btn'>Ver comprobante</a></td>
@@ -262,7 +262,7 @@ class Pagos extends CI_Controller
 
 		$this->form_validation->set_message('required', 'El campo %s es requerido');
 		if($this->form_validation->run()):
-
+			$info_depto = $this->depositos_model->info_deposito($dt_pago->id_deposito);
 			$empresa = $this->depositos_model->empresa(array('ace.id_empresa' => $dt_pago->id_empresa, 'acb.id_banco' => $dt_pago->id_banco));
 
 			$array = array(	'monto_pago'			=> 	$this->input->post('monto'),
@@ -276,13 +276,15 @@ class Pagos extends CI_Controller
 			$array_salida = array('fecha_salida' 	=> formato_fecha_ddmmaaaa($this->input->post('fecha_pago')),
 							'monto_salida' 	=> $this->input->post('monto'),
 							'folio_salida'	=> 	$this->input->post('folio_pago'),
-							'detalle_salida'=> 'Pago en el deposito con folio '.$this->input->post('folio_pago'));
+							'detalle_salida' => 'Se actualizo un pago a la empresa '.$empresa->nombre_empresa.' en el banco '.$empresa->nombre_banco.' por la cantidad de '.$this->input->post('monto'). ' al depósito con folio '.$info_depto->folio_depto );
 
 			$this->depositos_model->update_salidas($array_salida, $dt_pago->id_salida);
 
 		
 
 			$array_detalle = array(	'fecha_movimiento'	=> 	formato_fecha_ddmmaaaa($this->input->post('fecha_pago')),
+									'id_empresa'		=> 	$this->input->post('empresa_retorno'),
+									'id_banco'			=> 	$this->input->post('id_banco'),
 									'folio_mov'			=>  trim($this->input->post('folio_pago')));
 
 			$this->depositos_model->update_detalle_cuenta($array_detalle, $dt_pago->id_detalle);

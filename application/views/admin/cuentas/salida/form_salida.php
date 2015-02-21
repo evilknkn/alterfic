@@ -13,8 +13,7 @@
 			<label class="control-label col-sm-4 col-xs-4">Fecha de salida</label>
 			<div class="col-sm-8 col-xs-8">
 				<div class="col-sm-4 col-xs-4">
-				
-		            <div class="input-group">
+	                <div class="input-group">
 	                    <input class="form-control date-picker input-xxlarge" id="id-date-picker-1" name="fecha_salida" required type="text" data-date-format="dd-mm-yyyy" value="<?=set_value('fecha_salida')?>"  placeholder="dd/mm/aaaa"/>
 	                    <span class="input-group-addon">
 	                    <i class="icon-calendar bigger-110"></i>

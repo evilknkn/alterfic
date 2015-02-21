@@ -34,6 +34,43 @@
                     <br><br>
                 <?php endif; ?>
                 
+                <div class="row" style="margin-top:30px">
+                <?=form_open('',array('class'=> 'form-horizontal'))?>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2 col-xs-2 no-padding-rigth">Fecha incio</label>
+                        <div class="col-sm-2 col-xs-2">
+                            <div class="input-icon datetime-pick date-only">
+                                <div class="input-group">
+                                    <input class="form-control date-picker input-xxlarge" id="id-date-picker-1" name="fecha_inicio" required type="text" data-date-format="dd-mm-yyyy" value="<?=set_value('fecha_inicio')?>"  placeholder="dd/mm/aaaa"/>
+                                    <span class="input-group-addon">
+                                    <i class="icon-calendar bigger-110"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                           
+                        </div>
+
+                        <label class="control-label col-sm-2 col-xs-2">Fecha final</label>
+                        <div class="col-sm-2 col-xs-2">
+                            <div class="input-icon datetime-pick date-only">
+                                <div class="input-group">
+                                    <input class="form-control date-picker input-xxlarge" id="id-date-picker-1" name="fecha_final" required type="text" data-date-format="dd-mm-yyyy" value="<?=set_value('fecha_final')?>"  placeholder="dd/mm/aaaa"/>
+                                    <span class="input-group-addon">
+                                    <i class="icon-calendar bigger-110"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2 col-xs-2">
+                            <button class="btn btn-info"> Ver resultado</button>
+                        </div>
+                    </div>
+                <?=form_close()?>
+            </div>
+
+            <a href="<?=base_url('excel/exportaExcel/movimientos_internos/'.$id_empresa.'/'.$id_banco)?>" class="btn btn-success"><i class="icon-file"></i> Exportar a excel </a>
+            <br><br>
                 <table id="sample-table-2" class="table table-striped table-bordered table-hover">
                     <thead>
                         <tr>
@@ -47,7 +84,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if(count($movimientos)>0):?>
                         <?php foreach($movimientos as $movimiento):?>
                            <tr>
                                 <td><?=nombre_empresa($db, $movimiento->empresa_destino)?></td>
@@ -67,11 +103,7 @@
                                 </td>
                            </tr>
                         <?php endforeach; ?>
-                        <?php else:?>
-                            <tr>
-                                <td colspan="7" class="text-center"> -- No hay datos disponibles -- </td>
-                            </tr>
-                        <?php endif;?>
+                     
                     </tbody>
                 </table>
             </div>
@@ -93,6 +125,7 @@
 <script type="text/javascript">
 jQuery(function($) {
     var oTable1 = $('#sample-table-2').dataTable( {
+    'aaSorting' : [[2, 'desc']],
     "aoColumns": [
       { "bSortable": true },
         null, null, null, null, null,

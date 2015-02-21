@@ -34,11 +34,20 @@ class Pendiente_retorno extends CI_Controller
 		$data = array(	'menu' 	=>  'menu/menu_admin',
 						'body'	=>	'admin/cuentas/pendiente_retorno/desgloce_pendiente_retorno');
 
+		$fecha = fechas_rango_inicio(date('m'));
+
+		$fecha_ini = ($this->input->post('fecha_inicio')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_inicio')) : $fecha['fecha_inicio'] ;
+		$fecha_fin = ($this->input->post('fecha_final')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_final')) : $fecha['fecha_fin'] ;
+		# creamos la session con la fecha de detalle para generar el archivo excel 
+		$array_session = array('fecha_ini_retorno' => $fecha_ini, 'fecha_fin_retorno' => $fecha_fin);
+		$this->session->set_userdata($array_session);
+
+
 		$data['db'] = $this->retorno_model;
 		$data['id_empresa']	= $id_empresa;
 		$data['id_banco'] 	= $id_banco;
 		
-		$filtro = array('adc.id_empresa' => $id_empresa, 'adc.id_banco' => $id_banco, 'adc.tipo_movimiento' => 'deposito');
+		$filtro = array('adc.id_empresa' => $id_empresa, 'adc.id_banco' => $id_banco, 'adc.tipo_movimiento' => 'deposito',  'adc.fecha_movimiento >=' => $fecha_ini, 'adc.fecha_movimiento <=' => $fecha_fin);
 		$data['depositos'] = $this->retorno_model->detalle_retorno($filtro);
 		$this->load->view('layer/layerout',$data);
 	}

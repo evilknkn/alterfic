@@ -112,4 +112,46 @@ class Mov_delete extends CI_Controller
 
 	}
 
+	public function deposito_persona($id_empresa, $id_banco, $id_detalle, $id_deposito)
+	{
+		$this->load->model('cuentas/delete_movimiento_model', 'mov_model');
+		$this->load->model('cuentas/depositos_model');
+
+		$this->mov_model->delete_registro('ad_depositos', array('id_deposito' =>$id_deposito)); 
+
+		$this->mov_model->delete_registro('ad_detalle_cuenta', array('id_detalle' =>$id_detalle));
+
+		$array  = array('id_user'   =>  $this->session->userdata('ID_USER') ,
+                        'accion'    =>  'El usuario '.$this->session->userdata('USERNAME'). ' eliminó el deposito con id '.$id_deposito,
+                        'lugar'     =>  'deposito eliminado',
+                        'usuario'   =>  $this->session->userdata('USERNAME'));
+
+        $this->bitacora_model->insert_log($array);
+		
+		$this->session->set_flashdata('success', 'Deposito eliminado correctamente');
+
+		redirect (base_url('/cuentas/deposito_persona/detalle_cuenta/'.$id_empresa.'/'.$id_banco)); 
+	}
+
+    public function salida_persona($id_empresa, $id_banco, $id_detalle, $id_salida)
+	{
+		$this->load->model('cuentas/delete_movimiento_model', 'mov_model');
+		$this->load->model('cuentas/depositos_model');
+
+		$this->mov_model->delete_registro('ad_salidas', array('id_salida' =>$id_salida)); 
+
+		$this->mov_model->delete_registro('ad_detalle_cuenta', array('id_detalle' =>$id_detalle));
+
+		$array  = array('id_user'   =>  $this->session->userdata('ID_USER') ,
+                        'accion'    =>  'El usuario '.$this->session->userdata('USERNAME'). ' eliminó la salida con id '.$id_salida,
+                        'lugar'     =>  'salida eliminada',
+                        'usuario'   =>  $this->session->userdata('USERNAME'));
+
+        $this->bitacora_model->insert_log($array);
+		
+		$this->session->set_flashdata('success', 'Salida eliminada correctamente');
+
+		redirect (base_url('/cuentas/deposito_persona/detalle_cuenta/'.$id_empresa.'/'.$id_banco)); 
+	}
+
 }
