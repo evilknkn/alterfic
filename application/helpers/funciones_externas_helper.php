@@ -22,13 +22,15 @@ function cliente_asignado($db, $id_deposito)
 	return  $res->id_cliente;
 }
 
-function montos($db, $id_empresa, $id_banco, $tipo_mov)
+function montos($db, $id_empresa, $id_banco, $tipo_mov, $fecha_ini = null, $fecha_fin = null)
 {	
 
 	$total_monto =0;
-	
-	$filtro = array('adc.id_empresa' => $id_empresa, 'adc.id_banco' => $id_banco,'adc.tipo_movimiento' => $tipo_mov);
-	
+	if($fecha_ini != null):
+		$filtro = array('adc.id_empresa' => $id_empresa, 'adc.id_banco' => $id_banco,'adc.tipo_movimiento' => $tipo_mov, 'fecha_movimiento >=' => $fecha_ini, 'fecha_movimiento <=' => $fecha_fin);
+	else:
+		$filtro = array('adc.id_empresa' => $id_empresa, 'adc.id_banco' => $id_banco,'adc.tipo_movimiento' => $tipo_mov);
+	endif;
 		$movimientos = $db->lista_movimiento($filtro, $tipo_mov);
 		
 	if(!empty($movimientos)):
@@ -115,9 +117,17 @@ function genera_comision_total($db, $id_cliente, $comision)
 	return $total_comision;
 }
 
-function genera_total_depositos($db, $id_empresa, $id_banco)
+function genera_total_depositos($db, $id_empresa, $id_banco, $fecha_ini = null, $fecha_fin = null)
 {	
-	$filtro=array('adc.id_empresa'=>$id_empresa, 'adc.id_banco' =>$id_banco, 'adc.tipo_movimiento' => 'deposito');
+	
+	if($fecha_ini!=null):
+		$filtro=array('adc.id_empresa'=>$id_empresa,
+		 'adc.id_banco' =>$id_banco, 'adc.tipo_movimiento' => 'deposito',
+		 'fecha_movimiento >= ' => $fecha_ini,
+		 'fecha_movimiento <=' => $fecha_fin);
+	else:
+		$filtro=array('adc.id_empresa'=>$id_empresa, 'adc.id_banco' =>$id_banco, 'adc.tipo_movimiento' => 'deposito');
+	endif;
 	$depositos = $db->depositos_empresa($filtro);
 
 	$total_depositos = 0 ;
@@ -173,8 +183,11 @@ function fechas_rango_inicio($month)
 	return $fecha;
 }
 
+
+
 function fechas_rango_mes($month)
 {
+
 	if($month == '01' or $month == '03' or $month =='04' or $month == '07' or $month == '08' or $month == '10' or $month == '12')
 	{
 		$fecha['fecha_inicio'] = '01';
@@ -186,7 +199,7 @@ function fechas_rango_mes($month)
 		$fecha['fecha_inicio'] = '01';
 		$fecha['fecha_fin'] = '28';
 	}
-
+///	print_r($fecha);
 	return $fecha;
 }
 
@@ -201,9 +214,25 @@ function cliente_asignado_deposito($db, $id_cliente)
 	return $nombre_cliente;
 }
 
-function depositos_pendiente_retorno_gral($db, $id_empresa, $id_banco)
+function depositos_pendiente_retorno_gral($db, $id_empresa, $id_banco, $fecha_ini, $fecha_fin)
 {	
-	$filtro = array('adc.id_empresa' => $id_empresa, 'adc.id_banco' => $id_banco, 'adc.tipo_movimiento' => 'deposito');
+	$filtro = array('adc.id_empresa' => $id_empresa, 'adc.id_banco' => $id_banco, 'adc.tipo_movimiento' => 'deposito', 'adc.fecha_movimiento >=' => $fecha_ini, 'adc.fecha_movimiento <=' => $fecha_fin);
 	$depositos = $db->detalle_retorno($filtro);
 	return $depositos;
 }
+
+function consulta_saldo_anterior($db, $month, $id_empresa, $id_banco)
+{	
+	$fecha_ant = fechas_rango_mes($month);
+	$year = date('Y');
+    if($month == '12'): $year =  $year - 1 ; endif;
+    $fecha_begin = $year.'-'.($month).'-'.$fecha_ant['fecha_inicio'];
+    $fecha_end = $year.'-'.($month).'-'.$fecha_ant['fecha_fin'];
+
+	$key = $db->select_corte(array('id_empresa'=>$id_empresa,
+	 'id_banco'=>$id_banco,'fecha_ini'=>$fecha_begin, 'fecha_fin'=>$fecha_end));
+	//echo $key->id_empresa.'--'.$key->id_banco.'---'. ($key->total_saldo) .'<br>';
+	return $key->total_saldo;
+}
+
+

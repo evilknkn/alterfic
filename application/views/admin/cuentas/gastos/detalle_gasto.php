@@ -18,7 +18,7 @@
         <div class="col-xs-12">
             <!-- PAGE CONTENT BEGINS -->
                 <div class="page-header">
-                    <h1>Pendiente de retorno</h1>
+                    <h1>Detalle de gastos</h1>
                 </div><!-- /.page-header -->
 
                 <table id="sample-table-2" class="table table-striped table-bordered table-hover">

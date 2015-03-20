@@ -26,12 +26,13 @@ $detalle_salida = (isset($detalle->detalle_salida))? $detalle->detalle_salida : 
 		<div class="col-sm-8 col-xs-8">
 			<input type="hidden" value="<?=$detalle->id_detalle;?>" name="id_detalle">
 			<div class="col-sm-4 col-xs-4">
-				<div class="input-icon datetime-pick date-only">
-	                <input data-format="dd/MM/yyyy" type="text" name="fecha_salida" class="form-control input-sm" placeholder="dd/mm/aaaa" value="<?=$fecha_salida?>" />
-	                <span class="add-on">
-	                    <i class="sa-plus"></i>
-	                </span>
-	            </div>
+				
+	            <div class="input-group">
+                    <input class="form-control date-picker input-xxlarge" id="id-date-picker-1" name="fecha_salida" required type="text" data-date-format="dd-mm-yyyy" value="<?=$fecha_salida?>"  placeholder="dd/mm/aaaa"/>
+                    <span class="input-group-addon">
+                    <i class="icon-calendar bigger-110"></i>
+                    </span>
+                </div>
             </div>
             <div class="col-sm-12 col-xs-12">&nbsp;</div>
 	        <div class="col-sm-4 col-xs-4"><?=form_error('fecha_salida')?></div>
@@ -48,8 +49,8 @@ $detalle_salida = (isset($detalle->detalle_salida))? $detalle->detalle_salida : 
 	        <div class="col-sm-4 col-xs-4"><?=form_error('monto_salida')?></div>
 		</div>
 	</div>
-
-	<div class="form-group">
+	<input type="hidden" class="form-control" name="folio_salida" value=" <?=$folio_salida?>" >
+	<!-- <div class="form-group">
 		<label class="control-label col-sm-4 col-xs-4">Folio</label>
 		<div class="col-sm-8 col-xs-8">
 			<div class="col-sm-4 col-xs-4">
@@ -58,7 +59,7 @@ $detalle_salida = (isset($detalle->detalle_salida))? $detalle->detalle_salida : 
 			<div class="col-sm-12 col-xs-12">&nbsp;</div>
 	        <div class="col-sm-4 col-xs-4"><?=form_error('folio_salida')?></div>
 		</div>
-	</div>
+	</div> -->
 
 	<div class="form-group">
 		<label class="control-label col-sm-4 col-xs-4">Detalle de salida</label>

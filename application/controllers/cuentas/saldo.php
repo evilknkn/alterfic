@@ -67,6 +67,6 @@ class Saldo extends CI_Controller
 		$data['empresa'] = $this->depositos_model->empresa(array('ace.id_empresa' => $this->input->post('id_empresa'), 'acb.id_banco' => $this->input->post('id_banco')));
 		
 
-		echo json_encode($data);
+		print_r(json_encode($data));
 	}
 }

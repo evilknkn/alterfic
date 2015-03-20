@@ -120,13 +120,16 @@ class Dashboard extends CI_Controller
 			$data['depositos'] 	= convierte_moneda($gran_total_depto_persona);
 			$data['salidas'] 	= convierte_moneda($gran_total_salida_persona);
 			$data['saldo_persona'] = convierte_moneda($saldo_persona);
-			$data['body']	= 'admin/home';
+
+			$all_data['body']	= 'admin/home';
 		else:
-			$data['body'] = 'admin/consulta/lista_empresas';
+			$all_data['body'] = 'admin/consulta/lista_empresas';
 			$data['empresas'] 	= $this->retorno_model->lista_empresas(array('ace.tipo_usuario' => 1));
 		endif;
-			$data['menu'] 	= 'menu/menu_admin';
+			//$data['menu'] 	= 'menu/menu_admin';
+			$all_data['cosas'] = json_encode($data);
+			//print_r($cuerpo);exit;
 			
-		$this->load->view('layer/layerout', $data);
+		$this->load->view('layer/layerout', $all_data);
 	}
 }

@@ -2,8 +2,8 @@
 <script type="text/javascript">
 function pagos(id_empresa, id_banco, id_deposito)
 {
-    var url_pago = 'cuentas/depositos/add_pagos/'+id_empresa+'/'+id_banco+'/'+id_deposito;
-    $('#agregar_pago').attr({'href': '<?=base_url()?>cuentas/depositos/add_pagos/'+id_empresa+'/'+id_banco+'/'+id_deposito});
+    var url_pago = 'cuentas/depositos/add_pagos/'+id_empresa+'/'+id_banco+'/'+id_deposito+'/1';
+    $('#agregar_pago').attr({'href': '<?=base_url()?>cuentas/depositos/add_pagos/'+id_empresa+'/'+id_banco+'/'+id_deposito+'/1'});
 
     $.ajax({
             type: "POST",
@@ -100,8 +100,8 @@ function pagos(id_empresa, id_banco, id_deposito)
 <script type="text/javascript">
 function pagos_detalle(id_empresa, id_banco, id_deposito)
 {
-    var url_pago = 'cuentas/depositos/add_pagos/'+id_empresa+'/'+id_banco+'/'+id_deposito;
-    $('#agregar_pago').attr({'href': '<?=base_url()?>cuentas/depositos/add_pagos/'+id_empresa+'/'+id_banco+'/'+id_deposito});
+    var url_pago = 'cuentas/depositos/add_pagos/'+id_empresa+'/'+id_banco+'/'+id_deposito+'/1';
+    $('#agregar_pago').attr({'href': '<?=base_url()?>cuentas/depositos/add_pagos/'+id_empresa+'/'+id_banco+'/'+id_deposito+'/1'});
 
     $.ajax({
             type: "POST",

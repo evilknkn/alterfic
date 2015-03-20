@@ -48,8 +48,17 @@ class Comisiones extends CI_Controller
 		$data = array(	'menu' 	=>  'menu/menu_admin',
 						'body'	=>	'admin/cuentas/comision/detalle_comision');
 
+		$fecha = fechas_rango_inicio(date('m'));
+
+		$fecha_ini = ($this->input->post('fecha_inicio')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_inicio')) : $fecha['fecha_inicio'] ;
+		$fecha_fin = ($this->input->post('fecha_final')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_final')) : $fecha['fecha_fin'] ;
+		# creamos la session con la fecha de detalle para generar el archivo excel 
+		$array_session = array('fecha_ini_comision' => $fecha_ini, 'fecha_fin_comision' => $fecha_fin);
+		$this->session->set_userdata($array_session);
+
+		$data['id_cliente'] = $id_cliente;
 		$data['cliente'] = $this->clientes_model->datos_cliente(array('id_cliente'=>$id_cliente));
-		$data['depositos'] = $this->comision_model->detalle_depositos(array('ad.id_cliente'=>$id_cliente));
+		$data['depositos'] = $this->comision_model->detalle_depositos(array('ad.id_cliente'=>$id_cliente, 'adc.fecha_movimiento >=' => $fecha_ini, 'adc.fecha_movimiento <=' => $fecha_fin ));
 		$data['db_com'] = $this->comision_model;
 		
 		$this->load->view('layer/layerout', $data);

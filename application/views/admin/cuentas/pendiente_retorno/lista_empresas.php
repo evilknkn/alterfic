@@ -42,8 +42,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach($empresas as $empresa):
-                        $res = genera_total_depositos($db, $empresa->id_empresa, $empresa->id_banco);
+                        <?php 
+                        $res['depositos'] =0;
+                        $res['pendiente_retorno'] =0;
+                        foreach($empresas as $empresa):
+                        $res = genera_total_depositos($db, $empresa->id_empresa, $empresa->id_banco, $fecha_ini, $fecha_fin);
                         
                         ?>
                         <tr>

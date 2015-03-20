@@ -1,4 +1,3 @@
-<!-- barra direccion-->
 <div class="breadcrumbs" id="breadcrumbs">
     <script type="text/javascript">
         try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
@@ -10,12 +9,14 @@
             <a href="<?=base_url('/admin/dashboard')?>">Inicio</a>
         </li>
 </div>
+<?php $valor = json_decode($cosas);  ?>
 
 <div class="page-content">
     <div class="row">
         <div class="col-xs-12">
             <!-- PAGE CONTENT BEGINS -->
             <div class="col-sm-12 col-xs-12">
+                
                 <div class="page-header">
                     <h1>Resumen financiero Empresas</h1>
                 </div><!-- /.page-header -->
@@ -23,32 +24,32 @@
                     <table id="sample-table-1" class="table table-striped table-bordered table-hover">
                         <tr>
                             <th>Total saldos</th>
-                            <td>$<?=$saldos?></td>
+                            <td>$<?=$valor->saldos?></td>
                         </tr>
 
                         <tr>
                             <th>Pendientes de retorno</th>
-                            <td>$<?=$retorno?></td>
+                            <td>$<?=$valor->retorno?></td>
                         </tr>
 
                         <tr>
                             <th>Comisiones</th>
-                            <td>$<?=$comision?></td>
+                            <td>$<?=$valor->comision?></td>
                         </tr>
 
                         <tr>
                             <th>Gastos</th>
-                            <td>$<?=$gastos?></td>
+                            <td>$<?=$valor->gastos?></td>
                         </tr>
 
                         <tr>
                             <th>Retiro de comisiones</th>
-                            <td>$<?=$retiros?></td>
+                            <td>$<?=$valor->retiros?></td>
                         </tr>
                         
                         <tr>
                             <th>Total resumen</th>
-                            <td>$<?=$resumen?></td>
+                            <td>$<?=$valor->resumen?></td>
                         </tr>
                     </table>
                 </div>
@@ -61,15 +62,15 @@
                     <table id="sample-table-1" class="table table-striped table-bordered table-hover">
                         <tr>
                             <th>Total depòsitos</th>
-                            <td>$<?=$depositos?></td>
+                            <td>$<?=$valor->depositos?></td>
                         </tr>
                         <tr>
                             <th>Total salidas</th>
-                            <td>$<?=$salidas?></td>
+                            <td>$<?=$valor->salidas?></td>
                         </tr>
                         <tr>
                             <th>Total resumen</th>
-                            <td>$<?=$saldo_persona?></td>
+                            <td>$<?=$valor->saldo_persona?></td>
                         </tr>
                     </table>
                 </div>
@@ -84,25 +85,26 @@
                                 <?php    ?>
                                 <tr>
                                     <th>Total comisiones</th>
-                                    <td style="margin-left:15px">$<?=($comision);?></td>
+                                    <td style="margin-left:15px">$<?=($valor->comision);?></td>
                                 </tr>
                                 <tr>
                                     <th>Total retiros</th>
-                                    <td style="margin-left:15px">$<?=($ret_com)?></td>
+                                    <td style="margin-left:15px">$<?=($valor->ret_com)?></td>
                                 </tr>
                                 <tr>
                                     <th>Total gastos</th>
-                                    <td style="margin-left:15px">$<?=($gastos)?></td>
+                                    <td style="margin-left:15px">$<?=($valor->gastos)?></td>
                                 </tr>
                                 <tr>
                                     <th>Total comisión</th>
-                                    <td style="margin-left:15px">$<?=($total_ret);?></td>
+                                    <td style="margin-left:15px">$<?=($valor->total_ret);?></td>
                                 </tr>
                             </table> 
                     </div>
                 </div>
             </div>
+            
             <!-- PAGE CONTENT ENDS -->
         </div><!-- /.col -->
     </div><!-- /.row -->
-</div><!-- /.page-content -->
+</div><!-- /.page-content

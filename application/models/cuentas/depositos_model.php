@@ -161,4 +161,17 @@ class  Depositos_model extends CI_Model
 		$query = $this->db->get_where('ad_depositos', array('id_deposito' => $id_deposito) );
 		return $query->row();
 	}
+
+	public function insert_corte($array)
+	{	
+		//$this->db->where($array_where);
+		$this->db->insert('ad_corte_movimienos_empresa', $array);
+	}
+
+	public function select_corte($array)
+	{
+		$query = $this->db->get_where('ad_corte_movimienos_empresa', $array);
+		return $query->row();
+	}
+
 }

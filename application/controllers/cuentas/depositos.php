@@ -22,6 +22,11 @@ class Depositos extends CI_controller
 		$data = array(	'menu' 	=>  'menu/menu_admin',
 						'body'	=>	'admin/cuentas/deposito/lista_depositos');
 
+		$fecha = fechas_rango_inicio(date('m'));
+
+		$data['fecha_ini'] = ($this->input->post('fecha_inicio')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_inicio')) : $fecha['fecha_inicio'] ;
+		$data['fecha_fin'] = ($this->input->post('fecha_final')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_final')) : $fecha['fecha_fin'] ;
+		
 		$data['empresas'] 	= $this->depositos_model->lista_empresas(array('ace.tipo_usuario' => 1));
 		$data['db']			= $this->depositos_model;
 		$data['db_mov']		= $this->movimiento_model;
@@ -190,7 +195,7 @@ class Depositos extends CI_controller
 		endif;
 	}
 
-	public function add_pagos($id_empresa, $id_banco, $id_deposito)
+	public function add_pagos($id_empresa, $id_banco, $id_deposito, $url_gral = null)
 	{ 
 		//date('Y-m-d');
 		$this->load->model('cuentas/depositos_model');
@@ -249,7 +254,11 @@ class Depositos extends CI_controller
 
 			
 			$this->session->set_flashdata('success', 'Pago agregado correctamente.');
-			redirect(base_url('cuentas/depositos/detalle_cuenta/'.$id_empresa.'/'.$id_banco));
+			if($url_gral ==1):
+				redirect(base_url('cuentas/pendiente_retorno/pendiente_retorno_general'));
+			else:
+				redirect(base_url('cuentas/depositos/detalle_cuenta/'.$id_empresa.'/'.$id_banco));
+			endif;
 		
 		else:
 			$data = array(	'menu' 	=>  'menu/menu_admin',
@@ -260,6 +269,7 @@ class Depositos extends CI_controller
 			$data['id_empresa'] = $id_empresa;
 			$data['id_banco']	= $id_banco;
 			$data['empresas']	= $this->empresas_model->lista_empresas();
+			$data['url_gral']   = $url_gral;
 		
 			$this->load->view('layer/layerout', $data);
 		endif;

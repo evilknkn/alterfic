@@ -145,7 +145,11 @@
 
                     <div class="clearfix text-center">
                         <button class="btn btn-primary"><i class="fa fa-save "></i> Guardar </button>
-                        <a href="<?=base_url('cuentas/depositos/detalle_cuenta/'.$id_empresa.'/'.$id_banco)?>" class="btn btn-grey" style="margin-left:15px"><i class="fa fa-undo"></i>Regresar</a>
+                        <?php if($url_gral == 1):?>
+                            <a href="<?=base_url('cuentas/pendiente_retorno/pendiente_retorno_general')?>" class="btn btn-grey" style="margin-left:15px"><i class="fa fa-undo"></i>Regresar</a>
+                        <?php else:?>
+                            <a href="<?=base_url('cuentas/depositos/detalle_cuenta/'.$id_empresa.'/'.$id_banco)?>" class="btn btn-grey" style="margin-left:15px"><i class="fa fa-undo"></i>Regresar</a>
+                        <?php endif;?>
                     </div>
                     <?=form_close()?>
                 </div>
