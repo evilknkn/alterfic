@@ -125,7 +125,12 @@
 <script type="text/javascript">
 jQuery(function($) {
     var oTable1 = $('#sample-table-2').dataTable( {
-    'aaSorting' : [[2, 'desc']],
+    'aaSorting' : [[4, 'desc']],
+    aLengthMenu: [
+        [25, 50, 100, 200, -1],
+        [25, 50, 100, 200, "All"]
+    ],
+    iDisplayLength: 100,
     "aoColumns": [
       { "bSortable": true },
         null, null, null, null, null,

@@ -65,6 +65,9 @@ class  Depositos_model extends CI_Model
 	{
 		$this->db->where($filtro);
 		$this->db->update('ad_depositos', $data);
+
+		$this->db->where($filtro);
+		$this->db->update('ad_pendiente_retorno', $data);
 	}
 
 	public function insert_salida($array)
@@ -161,4 +164,17 @@ class  Depositos_model extends CI_Model
 		$query = $this->db->get_where('ad_depositos', array('id_deposito' => $id_deposito) );
 		return $query->row();
 	}
+
+	public function insert_corte($array)
+	{	
+		//$this->db->where($array_where);
+		$this->db->insert('ad_corte_movimienos_empresa', $array);
+	}
+
+	public function select_corte($array)
+	{
+		$query = $this->db->get_where('ad_corte_movimienos_empresa', $array);
+		return $query->row();
+	}
+
 }

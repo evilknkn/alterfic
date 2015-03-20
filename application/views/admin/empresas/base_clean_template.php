@@ -10,7 +10,6 @@
             <a href="<?=base_url('/admin/dashboard')?>">Inicio</a>
         </li>
         <li>Lista de empresas</li>
-    </ul>
 </div>
 
 <div class="page-content">

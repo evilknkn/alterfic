@@ -19,7 +19,11 @@ class Pendiente_retorno extends CI_Controller
 
 		$data = array(	'menu' 	=>  'menu/menu_admin',
 						'body'	=>	'admin/cuentas/pendiente_retorno/lista_empresas');
-		
+		$fecha = fechas_rango_inicio(date('m'));
+
+		$data['fecha_ini'] = ($this->input->post('fecha_inicio')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_inicio')) : $fecha['fecha_inicio'] ;
+		$data['fecha_fin'] = ($this->input->post('fecha_final')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_final')) : $fecha['fecha_fin'] ;
+
 		$data['empresas'] = $this->retorno_model->lista_empresas(array('ace.tipo_usuario' => 1));
 		$data['db'] = $this->retorno_model;
 
@@ -56,23 +60,37 @@ class Pendiente_retorno extends CI_Controller
 	{
 		$this->load->model('cuentas/retorno_model');
 		$this->load->helper('funciones_externas');
+		$this->load->model('users/clientes_model');
+		$this->load->helper('cuentas_helper');
+		$this->load->model('cuentas/detalle_cuenta_model', 'movimiento_model');
+
 
 		if($this->input->post('id_empresa'))
 		{
 			$id_empresa = $this->input->post('id_empresa');
 		}
 
-
 		$data = array(	'menu' 	=>  'menu/menu_admin',
-						'body'	=>	'admin/cuentas/pendiente_retorno/retorno_pendiente_general');
+						'body'	=>	'admin/cuentas/pendiente_retorno/retorno_pendiente_general'); 
+
+		$fecha = fechas_rango_inicio(date('m'));
+
+		$data['fecha_ini'] = ($this->input->post('fecha_inicio')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_inicio')) : $fecha['fecha_inicio'] ;
+		$data['fecha_fin'] = ($this->input->post('fecha_final')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_final')) : $fecha['fecha_fin'] ;
+
 
 		$data['catalogo_empresas'] = $this->retorno_model->all_empresas();
+
+
 		if(isset($id_empresa) and $id_empresa >0):
 			$data['empresas'] = $this->retorno_model->empresa_general_filtro($id_empresa);
 		else:
 			$data['empresas'] = $this->retorno_model->empresas_general();
 		endif;
+
+		$data['clientes']	= $this->clientes_model->lista_clientes();
 		$data['db'] = $this->retorno_model;
+		$data['db_mov'] = $this->movimiento_model;
 
 		$this->load->view('layer/layerout', $data);
 	}

@@ -26,7 +26,7 @@
         <![endif]-->
 
         
-        <script src="<?=base_url('assets/js/jquery.ui.touch-punch.min.js');?>"></script>
+       <!-- <script src="<?=base_url('assets/js/jquery.ui.touch-punch.min.js');?>"></script>
         <script src="<?=base_url('assets/js/jquery.gritter.min.js');?>"></script>
         
         
@@ -39,7 +39,7 @@
         <script src="<?=base_url('assets/js/fuelux/fuelux.spinner.min.js');?>"></script>
         <script src="<?=base_url('assets/js/x-editable/bootstrap-editable.min.js');?>"></script>
         <script src="<?=base_url('assets/js/x-editable/ace-editable.min.js');?>"></script>
-        <script src="<?=base_url('assets/js/jquery.maskedinput.min.js');?>"></script>
+        <script src="<?=base_url('assets/js/jquery.maskedinput.min.js');?>"></script>-->
         <script src="<?=base_url('assets/js/jquery-ui-1.10.3.custom.min.js');?>"></script>
 
         <!-- ace scripts -->

@@ -51,11 +51,10 @@
                         <label class="control-label col-sm-4 col-xs-4">Fecha de retiro</label>
                         <div class="col-sm-8 col-xs-8">
                             <div class="col-sm-4 col-xs-4">
-                                
-                                <div class="input-group">
-                                    <input class="form-control date-picker input-xxlarge" id="id-date-picker-1" name="fecha_retiro" required type="text" data-date-format="dd-mm-yyyy" value="<?=set_value('fecha_retiro')?>"  placeholder="dd/mm/aaaa"/>
-                                    <span class="input-group-addon">
-                                    <i class="icon-calendar bigger-110"></i>
+                                <div class="input-icon datetime-pick date-only">
+                                    <input data-format="dd/MM/yyyy" type="text" name="fecha_retiro" class="form-control input-sm" placeholder="dd/mm/aaaa" value="<?=set_value('fecha_retiro')?>" />
+                                    <span class="add-on">
+                                        <i class="sa-plus"></i>
                                     </span>
                                 </div>
                             </div>

@@ -70,10 +70,9 @@
                 <h1><?=$empresa->nombre_empresa?></h1>
             </div><!-- /.page-header -->
             <div class="row">
-                <a href="" class="btn btn-success"> <i class="icon-file"></i> Exportar a excel </a>
-                <br><br>
                 <table id="sample-table-2" class="table table-striped table-bordered table-hover">
                     <thead>
+                        
                         <tr>
                             <th class="text-center">Fecha</th>
                             <th class="text-center">Deposito</th>
@@ -133,7 +132,7 @@
                                     $salida = lista_salidas($db_mov, $movimiento->folio_mov);
                                     $total_sal = $total_sal + $salida->monto_salida;?>
                                     <tr>
-                                        <td class="text-center"><?=formato_fecha_ddmmaaaa($movimiento->fecha_movimiento)?></td>
+                                        <td><?=formato_fecha_ddmmaaaa($movimiento->fecha_movimiento)?></td>
                                         <td></td>
                                         <td class="text-center">$<?=convierte_moneda($salida->monto_salida)?></td>
                                         

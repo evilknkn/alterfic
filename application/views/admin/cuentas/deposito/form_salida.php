@@ -13,13 +13,12 @@
 		<label class="control-label col-sm-4 col-xs-4">Fecha de salida</label>
 		<div class="col-sm-8 col-xs-8">
 			<div class="col-sm-4 col-xs-4">
-	            <div class="input-group">
-                    <input class="form-control date-picker input-xxlarge" id="id-date-picker-1" name="fecha_salida" required type="text" data-date-format="dd-mm-yyyy" value="<?=set_value('fecha_salida')?>"  placeholder="dd/mm/aaaa"/>
-                    <span class="input-group-addon">
-                    <i class="icon-calendar bigger-110"></i>
-                    </span>
-                </div>
-
+				<div class="input-icon datetime-pick date-only">
+	                <input data-format="dd/MM/yyyy" type="text" name="fecha_salida" class="form-control input-sm" placeholder="dd/mm/aaaa" value="<?=set_value('fecha_salida')?>" />
+	                <span class="add-on">
+	                    <i class="sa-plus"></i>
+	                </span>
+	            </div>
             </div>
             <div class="col-sm-12 col-xs-12">&nbsp;</div>
 	        <div class="col-sm-4 col-xs-4"><?=form_error('fecha_salida')?></div>
