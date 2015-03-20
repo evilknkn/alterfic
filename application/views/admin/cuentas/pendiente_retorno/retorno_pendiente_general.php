@@ -89,14 +89,16 @@
                                //print_r($pendientes);
                                		foreach($pendientes as $data):
                                			//print_r($data->id_cliente);exit;
-                               			if(!empty($data->id_cliente) and $data->id_cliente != 0 ):
-                                        	$nombre_cliente = cliente_asignado_deposito($db , $data->id_cliente);
-                                        else:
-                                        		$nombre_cliente = '';
-                                    	endif;
-                                        $cliente_asig = cliente_asignado($db_mov, $data->id_deposito);
+                                        if($data->pendiente_retornar > 10):
+                                                
+                                   			if(!empty($data->id_cliente) and $data->id_cliente != 0 ):
+                                            	$nombre_cliente = cliente_asignado_deposito($db , $data->id_cliente);
+                                            else:
+                                            		$nombre_cliente = '';
+                                        	endif;
+                                        //$cliente_asig = cliente_asignado($db_mov, $data->id_deposito);
                                        // $cliente_asig = 0;
-                                    	if($data->pendiente_retornar > 10):
+                                    	
                                         ?>
                                     <tr>
                                         <td><?=$empresa->nombre_empresa?></td>
@@ -107,10 +109,10 @@
                                         <td>
                                             <input type="hidden" id="id_deposito" value="<?=$data->id_deposito?>">
                                             
-                                            <select class="input-large" name="cliente_deposito" id="cliente_deposito_<?=$data->id_deposito?>" onchange="actualiza_cliente_deposito(<?=$data->id_deposito?>, this.value)" <?=($cliente_asig!=0)? 'disabled=disabled' : '';?> >
+                                            <select class="input-large" name="cliente_deposito" id="cliente_deposito_<?=$data->id_deposito?>" onchange="actualiza_cliente_deposito(<?=$data->id_deposito?>, this.value)" <?=($data->id_cliente!=0)? 'disabled=disabled' : '';?> >
                                                 <option value=""> Seleccione un cliente</option>
                                                 <?php foreach($clientes as $cliente):?>
-                                                    <option value="<?=$cliente->id_cliente?>" <?=($cliente_asig==$cliente->id_cliente)? 'selected=selected' : '';?>><?=$cliente->nombre_cliente?></option>
+                                                    <option value="<?=$cliente->id_cliente?>" <?=($data->id_cliente ==$cliente->id_cliente)? 'selected=selected' : '';?>><?=$cliente->nombre_cliente?></option>
                                                 <?php endforeach;?>
                                             </select>
                                             <a style="cursor:pointer;width:60px" onclick="editar_cliente(<?=$data->id_deposito?>)" class="btn btn-primary" >Editar</a>
