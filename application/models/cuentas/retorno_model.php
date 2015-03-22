@@ -84,4 +84,27 @@ class Retorno_model extends  CI_Model
 		return $query->result();
 	}
 
+	public function insert_deposito($array_insert)
+	{
+		$this->db->insert('ad_pendiente_retorno', $array_insert);
+	}
+
+	public function select_pendiente_retorno($array_filtro)
+	{
+		$query = $this->db->get_where('ad_pendiente_retorno', $array_filtro);
+		return $query->result();
+	}
+
+	public function select_pendiente_retorno_empresa($array_filtro)
+	{
+		$query = $this->db->get_where('ad_pendiente_retorno', $array_filtro);
+		return $query->row();
+	}
+
+	public function update_pendiente_retorno($array_up, $array_where)
+	{
+		$this->db->where($array_where);
+		$this->db->update('ad_pendiente_retorno', $array_up);
+	}
+
 }

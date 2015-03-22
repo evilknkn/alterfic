@@ -65,6 +65,9 @@ class  Depositos_model extends CI_Model
 	{
 		$this->db->where($filtro);
 		$this->db->update('ad_depositos', $data);
+
+		$this->db->where($filtro);
+		$this->db->update('ad_pendiente_retorno', $data);
 	}
 
 	public function insert_salida($array)

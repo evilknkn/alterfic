@@ -216,7 +216,11 @@ function cliente_asignado_deposito($db, $id_cliente)
 
 function depositos_pendiente_retorno_gral($db, $id_empresa, $id_banco, $fecha_ini, $fecha_fin)
 {	
+	if($fecha_ini == null):
+	$filtro = array('adc.id_empresa' => $id_empresa, 'adc.id_banco' => $id_banco, 'adc.tipo_movimiento' => 'deposito');
+	else:
 	$filtro = array('adc.id_empresa' => $id_empresa, 'adc.id_banco' => $id_banco, 'adc.tipo_movimiento' => 'deposito', 'adc.fecha_movimiento >=' => $fecha_ini, 'adc.fecha_movimiento <=' => $fecha_fin);
+	endif;
 	$depositos = $db->detalle_retorno($filtro);
 	return $depositos;
 }
@@ -235,4 +239,15 @@ function consulta_saldo_anterior($db, $month, $id_empresa, $id_banco)
 	return $key->total_saldo;
 }
 
+
+function pendiente_retorno($db, $id_empresa, $id_banco, $fecha_ini = null, $fecha_fin = null)
+{
+		$key = $db->select_pendiente_retorno(array('id_empresa' => $id_empresa, 'id_banco' => $id_banco));
+	return $key;
+}
+function pendiente_retorno_empresa($db, $filtro)
+{
+	$key = $db->select_pendiente_retorno($filtro);
+	return $key;
+}
 

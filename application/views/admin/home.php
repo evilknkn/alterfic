@@ -9,14 +9,14 @@
             <a href="<?=base_url('/admin/dashboard')?>">Inicio</a>
         </li>
 </div>
-<?php $valor = json_decode($cosas);  ?>
+<?php //$valor = json_decode($cosas);  ?>
 
 <div class="page-content">
     <div class="row">
         <div class="col-xs-12">
             <!-- PAGE CONTENT BEGINS -->
             <div class="col-sm-12 col-xs-12">
-                
+                <?php /*
                 <div class="page-header">
                     <h1>Resumen financiero Empresas</h1>
                 </div><!-- /.page-header -->
@@ -103,7 +103,7 @@
                     </div>
                 </div>
             </div>
-            
+            */ ?>
             <!-- PAGE CONTENT ENDS -->
         </div><!-- /.col -->
     </div><!-- /.row -->

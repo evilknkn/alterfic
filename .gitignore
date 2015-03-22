@@ -1,0 +1,11 @@
+application/config/database.php.orig
+application/controllers/cuentas/mov_delete.php.orig
+application/controllers/excel/exportaExcel.php.orig
+application/views/admin/cuentas/deposito_persona/detalle_deposito.php.orig
+application/views/admin/cuentas/pendiente_retorno/retorno_pendiente_general.php.orig
+application/helpers/funciones_externas_helper.php.orig
+application/controllers/cuentas/pendiente_retorno.php.orig
+application/views/admin/home.php.orig
+application/config/constants.php.orig
+application/controllers/admin/dashboard.php.orig
+application/controllers/tool/tool_master_controller.php.orig

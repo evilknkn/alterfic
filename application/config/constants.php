@@ -35,7 +35,7 @@ define('FOPEN_WRITE_CREATE',					'ab');
 define('FOPEN_READ_WRITE_CREATE',				'a+b');
 define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
-define('PATH',									'C:/xampp/htdocs/alterfisc_v2/');
+define('PATH',									'/Applications/MAMP/htdocs/admin_new');
 define('APPNAME', 								'Alterfisc');
 
 

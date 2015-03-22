@@ -20,7 +20,7 @@ class Dashboard extends CI_Controller
 		$this->load->helper('cuentas');
 
 		if($this->session->userdata('consulta')=='active'):
-			$depositos = $this->resumen_model->total_depositos();
+			/*$depositos = $this->resumen_model->total_depositos();
 			//lista de empresas
 			$empresas = $this->retorno_model->lista_empresas(array('ace.tipo_usuario' => 1));
 			
@@ -119,7 +119,7 @@ class Dashboard extends CI_Controller
 
 			$data['depositos'] 	= convierte_moneda($gran_total_depto_persona);
 			$data['salidas'] 	= convierte_moneda($gran_total_salida_persona);
-			$data['saldo_persona'] = convierte_moneda($saldo_persona);
+			$data['saldo_persona'] = convierte_moneda($saldo_persona);*/
 
 			$all_data['body']	= 'admin/home';
 		else:
@@ -127,7 +127,7 @@ class Dashboard extends CI_Controller
 			$data['empresas'] 	= $this->retorno_model->lista_empresas(array('ace.tipo_usuario' => 1));
 		endif;
 			//$data['menu'] 	= 'menu/menu_admin';
-			$all_data['cosas'] = json_encode($data);
+			//$all_data['cosas'] = json_encode($data);
 			//print_r($cuerpo);exit;
 			
 		$this->load->view('layer/layerout', $all_data);

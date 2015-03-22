@@ -69,15 +69,19 @@
                                 <th>Nombre empresa</th>
                                 <th>Banco</th>
                                 <th>Fecha de depósito</th>
+                                <th>Monto depósito</th>
                                 <th>Folio</th>
                                 <th>Nombre cliente</th>
+<!--                                 <th>Cliente</th> 
+ -->                                <!-- 
+                                <th>Nombre cliente</th>
                                 <th>Cliente</th> 
-                                <th>Depósito</th>
-                                <th>Pagos</th>
+                                
+                                <th>Pagos</th>-->
                                 <th>Comisión </th>
-                                <th>Pendiente retorno</th>
                                 <th>Ver pagos</th>
-                         </tr>
+<!--                                 <th>Pendiente retorno</th>
+ -->                            </tr>
                         </thead>
                         <tbody>
                             <?php 
@@ -85,50 +89,52 @@
                             $id_banco   = 0;
 
                             foreach($empresas as $empresa):
-                               	$pendientes = pendiente_retorno_empresa($db, array('id_empresa' => $empresa->id_empresa, 'id_banco' => $empresa->id_banco));
-                               //print_r($pendientes);
-                               		foreach($pendientes as $data):
-                               			//print_r($data->id_cliente);exit;
-                                        if($data->pendiente_retornar > 10):
-                                                
-                                   			if(!empty($data->id_cliente) and $data->id_cliente != 0 ):
-                                            	$nombre_cliente = cliente_asignado_deposito($db , $data->id_cliente);
-                                            else:
-                                            		$nombre_cliente = '';
-                                        	endif;
-                                        //$cliente_asig = cliente_asignado($db_mov, $data->id_deposito);
+                                if($id_empresa != $empresa->id_empresa and $id_banco != $empresa->id_banco): 
+                                    $depositos = depositos_pendiente_retorno_gral($db, $empresa->id_empresa, $empresa->id_banco, $fecha_ini, $fecha_fin);
+                                ?>
+                                <?php foreach($depositos as $deposito):
+
+                                        $nombre_cliente = cliente_asignado_deposito($db , $deposito->id_cliente);
+                                       // $nombre_cliente =  '----';
+                                        //$cliente_asig = cliente_asignado($db_mov, $deposito->id_deposito);
                                        // $cliente_asig = 0;
-                                    	
+                                        $comision = genera_comision($db, $deposito->id_cliente, $deposito->monto_deposito); 
+                                       // $pagos = total_pagos($db, $empresa->id_empresa, $empresa->id_banco, $deposito->id_deposito);
+                                       // $pendiente_retorno = $deposito->monto_deposito - ($comision + $pagos);
+                                       // if($pendiente_retorno > 10):
                                         ?>
                                     <tr>
                                         <td><?=$empresa->nombre_empresa?></td>
                                         <td><?=$empresa->nombre_banco?></td>
-                                        <td><?=formato_fecha_ddmmaaaa($data->fecha_movimiento)?></td>
-                                        <td><?=$data->folio_deposito?></td>
-                                        <td><?=$nombre_cliente?></td>
-                                        <td>
-                                            <input type="hidden" id="id_deposito" value="<?=$data->id_deposito?>">
-                                            
-                                            <select class="input-large" name="cliente_deposito" id="cliente_deposito_<?=$data->id_deposito?>" onchange="actualiza_cliente_deposito(<?=$data->id_deposito?>, this.value)" <?=($data->id_cliente!=0)? 'disabled=disabled' : '';?> >
+                                        <td><?=formato_fecha_ddmmaaaa($deposito->fecha_deposito)?></td>
+                                        <td>$<?=convierte_moneda($deposito->monto_deposito)?></td>
+                                     <td><?=$deposito->folio_depto?></td>
+ <!--  
+                                        -->
+                                         <td><?=$nombre_cliente?></td>
+                                       <!--  <td>
+                                            <input type="hidden" id="id_deposito" value="<?=$deposito->id_deposito?>">
+                                            <?php echo $cliente_asig?>
+                                            <select class="input-large" name="cliente_deposito" id="cliente_deposito_<?=$deposito->id_deposito?>" onchange="actualiza_cliente_deposito(<?=$deposito->id_deposito?>, this.value)" <?=($cliente_asig!=0)? 'disabled=disabled' : '';?> >
                                                 <option value=""> Seleccione un cliente</option>
                                                 <?php foreach($clientes as $cliente):?>
-                                                    <option value="<?=$cliente->id_cliente?>" <?=($data->id_cliente ==$cliente->id_cliente)? 'selected=selected' : '';?>><?=$cliente->nombre_cliente?></option>
+                                                    <option value="<?=$cliente->id_cliente?>" <?=($cliente_asig==$cliente->id_cliente)? 'selected=selected' : '';?>><?=$cliente->nombre_cliente?></option>
                                                 <?php endforeach;?>
                                             </select>
-                                            <a style="cursor:pointer;width:60px" onclick="editar_cliente(<?=$data->id_deposito?>)" class="btn btn-primary" >Editar</a>
-                                        </td>  
-                                        <td>$<?=convierte_moneda($data->monto_deposito)?></td>
-                                     	<td>$<?=convierte_moneda($data->total_pagos)?></td>
-                                     	<td>$<?=convierte_moneda($data->comision)?></td>
-                                        <td><?=convierte_moneda($data->pendiente_retornar)?></td>
+                                            <a style="cursor:pointer;width:60px" onclick="editar_cliente(<?=$deposito->id_deposito?>)" class="btn btn-primary" >Editar</a>
+                                        </td>   -->                                       
+                                        <!--
+                                        <td>$<?=convierte_moneda($pagos)?></td>-->
+                                        <td>$<?=convierte_moneda($comision)?></td>
                                         <td>
-                                            <a data-toggle="modal" href="#modalPagos" class="btn btn-info" onclick="pagos(<?=$empresa->id_empresa?>,<?=$empresa->id_banco?>, <?=$data->id_deposito?>)">Ver Pagos</a>
+                                            <a data-toggle="modal" href="#modalPagos" class="btn btn-info" onclick="pagos(<?=$empresa->id_empresa?>,<?=$empresa->id_banco?>, <?=$deposito->id_deposito?>)">Ver Pagos</a>
                                         </td>
-                                        <!--  -->
+                                        <!-- <td><?=convierte_moneda($pendiente_retorno)?></td> -->
                                        
                                     </tr>
-                                    <?php endif;?>
-                                <?php endforeach;?>
+                                    <?php //endif;?>
+                                    <?php endforeach;?>
+                                <?php endif;?>
                             <?php endforeach;?>
                         </tbody>
                     </table>
@@ -154,7 +160,7 @@ jQuery(function($) {
     iDisplayLength: 100,
     "aoColumns": [
       { "bSortable": true },
-        null, null, null, null, null, null, null,null,null,
+        null, null, null, null, null, null,
       { "bSortable": true }
     ] } );
         
