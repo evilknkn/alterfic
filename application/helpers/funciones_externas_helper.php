@@ -214,7 +214,7 @@ function cliente_asignado_deposito($db, $id_cliente)
 	return $nombre_cliente;
 }
 
-function depositos_pendiente_retorno_gral($db, $id_empresa, $id_banco, $fecha_ini, $fecha_fin)
+function depositos_pendiente_retorno_gral($db, $id_empresa, $id_banco, $fecha_ini = null, $fecha_fin = null)
 {	
 	if($fecha_ini == null):
 	$filtro = array('adc.id_empresa' => $id_empresa, 'adc.id_banco' => $id_banco, 'adc.tipo_movimiento' => 'deposito');

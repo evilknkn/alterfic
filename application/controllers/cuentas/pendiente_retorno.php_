@@ -88,7 +88,7 @@ class Pendiente_retorno extends CI_Controller
 			$data['empresas'] = $this->retorno_model->empresas_general();
 		endif;
 
-		$data['clientes']	= $this->clientes_model->lista_clientes();
+		//$data['clientes']	= $this->clientes_model->lista_clientes();
 		$data['db'] = $this->retorno_model;
 		$data['db_mov'] = $this->movimiento_model;
 
