@@ -44,24 +44,24 @@
                             $total_saldo = 0;
                             $saldo = 0;
                             foreach($empresas as $empresa): 
-                            $depto = montos($db_mov, $empresa->id_empresa, $empresa->id_banco, 'deposito', $fecha_ini, $fecha_fin);
-                            $depto_int = montos($db_mov, $empresa->id_empresa, $empresa->id_banco, 'deposito_interno', $fecha_ini, $fecha_fin);
+                            // $depto = montos($db_mov, $empresa->id_empresa, $empresa->id_banco, 'deposito', $fecha_ini, $fecha_fin);
+                            // $depto_int = montos($db_mov, $empresa->id_empresa, $empresa->id_banco, 'deposito_interno', $fecha_ini, $fecha_fin);
                             
-                            $salida = montos($db_mov, $empresa->id_empresa, $empresa->id_banco, 'salida', $fecha_ini, $fecha_fin);
-                            $salida_pago = montos($db_mov, $empresa->id_empresa, $empresa->id_banco, 'salida_pago', $fecha_ini, $fecha_fin);
-                            $salida_mov_int = montos($db_mov, $empresa->id_empresa, $empresa->id_banco, 'mov_int', $fecha_ini, $fecha_fin);
-                            $salida_comision = montos($db_mov, $empresa->id_empresa, $empresa->id_banco, 'salida_comision', $fecha_ini, $fecha_fin);
+                            // $salida = montos($db_mov, $empresa->id_empresa, $empresa->id_banco, 'salida', $fecha_ini, $fecha_fin);
+                            // $salida_pago = montos($db_mov, $empresa->id_empresa, $empresa->id_banco, 'salida_pago', $fecha_ini, $fecha_fin);
+                            // $salida_mov_int = montos($db_mov, $empresa->id_empresa, $empresa->id_banco, 'mov_int', $fecha_ini, $fecha_fin);
+                            // $salida_comision = montos($db_mov, $empresa->id_empresa, $empresa->id_banco, 'salida_comision', $fecha_ini, $fecha_fin);
                             
-                            $total_depto =   $depto + $depto_int;
-                            $total_salida = $salida + $salida_mov_int + $salida_pago + $salida_comision;
+                            // $total_depto =   $depto + $depto_int;
+                            // $total_salida = $salida + $salida_mov_int + $salida_pago + $salida_comision;
 
                             $month = date('m');
                             $month_ant  = '0'.($month-1);  
                             
-                            $saldo = $total_depto - $total_salida; 
-                            $saldo_anterior = consulta_saldo_anterior($db, $month_ant, $empresa->id_empresa, $empresa->id_banco);
+                            // $saldo = $total_depto - $total_salida; 
+                            // $saldo_anterior = consulta_saldo_anterior($db, $month_ant, $empresa->id_empresa, $empresa->id_banco);
 
-                            $total_saldo = $saldo_anterior + $saldo; ?>
+                            // $total_saldo = $saldo_anterior + $saldo; ?>
                             <tr>
                                 <td><?=$empresa->nombre_empresa?></td>
                                 <td><?=$empresa->nombre_banco?></td>
