@@ -11,8 +11,35 @@ class Detalle_cuenta_model extends CI_Model
 		$this->db->where($filtro);
 		$this->db->where('fecha_movimiento >=', $fecha_ini);
 		$this->db->where('fecha_movimiento <=', $fecha_fin);
-		$this->db->order_by('adc.folio_mov', 'desc');
+		
+		//$this->db->order_by('adc.folio_mov', 'desc');
+
 		//$this->db->order_by('adc.fecha_movimiento','asc');
+		$this->db->order_by('adc.tipo_movimiento');
+		$this->db->order_by('adc.id_detalle', 'asc');
+
+		//$query = $this->db->get();
+		return $this->db->count_all_results();;
+		//return $query->result();
+	}
+
+	public function lista_movimientos_page($filtro, $fecha_ini, $fecha_fin, $filter_page = null, $order = null)
+	{	
+		//print_r($filter_page); exit;
+		$this->db->from('ad_detalle_cuenta adc');
+		$this->db->where($filtro);
+		$this->db->where('fecha_movimiento >=', $fecha_ini);
+		$this->db->where('fecha_movimiento <=', $fecha_fin);
+		if($filter_page != null):
+			$this->db->where($filter_page);
+		endif;
+		$this->db->order_by('adc.folio_mov', $order);
+
+		$this->db->order_by('adc.fecha_movimiento','asc');
+		$this->db->order_by('adc.tipo_movimiento');
+		$this->db->order_by('adc.id_detalle', 'asc');
+		$this->db->limit(100);
+
 		$query = $this->db->get();
 		return $query->result();
 	}
