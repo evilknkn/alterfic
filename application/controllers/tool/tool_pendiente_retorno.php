@@ -26,7 +26,11 @@ class Tool_pendiente_retorno extends  CI_Controller
             $depositos = depositos_pendiente_retorno_gral($db, $empresa->id_empresa, $empresa->id_banco);
             //print_r($depositos);exit;
             foreach($depositos as $deposito)
-            {
+            {	
+
+            	$valida_depositos = $this->retorno_model->select_pendiente_retorno(array('id_empresa' => $empresa->id_empresa, 'id_banco' => $empresa->id_banco,'id_deposito' => $deposito->id_deposito) );
+            	if(count($valida_depositos) == 0):
+
             	echo $deposito->folio_mov.' '.$deposito->id_movimiento.' '.$deposito->fecha_movimiento.' '.$deposito->monto_deposito.' '.$deposito->id_cliente."<br>";
             	$array_insert = array(	'id_empresa' 		=> $empresa->id_empresa, 
             							'id_banco' 			=> $empresa->id_banco, 
@@ -38,6 +42,8 @@ class Tool_pendiente_retorno extends  CI_Controller
             							'total_pagos' 		=> 0,
             							'pendiente_retornar'=> 0);
             	$this->retorno_model->insert_deposito($array_insert);
+            	endif;
+
             }#fin depositos
             echo "<hr>";
 		}#fin lista_empresas

@@ -21,6 +21,8 @@ class Mov_delete extends CI_Controller
 
 		$this->mov_model->delete_registro('ad_detalle_cuenta', array('id_detalle' =>$id_detalle));
 
+		$this->mov_model->delete_registro('ad_pendiente_retorno', array('id_deposito' =>$id_deposito));
+
 		$array  = array('id_user'   =>  $this->session->userdata('ID_USER') ,
                         'accion'    =>  'El usuario '.$this->session->userdata('USERNAME'). ' eliminó el deposito con id '.$id_deposito,
                         'lugar'     =>  'deposito eliminado',

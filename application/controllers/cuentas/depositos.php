@@ -4,6 +4,7 @@ class Depositos extends CI_controller
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->library('unit_test');
 		if($this->session->userdata('USERNAME') == '' ){
 			
             $regresar = (isset($_SERVER['HTTPS']) ? 'https://' : 'http://' ) . $_SERVER["SERVER_NAME"] . $_SERVER['REQUEST_URI'];
@@ -34,7 +35,7 @@ class Depositos extends CI_controller
 		$this->load->view('layer/layerout', $data);
 	}
 
-	public function detalle_cuenta($id_empresa, $id_banco)
+	public function detalle_cuenta($id_empresa, $id_banco, $no, $dir = null, $page_no = null)
 	{	
 		$this->load->model('cuentas/depositos_model');
 		$this->load->model('users/clientes_model');
@@ -50,6 +51,7 @@ class Depositos extends CI_controller
 
 		$fecha_ini = ($this->input->post('fecha_inicio')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_inicio')) : $fecha['fecha_inicio'] ;
 		$fecha_fin = ($this->input->post('fecha_final')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_final')) : $fecha['fecha_fin'] ;
+		
 		# creamos la session con la fecha de detalle para generar el archivo excel 
 		$array_session = array('fecha_ini_depositos' => $fecha_ini, 'fecha_fin_depositos' => $fecha_fin);
 		$this->session->set_userdata($array_session);
@@ -58,12 +60,30 @@ class Depositos extends CI_controller
 		$data['empresa'] = $datos_empresa;
 
 		$filtro = array('adc.id_empresa' => $id_empresa, 'adc.id_banco' => $id_banco);
+		$filter = '';
+		$order = 'desc';
 
-		$data['movimientos'] 	= $this->movimiento_model->lista_movimientos($filtro, $fecha_ini, $fecha_fin );
+		$data['movimientos'] = $this->movimiento_model->lista_movimientos($filtro, $fecha_ini, $fecha_fin);
+		if($dir == 'a'):
+			$filter = array('adc.folio_mov >' => $page_no);
+			$order = 'asc';
+		elseif($dir == 's'):
+			$filter = array('adc.folio_mov <' => $page_no);	
+			$order = 'desc';
+		endif;
+
+		$data['lista_moves'] = $this->movimiento_model->lista_movimientos_page($filtro, $fecha_ini, $fecha_fin, $filter , $order);
+
+		$no_pages = ceil($data['movimientos'] / 100);
+
+		$data['status_ini']  = ($no > 1)? 'ini':'';
+		$data['status_fin']  = ($no < $no_pages)? 'fin':'';
+
 		$data['clientes']	= $this->clientes_model->lista_clientes();
 
 		$data['id_empresa'] = $id_empresa;
 		$data['id_banco']	= $id_banco;
+		$data['pag_stat'] 	= $no;
 		$data['db'] = $this->depositos_model;
 		$data['db_mov'] = $this->movimiento_model;
 		$data['db_cliente'] = $this->clientes_model;
@@ -136,6 +156,8 @@ class Depositos extends CI_controller
 	{
 		$this->load->model('cuentas/depositos_model');
 		$this->load->model('cuentas/detalle_cuenta_model');
+		$this->load->model('cuentas/retorno_model');
+		$this->load->helper('funciones_externas');
 
 		$empresa = $this->depositos_model->empresa(array('ace.id_empresa' => $id_empresa));
 		$dt_deposito = $this->depositos_model->detalle_deposito(array('adc.id_empresa'=>$id_empresa, 'adc.id_banco' => $id_banco, 'ad.id_deposito' => $id_deposito));
@@ -145,8 +167,13 @@ class Depositos extends CI_controller
 		$this->form_validation->set_rules('folio_depto' ,'folio', 'required|trim|callback_unique_folio_other');
 
 		if($this->form_validation->run()):
-
+			
 			$dt_depositos = array(	'fecha_movimiento' 	=>  formato_fecha_ddmmaaaa($this->input->post('fecha_depto')), 'folio_mov' => $this->input->post('folio_depto'));
+			$dt_pendiente = $this->retorno_model->select_pendiente_retorno_empresa(array('id_deposito' => $id_deposito));
+
+			$pendiente = $this->input->post('monto_depto') - ($dt_pendiente->comision + $dt_pendiente->total_pagos) ;
+
+			//print_r($pendiente);exit;
 
 			$this->depositos_model->actualiza_detalle_cuenta($dt_depositos, $id_detalle);
 
@@ -155,6 +182,13 @@ class Depositos extends CI_controller
 								'folio_depto'  		=> $this->input->post('folio_depto'));
 
 			$this->depositos_model->actualiza_deposito($deposito, $id_deposito);
+
+			$data_pendiente = array('monto_deposito' 	=> 	$this->input->post('monto_depto') ,
+									'fecha_movimiento'	=> 	formato_fecha_ddmmaaaa($this->input->post('fecha_depto')),
+									'folio_deposito'	=> 	$this->input->post('folio_depto'),
+									'pendiente_retornar'=> 	$pendiente);
+
+			$this->retorno_model->update_pendiente_retorno($data_pendiente, array('id_deposito' => $id_deposito));
 
 			$array  = array('id_user'   =>  $this->session->userdata('ID_USER') ,
                             'accion'    =>  'El usuario '.$this->session->userdata('USERNAME'). ' modificó el deposito con folio '.$this->input->post('folio_depto').' los datos anteriores eran: no. folio '.$dt_deposito->folio_depto.', monto '.$dt_deposito->monto_deposito.', fecha deldepto '.$dt_deposito->folio_depto.' de la empresa '. $dt_deposito->nombre_empresa.' en banco '. $dt_deposito->nombre_banco.'.' ,

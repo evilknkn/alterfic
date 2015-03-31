@@ -73,7 +73,7 @@
                                     <a data-toggle="modal" href="#modalSaldosPorMes" onclick="saldoPorMes(<?php echo $empresa->id_empresa?>, <?php echo $empresa->id_banco?>)" class="btn btn-info">Consultar</a></td>
                               
                                 <td class="tex-center">
-                                    <a href="<?=base_url('cuentas/depositos/detalle_cuenta/'.$empresa->id_empresa.'/'.$empresa->id_banco)?>">
+                                    <a href="<?=base_url('cuentas/depositos/detalle_cuenta/'.$empresa->id_empresa.'/'.$empresa->id_banco.'/1')?>">
                                         <i class="fa fa-search fa-lg"></i>
                                     </a>
                                 </td>
