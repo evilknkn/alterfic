@@ -78,9 +78,33 @@
                 </div><!-- /.page-header -->
                 <a href="<?=base_url('excel/exportaExcel/detalle_depositos/'.$id_empresa.'/'.$id_banco)?>" class="btn btn-success"><i class="icon-file"></i> Exporar a excel</a>
                 <br><br>
+                <?php $end_pag = count($lista_moves) -1; ?>
+
+                <div class="dd-handle">
+                    Desplegados <?= 100 * $pag_stat ?> / <?=($movimientos)?> registros </div> 
+                </div>
+
+                <ul class="pager">
+                    <li class="previous">
+                        <?php if($status_ini == 'ini'):?>
+                            <?php $anterior = $pag_stat - 1?>
+                            <a href="<?=base_url('cuentas/depositos/detalle_cuenta/'.$id_empresa.'/'.$id_banco.'/'.$anterior.'/a/'.$lista_moves[0]->folio_mov)?>"  >← Anterior </a>
+                        <?php endif;?>
+                    </li>
+                    <?php $end_pag = count($lista_moves) -1?>
+
+                    <li class="next">
+                        <?php if($status_fin == 'fin'):?>
+                            <?php $siguiente = $pag_stat + 1?>
+                            <a href="<?=base_url('cuentas/depositos/detalle_cuenta/'.$id_empresa.'/'.$id_banco.'/'.$siguiente.'/s/'.$lista_moves[$end_pag]->folio_mov)?>" >Siguiente → </a>
+                        <?php endif;?>
+                    </li>
+                </ul>
+
                 <table id="sample-table-2" class="table table-striped table-bordered table-hover">
                     <thead>
                         <tr>
+                            <th></th>
                             <th class="text-center">Fecha</th>
                             <th class="text-center">Deposito</th>
                             <th class="text-center">Salida</th>
@@ -98,7 +122,7 @@
                     <tbody>
                     
                     <?php 
-                   $total_depto    = 0 ;
+                    $total_depto    = 0 ;
                     $total_sal      = 0 ;
                    
                     $deposito =0;
@@ -107,8 +131,8 @@
                     $catidad_retornar=0;
                     $pendiente=0;
                     $pagos=0;
-                    //foreach($movimientos as $movimiento): 
-                    foreach($movimientos as $movimiento): 
+                    $i=1;
+                    foreach($lista_moves as $movimiento): 
                         $type_mov = $movimiento->tipo_movimiento;
                         ?>
                     <?php if($type_mov == 'deposito')
@@ -118,12 +142,13 @@
                         //print_r($deposito);
                         $cantidad_deposito = $deposito->monto_deposito; 
                         $cliente_asig = cliente_asignado($db_mov, $deposito->id_deposito);
-                        $total_depto = $total_depto + $deposito->monto_deposito;
-                        $comisio_cliente = genera_comision($db_cliente, $cliente_asig, $deposito->monto_deposito);
-                        $catidad_retornar = ($cantidad_deposito) - ($comisio_cliente) ;
-                        $pagos = total_pagos($db_mov, $id_empresa, $id_banco, $deposito->id_deposito);
-                        $pendiente=$catidad_retornar - $pagos;?>
+                        //$total_depto = $total_depto + $deposito->monto_deposito;
+                        //$comisio_cliente = genera_comision($db_cliente, $cliente_asig, $deposito->monto_deposito);
+                        //$catidad_retornar = ($cantidad_deposito) - ($comisio_cliente) ;
+                        //$pagos = total_pagos($db_mov, $id_empresa, $id_banco, $deposito->id_deposito);
+                        //$pendiente=$catidad_retornar - $pagos;?>
                        <tr>
+                            <td><?=$i++?></td>
                             <td><?=formato_fecha_ddmmaaaa($movimiento->fecha_movimiento)?></td>
                             <td>$<?=convierte_moneda($cantidad_deposito)?></td>
                             <td></td>
@@ -164,6 +189,7 @@
                         $cantidad_deposito = $deposito->monto_deposito;
                         $total_depto = $total_depto + $cantidad_deposito;?>
                         <tr>
+                            <td><?=$i++?></td>
                             <td><?=formato_fecha_ddmmaaaa($movimiento->fecha_movimiento)?></td>
                             
                             <td class="text-center">$<?=convierte_moneda($cantidad_deposito)?></td>
@@ -186,6 +212,7 @@
                             $total_sal = $total_sal + $salida->monto_salida;
                             ?>
                         <tr>
+                            <td><?=$i++?></td>
                             <td><?=formato_fecha_ddmmaaaa($movimiento->fecha_movimiento)?></td>
                             <td></td>
                             <td class="text-center">$<?=convierte_moneda($salida->monto_salida)?></td>
@@ -226,6 +253,22 @@
                         <td></td>
                     </tfoot>
                 </table>
+                <ul class="pager">
+                    <li class="previous">
+                        <?php if($status_ini == 'ini'):?>
+                            <?php $anterior = $pag_stat - 1?>
+                            <a href="<?=base_url('cuentas/depositos/detalle_cuenta/'.$id_empresa.'/'.$id_banco.'/'.$anterior.'/a/'.$lista_moves[0]->folio_mov)?>"  >← Anterior </a>
+                        <?php endif;?>
+                    </li>
+                    <?php $end_pag = count($lista_moves) -1?>
+
+                    <li class="next">
+                        <?php if($status_fin == 'fin'):?>
+                            <?php $siguiente = $pag_stat + 1?>
+                            <a href="<?=base_url('cuentas/depositos/detalle_cuenta/'.$id_empresa.'/'.$id_banco.'/'.$siguiente.'/s/'.$lista_moves[$end_pag]->folio_mov)?>" >Siguiente → </a>
+                        <?php endif;?>
+                    </li>
+                </ul>
             </div>
             <div class="clearfix text-center" style="margin-top:20px;">
                     <a href="<?=base_url('cuentas/depositos')?>"  class="btn btn-grey"> <i class="fa fa-undo"></i> Regresar</a>
@@ -241,20 +284,20 @@
 <script src="<?php echo base_url()?>assets/js/jquery.dataTables.bootstrap.js"></script>
 <script type="text/javascript">
 jQuery(function($) {
-    var oTable1 = $('#sample-table-2').dataTable( {
-        'aaSorting' : [[3, 'desc']],
-        aLengthMenu: [
-        [25, 50, 100, 200, -1],
-        [25, 50, 100, 200, "All"]
-    ],
-    iDisplayLength: 100,
-    "aoColumns": [
-      { "bSortable": true },
-        null, null, null, null, null, null, null, null, null, null,
-      { "bSortable": false }
-    ] } );
+//     var oTable1 = $('#sample-table-2').dataTable( {
+//         'aaSorting' : [[3, 'desc']],
+//         aLengthMenu: [
+//         [25, 50, 100, 200, -1],
+//         [25, 50, 100, 200, "All"]
+//     ],
+//     iDisplayLength: 100,
+//     "aoColumns": [
+//       { "bSortable": true },
+//         null, null, null, null, null, null, null, null, null, null,
+//       { "bSortable": false }
+//     ] } );
         
-});
+// });
 
 
 function actualiza_cliente_deposito(id_deposito, id_cliente){

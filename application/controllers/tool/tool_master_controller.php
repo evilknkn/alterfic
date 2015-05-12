@@ -18,10 +18,10 @@ class Tool_master_controller extends  CI_Controller
 
         echo '<br>
                 <form method="post" >
-                id_empresa <input type="text" name="empresa" value="15"><br>
-                banco <input type="text" name="banco" value="6" ><br>
-                mes <input type="text" name="month" value="09" ><br>
-                año <input type="text" name="year" value="2014" ><br>
+                id_empresa <input type="text" name="empresa" value=""><br>
+                banco <input type="text" name="banco" value="" ><br>
+                mes <input type="text" name="month" value="03" ><br>
+                año <input type="text" name="year" value="2015" ><br>
                 <button type="submit">Enviar</button>
                 </form>';
 

@@ -11,35 +11,11 @@ class Detalle_cuenta_model extends CI_Model
 		$this->db->where($filtro);
 		$this->db->where('fecha_movimiento >=', $fecha_ini);
 		$this->db->where('fecha_movimiento <=', $fecha_fin);
-		
+		$this->db->order_by('adc.tipo_movimiento');
 		//$this->db->order_by('adc.folio_mov', 'desc');
 
 		//$this->db->order_by('adc.fecha_movimiento','asc');
-		$this->db->order_by('adc.tipo_movimiento');
-		$this->db->order_by('adc.id_detalle', 'asc');
-
-		$query = $this->db->get();
-		//return $this->db->count_all_results();;
-		return $query->result();
-	}
-
-	public function lista_movimientos_page($filtro, $fecha_ini, $fecha_fin, $filter_page = null, $order = null)
-	{	
-		//print_r($filter_page); exit;
-		$this->db->from('ad_detalle_cuenta adc');
-		$this->db->where($filtro);
-		$this->db->where('fecha_movimiento >=', $fecha_ini);
-		$this->db->where('fecha_movimiento <=', $fecha_fin);
-		if($filter_page != null):
-			$this->db->where($filter_page);
-		endif;
-		$this->db->order_by('adc.folio_mov', $order);
-
-		$this->db->order_by('adc.fecha_movimiento','asc');
-		$this->db->order_by('adc.tipo_movimiento');
-		$this->db->order_by('adc.id_detalle', 'asc');
-		$this->db->limit(100);
-
+		$this->db->limit(100,10);
 		$query = $this->db->get();
 		return $query->result();
 	}
@@ -176,31 +152,5 @@ class Detalle_cuenta_model extends CI_Model
  
 	}
 
-	public function sum_depositos($id_empresa, $id_banco, $fecha_ini , $fecha_fin)
-	{	//echo "empresa --".$id_empresa."--Banco --".$id_banco."<br>";
-		$sql = "SELECT SUM(ad.monto_deposito) total_deposito
-				FROM ad_detalle_cuenta adc 
-				INNER JOIN ad_depositos ad ON adc.id_movimiento = ad.id_deposito 
-				WHERE adc.id_empresa = ".$id_empresa." AND adc.id_banco = ".$id_banco." 
-				AND adc.tipo_movimiento IN ('deposito', 'deposito_interno')
-				ORDER BY adc.`folio_mov` DESC";
-			//print_r($sql);exit();
-		$query = $this->db->query($sql);		
-		return $query->row();
-	}
 
-	public function sum_salidas($id_empresa, $id_banco, $fecha_ini , $fecha_fin)
-	{	
-		//echo "empresa --".$id_empresa."--Banco --".$id_banco."<br>";
-		$sql = "SELECT SUM(asal.monto_salida) total_salida
-				FROM ad_detalle_cuenta adc 
-				INNER JOIN ad_salidas asal ON asal.id_salida = adc.id_movimiento 
-				WHERE adc.id_empresa = ".$id_empresa." AND adc.id_banco = ".$id_banco."  
-				
-				AND adc.tipo_movimiento IN ('salida', 'salida_pago', 'mov_int', 'salida_comision')
-				ORDER BY adc.`folio_mov` DESC";
-		//print_r($sql);exit();
-		$query = $this->db->query($sql);
-		return $query->row();
-	}
 }

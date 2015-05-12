@@ -4,7 +4,6 @@ class Dashboard extends CI_Controller
 	function __construct()
 	{
 		parent::__construct();
-		//$this->load->library('unit_test');
 		if($this->session->userdata('USERNAME') == ''){
 			
             $regresar = (isset($_SERVER['HTTPS']) ? 'https://' : 'http://' ) . $_SERVER["SERVER_NAME"] . $_SERVER['REQUEST_URI'];

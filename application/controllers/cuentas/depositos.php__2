@@ -4,6 +4,7 @@ class Depositos extends CI_controller
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->library('unit_test');
 		if($this->session->userdata('USERNAME') == '' ){
 			
             $regresar = (isset($_SERVER['HTTPS']) ? 'https://' : 'http://' ) . $_SERVER["SERVER_NAME"] . $_SERVER['REQUEST_URI'];
@@ -24,13 +25,9 @@ class Depositos extends CI_controller
 
 		$fecha = fechas_rango_inicio(date('m'));
 
-		//$data['fecha_ini'] = ($this->input->post('fecha_inicio')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_inicio')) : $fecha['fecha_inicio'] ;
-		//$data['fecha_fin'] = ($this->input->post('fecha_final')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_final')) : $fecha['fecha_fin'] ;
+		$data['fecha_ini'] = ($this->input->post('fecha_inicio')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_inicio')) : $fecha['fecha_inicio'] ;
+		$data['fecha_fin'] = ($this->input->post('fecha_final')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_final')) : $fecha['fecha_fin'] ;
 		
-		$data['fecha_ini'] = '2015-03-01';#($this->input->post('fecha_inicio')) ? '2015-03-01' : $fecha['fecha_inicio'] ;
-		$data['fecha_fin'] = '2015-03-31';#($this->input->post('fecha_final')) ? '2015-03-31' : $fecha['fecha_fin'] ;
-		
-
 		$data['empresas'] 	= $this->depositos_model->lista_empresas(array('ace.tipo_usuario' => 1));
 		$data['db']			= $this->depositos_model;
 		$data['db_mov']		= $this->movimiento_model;
@@ -38,7 +35,7 @@ class Depositos extends CI_controller
 		$this->load->view('layer/layerout', $data);
 	}
 
-	public function detalle_cuenta($id_empresa, $id_banco)
+	public function detalle_cuenta($id_empresa, $id_banco, $no, $dir = null, $page_no = null)
 	{	
 		$this->load->model('cuentas/depositos_model');
 		$this->load->model('users/clientes_model');
@@ -54,6 +51,7 @@ class Depositos extends CI_controller
 
 		$fecha_ini = ($this->input->post('fecha_inicio')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_inicio')) : $fecha['fecha_inicio'] ;
 		$fecha_fin = ($this->input->post('fecha_final')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_final')) : $fecha['fecha_fin'] ;
+		
 		# creamos la session con la fecha de detalle para generar el archivo excel 
 		$array_session = array('fecha_ini_depositos' => $fecha_ini, 'fecha_fin_depositos' => $fecha_fin);
 		$this->session->set_userdata($array_session);
@@ -62,12 +60,30 @@ class Depositos extends CI_controller
 		$data['empresa'] = $datos_empresa;
 
 		$filtro = array('adc.id_empresa' => $id_empresa, 'adc.id_banco' => $id_banco);
+		$filter = '';
+		$order = 'desc';
 
-		$data['movimientos'] 	= $this->movimiento_model->lista_movimientos($filtro, $fecha_ini, $fecha_fin );
+		$data['movimientos'] = $this->movimiento_model->lista_movimientos($filtro, $fecha_ini, $fecha_fin);
+		if($dir == 'a'):
+			$filter = array('adc.folio_mov >' => $page_no);
+			$order = 'asc';
+		elseif($dir == 's'):
+			$filter = array('adc.folio_mov <' => $page_no);	
+			$order = 'desc';
+		endif;
+
+		$data['lista_moves'] = $this->movimiento_model->lista_movimientos_page($filtro, $fecha_ini, $fecha_fin, $filter , $order);
+
+		$no_pages = ceil($data['movimientos'] / 100);
+
+		$data['status_ini']  = ($no > 1)? 'ini':'';
+		$data['status_fin']  = ($no < $no_pages)? 'fin':'';
+
 		$data['clientes']	= $this->clientes_model->lista_clientes();
 
 		$data['id_empresa'] = $id_empresa;
 		$data['id_banco']	= $id_banco;
+		$data['pag_stat'] 	= $no;
 		$data['db'] = $this->depositos_model;
 		$data['db_mov'] = $this->movimiento_model;
 		$data['db_cliente'] = $this->clientes_model;

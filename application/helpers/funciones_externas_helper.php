@@ -227,6 +227,7 @@ function depositos_pendiente_retorno_gral($db, $id_empresa, $id_banco, $fecha_in
 
 function consulta_saldo_anterior($db, $month, $id_empresa, $id_banco)
 {	
+	$total_saldo = 0;
 	$fecha_ant = fechas_rango_mes($month);
 	$year = date('Y');
     if($month == '12'): $year =  $year - 1 ; endif;
@@ -236,7 +237,10 @@ function consulta_saldo_anterior($db, $month, $id_empresa, $id_banco)
 	$key = $db->select_corte(array('id_empresa'=>$id_empresa,
 	 'id_banco'=>$id_banco,'fecha_ini'=>$fecha_begin, 'fecha_fin'=>$fecha_end));
 	//echo $key->id_empresa.'--'.$key->id_banco.'---'. ($key->total_saldo) .'<br>';
-	return $key->total_saldo;
+	if(isset($key->total_saldo)):
+		$total_saldo = $key->total_saldo; 
+	endif;
+	return $total_saldo;
 }
 
 
@@ -251,3 +255,27 @@ function pendiente_retorno_empresa($db, $filtro)
 	return $key;
 }
 
+function depositos_generales ($db, $id_empresa, $id_banco, $fecha_ini = null, $fecha_fin = null)
+{	
+	//print_r($id_empresa);exit();
+	$key = $db->sum_depositos( $id_empresa, $id_banco, $fecha_ini , $fecha_fin);
+	//print_r($key);exit();
+	if(!empty($key->total_deposito) ):
+		return $key->total_deposito;
+	else:
+		return '0';
+	endif;
+}
+
+function salidas_generales ($db, $id_empresa, $id_banco, $fecha_ini = null, $fecha_fin = null)
+{	
+	//print_r($id_empresa);exit();
+	$key = $db->sum_salidas( $id_empresa, $id_banco, $fecha_ini , $fecha_fin);
+	//echo $key->total_salida;
+	//exit();
+	if(!empty($key->total_salida) ):
+		return $key->total_salida;
+	else:
+		return '0';
+	endif;
+}
