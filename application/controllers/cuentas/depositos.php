@@ -51,6 +51,7 @@ class Depositos extends CI_controller
 						'body'	=>	'admin/cuentas/deposito/detalle_deposito');
 
 		$fecha = fechas_rango_inicio(date('m'));
+		//print_r($fecha);
 
 		$fecha_ini = ($this->input->post('fecha_inicio')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_inicio')) : $fecha['fecha_inicio'] ;
 		$fecha_fin = ($this->input->post('fecha_final')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_final')) : $fecha['fecha_fin'] ;

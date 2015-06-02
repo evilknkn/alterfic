@@ -167,15 +167,35 @@ function gastos_cuenta($db, $id_empresa, $id_banco)
 }
 
 function fechas_rango_inicio($month)
-{
+{	
+	$fecha_anterior = '';
+
 	if($month == '01' or $month == '03' or $month =='04' or $month == '07' or $month == '08' or $month == '10' or $month == '12')
-	{
+	{	
+		// if($month < 10){
+		// 	$fecha_anterior = ($month == '01') ? (date('Y') -1).'-12-15':  date('Y').'-0'.($month - 1).'-15'; 
+		// }else{
+		// 	$fecha_anterior = ($month == '01') ? (date('Y') -1).'-12-15':  date('Y').($month - 1).'-15'; 
+		// }
+
 		$fecha['fecha_inicio'] = date('Y-m-').'01';
 		$fecha['fecha_fin'] = date('Y-m-').'31';
+
 	}elseif($month == '04' or $month == '06' or $month == '09' or $month == '11'){
+		// if($month < 10){
+		// 	$fecha_anterior = ($month == '01') ? (date('Y') -1).'-12-15':  date('Y').'-0'.($month - 1).'-15'; 
+		// }else{
+		// 	$fecha_anterior = ($month == '01') ? (date('Y') -1).'-12-15':  date('Y').($month - 1).'-15'; 
+		// }
+
 		$fecha['fecha_inicio'] = date('Y-m-').'01';
 		$fecha['fecha_fin'] = date('Y-m-').'30';
 	}else{
+		// if($month < 10){
+		// 	$fecha_anterior = ($month == '01') ? (date('Y') -1).'-12-15':  date('Y').'-0'.($month - 1).'-15'; 
+		// }else{
+		// 	$fecha_anterior = ($month == '01') ? (date('Y') -1).'-12-15':  date('Y').($month - 1).'-15'; 
+		// }
 		$fecha['fecha_inicio'] = date('Y-m-').'01';
 		$fecha['fecha_fin'] = date('Y-m-').'28';
 	}
