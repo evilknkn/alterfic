@@ -65,7 +65,7 @@
                            // echo ($saldo)."---";
                             $saldo_anterior = consulta_saldo_anterior($db, $month_ant, $empresa->id_empresa, $empresa->id_banco);
                             //echo $saldo_anterior."<br>";
-                            $total_saldo = $saldo_anterior + $saldo; ?>
+                            $total_saldo = $saldo; ?>
                             <tr>
                                 <td><?=$empresa->nombre_empresa?></td>
                                 <td><?=$empresa->nombre_banco?></td>

@@ -105,6 +105,13 @@
                         Caja Chica
                     </a>
                 </li>
+
+                <li>
+                    <a href="<?=base_url('cuentas/gastos_camion')?>">
+                        <i class="icon-double-angle-right"></i>
+                        Gastos camión
+                    </a>
+                </li>
             </ul>
         </li>
 

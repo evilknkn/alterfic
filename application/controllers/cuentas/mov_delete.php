@@ -35,7 +35,7 @@ class Mov_delete extends CI_Controller
 		redirect (base_url('/cuentas/depositos/detalle_cuenta/'.$id_empresa.'/'.$id_banco)); 
 	}
 
-    public function salida($id_empresa, $id_banco, $id_detalle, $id_salida)
+    public function salida($id_empresa, $id_banco, $id_detalle, $id_salida = null)
 	{
 		$this->load->model('cuentas/delete_movimiento_model', 'mov_model');
 		$this->load->model('cuentas/depositos_model');
@@ -153,7 +153,11 @@ class Mov_delete extends CI_Controller
 		
 		$this->session->set_flashdata('success', 'Salida eliminada correctamente');
 
+		if($id_empresa == 30):
+			redirect (base_url('/cuentas/caja_chica')); 
+		else:
 		redirect (base_url('/cuentas/deposito_persona/detalle_cuenta/'.$id_empresa.'/'.$id_banco)); 
+		endif;
 	}
 
 }
