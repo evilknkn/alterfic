@@ -37,6 +37,7 @@ class catalogo_banco_model extends CI_Model
 		$this->db->from('ad_bancos_empresa abe');
 		$this->db->join('ad_catalogo_bancos acb', 'acb.id_banco = abe.id_banco', 'inner');
 		$this->db->where('abe.id_empresa', $id_empresa);
+		$this->db->where('abe.status_cta', 1);
 		$query =  $this->db->get();
 		return $query->result();
 	}

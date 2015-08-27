@@ -47,7 +47,7 @@
                         $res['pendiente_retorno'] =0;
                         foreach($empresas as $empresa):
                          $res = genera_total_depositos($db, $empresa->id_empresa, $empresa->id_banco, $fecha_ini, $fecha_fin);
-                        
+                            if($res['pendiente_retorno'] > 10 ) :
                         ?>
                         <tr>
                             <td><?=$empresa->nombre_empresa?></td>
@@ -60,6 +60,7 @@
                                 </a>
                             </td>
                         </tr>
+                    <?php endif;?>
                         <?php endforeach;?>
                     </tbody>
                 </table>
@@ -74,6 +75,11 @@
 <script type="text/javascript">
 jQuery(function($) {
     var oTable1 = $('#sample-table-2').dataTable( {
+     aLengthMenu: [
+        [25, 50, 100, 200, -1],
+        [25, 50, 100, 200, "All"]
+    ],
+    iDisplayLength: 100,
     "aoColumns": [
       { "bSortable": true },
         null, null, null, 

@@ -102,4 +102,10 @@ class Empresas_model extends CI_Model
 		return $query->result();
 	}
 
+	public function change_status_bank($array_set, $array_where)
+	{
+		$this->db->where($array_where);
+		$this->db->update('ad_bancos_empresa', $array_set);	
+	}
+
 }
