@@ -136,4 +136,25 @@ class Corps extends CI_Controller
         $this->session->set_flashdata('success', 'Empresa elimada correctamente');
         redirect(base_url('catalogos/corps'));
 	}
+
+	public function bancos_empresa()
+	{
+		$this->load->model('catalogo/empresas_model');
+		$this->load->helper('funciones_externas_helper');
+					
+		$bancos = $this->empresas_model->catalogo_empresa_bancos(array('ace.id_empresa' => $this->input->post('id_empresa') ));
+		print_r($bancos);
+		$data = array();
+		foreach($bancos as $banco)
+		{
+			$data[] = array('id_banco' => $banco->id_banco, 'nombre_banco' => $banco->nombre_banco, 'status_banco' => $banco->status_cta);
+		}
+
+		return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode($data));
+
+		//echo json_encode($data);
+	}
 }

@@ -131,7 +131,7 @@
                             <td class="text-center">$<?=convierte_moneda($comisio_cliente)?></td>
                             <td class="text-center">$<?=convierte_moneda($catidad_retornar)?></td>
                             <td class="text-center">$<?=convierte_moneda($pendiente)?></td>
-                            <td class="text-center">$<?=$pagos?></td>
+                            <td class="text-center">$<?=convierte_moneda($pagos)?></td>
                             <td>
                                  <input type="hidden" id="id_deposito" value="<?=$deposito->id_deposito?>">
 

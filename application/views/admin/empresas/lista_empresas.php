@@ -45,7 +45,10 @@
 				    	$nombre_banco = join(',', $nombre_banco)?>
 				    	<tr>
 				    		<td><?=$empresa->nombre_empresa;?></td>
-				    		<td><?=$nombre_banco?></td>
+				    		<td><?=$nombre_banco?> <br>
+				    		<!-- botón de activar o desactivar bancos  -->
+				    			<button class="btn btn-info" data-toggle="modal" href="#bancos" onclick="bancos_empresa(<?=$empresa->id_empresa?>)"> Bancos activos</button> 
+				    		</td>
 				    		<td><?=$empresa->no_cuenta?></td>
 				    		<td><?=$empresa->clabe_bancaria?></td>
 				    		<td><?=($empresa->tipo_usuario ==1 )?'Empresa':'Persona';?></td>
@@ -55,7 +58,7 @@
 				    			<select name="id_banco" class="input-large"required>
 									<option value="">Seleccione un banco</option>
 									<?php foreach($bancos as $banco):?>
-										<option value="<?=$banco->id_banco?>"><?=$banco->nombre_banco?></option>
+										<option value="<?=$banco->id_banco?>"><?=$banco->nombre_banco?> </option>
 									<?php endforeach;?>
 								</select>
 								<button class="btn btn-info"> Agregar</button>
@@ -76,6 +79,9 @@
 				    </tbody>
 				</table>				
 			</div>
+
+			<?=$this->load->view('admin/empresas/modal_bancos')?>
+
 			<script src="<?php echo base_url()?>assets/js/jquery.dataTables.min.js"></script>
 			<script src="<?php echo base_url()?>assets/js/jquery.dataTables.bootstrap.js"></script>
 			<script type="text/javascript">

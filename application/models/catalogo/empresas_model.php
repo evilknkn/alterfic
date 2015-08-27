@@ -91,4 +91,15 @@ class Empresas_model extends CI_Model
 		$query = $this->db->get();
 		return $query->result();
 	}
+
+	public function catalogo_empresa_bancos ($filtro)
+	{
+		$this->db->from('ad_catalogo_empresa ace');
+		$this->db->join('ad_bancos_empresa abe', 'abe.id_empresa = ace.id_empresa', 'inner');
+		$this->db->join('ad_catalogo_bancos acb', 'acb.id_banco = abe.id_banco', 'inner');
+		$this->db->where($filtro);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
 }
