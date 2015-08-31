@@ -173,7 +173,20 @@ function pagos(id_empresa, id_banco, id_deposito)
                             });
                         </script>
 
+                        <table border="1">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Folio</th>
+                                    <th>Depósito</th>
+                                    <th>Comisión</th>
+                                    <th>Pendiente</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pendientes_retornar"></tbody>
+                        </table>
 
+                        <input type="text" value="" id="prueba">
                     </form>
                 </div>   
 
@@ -210,6 +223,32 @@ function pagos(id_empresa, id_banco, id_deposito)
         
 
         console.log('id_empresa:'+empresa+ ' - id_banco:'+banco+' -empresa:'+deposito);
+
+        $.ajax({
+                type: "POST",
+                dataType: "json",
+                url:    "<?=base_url('cuentas/pagos/pending_pay_client')?>",
+                data:   "id_deposito=" +deposito,
+                success: function(data){
+                    console.log(data.length);
+
+                    var html_pendiente = '';
+
+                    for(var i=0; i<data.length; i++){
+                        html_pendiente += "<tr>";
+                        html_pendiente += "<td>"+data[i].id_deposito+"</td>";
+                        html_pendiente += "<td>"+data[i].folio_deposito+"</td>";
+                        html_pendiente += "<td>"+data[i].monto_deposito+"</td>";
+                        html_pendiente += "<td>"+data[i].comision+"</td>";
+                        html_pendiente += "<td>"+data[i].pendiente_retornar+"</td>";
+                        html_pendiente += "</tr>";             
+                    }
+
+
+                    $("#pendientes_retornar").html(html_pendiente);
+                    $("#prueba").html('ksmf');
+                }
+        });
 
     });
 

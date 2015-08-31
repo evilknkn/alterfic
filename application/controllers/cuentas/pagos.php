@@ -306,6 +306,35 @@ class Pagos extends CI_Controller
 		endif;
 	}
 
+	public function pending_pay_client()
+	{	
+		$this->load->model('cuentas/Pendiente_retorno_model', 'db_retorno');
+		$db = $this->db_retorno;
+
+		
+
+		$det_depto = $db->row_quey('ad_pendiente_retorno', array('id_deposito' => $this->input->post('id_deposito') ) );
+		//print_r($det_depto->id_cliente);exit;
+		$ctas_pendiente = $db->get_query('ad_pendiente_retorno', array('id_cliente'=> $det_depto->id_cliente, 'pendiente_retornar >'=>10));
+		$data = array();
+		foreach($ctas_pendiente as $ctas )
+		{
+			$data['id_deposito'] 	= $ctas->id_pendiente;
+			$data['folio_deposito'] = $ctas->folio_deposito;
+			$data['monto_deposito'] = $ctas->monto_deposito;
+			$data['comision']		= $ctas->comision;
+			$data['pendiente_retornar']= $ctas->pendiente_retornar;
+			$data['checked'] 		= ($ctas->id_deposito == $det_depto->id_deposito)? true:false;
+		}
+		//print_r(($data));exit;
+
+		return $this->output->set_content_type('application/json')->set_status_header(200)->set_output(json_encode($data)); 
+	}
+	public function pay_bills()
+	{
+
+	}
+
 	function unique_folio($folio)
 	{	
 		$this->load->model('validate_model');
@@ -347,4 +376,6 @@ class Pagos extends CI_Controller
 			return TRUE;
 		endif;
 	}
+
+
 }
