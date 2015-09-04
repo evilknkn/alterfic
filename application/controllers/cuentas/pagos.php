@@ -367,7 +367,7 @@ class Pagos extends CI_Controller
 		$i=0;
 		foreach($array as $depto )
 		{	
-			if(empty($folio_form) and $empresa_retorno != 15){
+			if($empresa_retorno == 15){
 				$folio_ant = $this->depositos_model->numero_folio('EFE');
 				$folio_mov = generar_folio('EFE', ($folio_ant+1) );
 			}else{
@@ -386,7 +386,7 @@ class Pagos extends CI_Controller
 					$pago_add = $monto_pago;
 				}
 
-				echo $depto->id_empresa.'-----'. $depto->id_banco.'---'.$depto->id_deposito;
+				//echo $depto->id_empresa.'-----'. $depto->id_banco.'---'.$depto->id_deposito;
 				//echo 'se pagara '. $pago_add."<br>";
 				# Inserta deposito a la tabla ad_deposito_pago, estos deben ir en la funcion de pendiente de retorno 
 				$array_first = array('id_empresa' 			=> 	$depto->id_empresa,
@@ -442,11 +442,27 @@ class Pagos extends CI_Controller
 		    $monto_pago = $monto_pago - $depto->pendiente_retornar;
 		}
 
-		// $data['message'] = 'success';
+		$data['message'] = 'success';
 
-		// echo json_encode($data); 
+		echo json_encode($data); 
 	}
 
+	public function unique_folio_ajax()
+	{
+		$this->load->model('cuentas/Pendiente_retorno_model', 'db_retorno');
+		$db = $this->db_retorno;
+
+		$folio= $db->row_quey('ad_detalle_cuenta', array('folio_mov'=>$this->input->post('folio_pago') ));
+
+		if(count($folio) > 0){
+			$data['success'] = false;
+		}else{
+			$data['success'] = true;
+		}
+
+
+		return $this->output->set_content_type('application/json')->set_status_header(200)->set_output(json_encode($data)); 
+	}
 
 	public function empresas()
 	{

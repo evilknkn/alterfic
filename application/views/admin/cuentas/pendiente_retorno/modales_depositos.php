@@ -138,6 +138,7 @@ function pagos(id_empresa, id_banco, id_deposito)
                                     <option value = "">Seleccione un banco</option>
                                 </select>
                                 <label class="text-danger" id="fail_banco_retorno" style="display:none">*Este campo es requerido</label>
+
                             </div>
                         </div>
 
@@ -146,9 +147,11 @@ function pagos(id_empresa, id_banco, id_deposito)
                             <div class="col-sm-8 col-xs-8">
                                 <div class="col-sm-5 col-xs-5">
                                    <input type="text" class="form-control" name="folio_pago"  id="folio_pago_retorno" >
+                                   <a onclick="validate_unique_folio()" class="btn btn-primary"> Validar folio</a>
                                 </div>
-                                <div class="col-sm-12 col-xs-12">&nbsp;</div>
-                                <div class="col-sm-4 col-xs-4"><?=form_error('folio_pago')?></div>
+                                <label class="text-danger" id="fail_folio_pago" style="display:none">*Este campo es requerido</label>
+                                <label class="text-danger" id="fail_folio_pago_existe" style="display:none">*Este folio ya fue registrado</label> 
+                                <label class="text-success" id="fail_folio_pago_success" style="display:none">*Este folio es valido</label> 
                             </div>
                         </div>
 
@@ -210,9 +213,16 @@ function pagos(id_empresa, id_banco, id_deposito)
                               debug: false
                             });
                         </script>
+                        
                         <div class="row text-center text-danger" style="display:none" id="fail_depositos_array">
                             *Debe seleccionar al menos un depósito
                         </div>
+
+                        <div class="row text-center text-danger" style="display:none" id="fail_depositos_array_folio">
+                            *No puedes ingresar más de un pago en este tipo de movimiento
+                        </div>
+
+                        
                         <table class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">
                             <thead>
                                 <tr>
@@ -334,19 +344,31 @@ function pagos(id_empresa, id_banco, id_deposito)
         }
     });
 
-    function validate_unique_folio(folio)
-    {
-        $.ajax({
-                type: "POST",
-                dataType: "json",
-                url: '<?php echo base_url("cuentas/pagos/pay_bills")?>',
-                data: "folio=" + folio,
-                success: function(data)
-                {   
-                    return data;
+   
 
-                }
-              });//fin accion ajax
+    function validate_unique_folio()
+    {
+       $.ajax({
+                                type: "POST",
+                                dataType: "json",
+                                url: '<?php echo base_url("cuentas/pagos/unique_folio_ajax")?>',
+                                data: "folio_pago=" + $("#folio_pago_retorno").val(),
+                                success: function(data)
+                                {       
+                                   console.log(data.success);
+                                    if(data.success  == false )    {
+                                        //console.log("este folio existe");
+                                        $('#fail_folio_pago_existe').show();
+                                        $('#fail_folio_pago_success').hide();
+                                        
+                                    }else{
+                                        $('#fail_folio_pago_success').show();
+                                        $('#fail_folio_pago_existe').hide();
+                                    }
+                                    
+                                    
+                                }
+                              });//fin accion ajax
     }
     
     
@@ -372,37 +394,36 @@ function pagos(id_empresa, id_banco, id_deposito)
         }else{
             if($("#empresa_retorno").val() != 15)
             {
-                // if( $("#id_banco_option").val() == '' || $("#id_banco_option").val() == undefined  ){
-                //     $('#fail_monto').hide();
-                //     $('#fail_fecha').hide();
-                //     $('#fail_archivo').hide();
-                //     $('#fail_empresa_retorno').hide();
-                //     $('#fail_banco_retorno').show();
+                if( $("#id_banco_option").val() == '' || $("#id_banco_option").val() == undefined  ){
+                    $('#fail_monto').hide();
+                    $('#fail_fecha').hide();
+                    $('#fail_archivo').hide();
+                    $('#fail_empresa_retorno').hide();
+                    $('#fail_banco_retorno').show();
 
                     
 
-                //     console.log('tercero ',$("#id_banco_option").val());
-                //     console.log('falta banco retorno');
-                //     return false;
-                // }
+                    console.log('id banco option ',$("#id_banco_option").val());
+                    console.log('falta banco retorno');
+                    return false;
+                }
 
-                // if( $("#folio_pago").val() == '' || $("#folio_pago").val() == undefined  ){
+                if( $("#folio_pago_retorno").val() == '' || $("#folio_pago_retorno").val() == undefined  ){
                     
-                //     $('#fail_monto').hide();
-                //     $('#fail_fecha').hide();
-                //     $('#fail_archivo').hide();
-                //     $('#fail_empresa_retorno').hide();
-                //     $('#fail_banco_retorno').show();
+                    $('#fail_monto').hide();
+                    $('#fail_fecha').hide();
+                    $('#fail_archivo').hide();
+                    $('#fail_empresa_retorno').hide();
+                    $('#fail_banco_retorno').hide();
+
+                    $('#fail_folio_pago').show();
 
                     
 
-                //     console.log('tercero ',$("#folio_pago").val());
-                //     console.log('falta banco retorno');
-                //     return false;
-                // }else{
-                //     //var unique = validate_unique_folio($('#folio_pago').val());
-
-                // }
+                    console.log('folio pago ',$("#folio_pago_retorno").val());
+                    console.log('falta folio pago');
+                    return false;
+                }
             }
 
         }
@@ -411,9 +432,15 @@ function pagos(id_empresa, id_banco, id_deposito)
 
 
 
-        if( $("input:text[name=fecha_pago]").val() == '' || $("input:text[name=fecha_pago]").val() == undefined  ){
+        if( $("input:text[name=fecha_pago]").val() == '' ||  $("input:text[name=fecha_pago]").val()== undefined  ){
             $('#fail_monto').hide();
+            $('#fail_fecha').hide();
+            $('#fail_archivo').hide();
+            $('#fail_empresa_retorno').hide();
+            $('#fail_banco_retorno').hide();
+            $('#fail_folio_pago').hide();
             $('#fail_fecha').show();
+            $('#fail_folio_pago_existe').hide();
 
             console.log('segundo ',$("input:text[name=fecha_pago]").val());
             console.log('falta fecha');
@@ -423,6 +450,10 @@ function pagos(id_empresa, id_banco, id_deposito)
         if( $("#ruta_comprobante").val() == '' || $("#ruta_comprobante").val() == undefined  ){
             $('#fail_monto').hide();
             $('#fail_fecha').hide();
+            $('#fail_archivo').hide();
+            $('#fail_empresa_retorno').hide();
+            $('#fail_banco_retorno').hide();
+            $('#fail_folio_pago').hide();
             $('#fail_archivo').show();
 
             console.log('tercero ',$("#ruta_comprobante").val());
@@ -441,6 +472,10 @@ function pagos(id_empresa, id_banco, id_deposito)
             $('#fail_depositos_array').show();
             return false;
         }
+        if($("#empresa_retorno").val() != 15 && type.length > 1 ){
+            $('#fail_depositos_array_folio').show();
+            return false;
+        }
 
         $('#fail_monto').hide();
         $('#fail_fecha').hide();
@@ -451,10 +486,10 @@ function pagos(id_empresa, id_banco, id_deposito)
         $('#fail_depositos_array').hide();
         $('#fail_banco_retorno').hide();
         $('#fail_empresa_retorno').hide();
-
-        
-
-        
+        $('#fail_folio_pago').hide();
+        $('#fail_folio_pago_existe').hide();
+        $('#fail_depositos_array_folio').hide();
+        $('#fail_folio_pago_success').hide();
 
         var empresa = $('#id_empresa').val();
         var banco   = $('#id_banco').val();
@@ -474,6 +509,7 @@ function pagos(id_empresa, id_banco, id_deposito)
                     $('#monto').val('');
                     $("input:text[name=fecha_pago]").val('');
                     $('#ruta_comprobante').val('');
+                    $("#folio_pago_retorno").val('');
 
 
                     $("#add-pay").hide();
