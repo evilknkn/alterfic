@@ -119,7 +119,7 @@
     $('#tipo_cliente').change(function (){
         var tipo = $('#tipo_cliente').val();
 
-        if(tipo == 'B')
+        if(tipo == 'B'  || tipo == 'A' )
         {
             $('#campo_comision').show();
         }else{

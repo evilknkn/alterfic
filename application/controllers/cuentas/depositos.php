@@ -427,7 +427,12 @@ class Depositos extends CI_controller
 
 		$this->retorno_model->update_pendiente_retorno(array('comision' => round($comision,2), 'pendiente_retornar' => $pendiente_retorno ) , array('id_deposito' => $this->input->post('id_deposito') ));
 		//print_r($comision);exit;
+		$array  = array('id_user'   =>  $this->session->userdata('ID_USER') ,
+                            'accion'    =>  'El usuario '.$this->session->userdata('USERNAME'). ' asigno al cliente con el id '.trim($this->input->post('id_cliente')).' en el deposito con id '.$this->input->post('id_deposito'),
+                            'lugar'     =>  'Deatalle_deposito/Deposito/asigna_cliente',
+                            'usuario'   =>  $this->session->userdata('USERNAME'));
 
+        $this->bitacora_model->insert_log($array);
 
 		echo "exito";
 	}

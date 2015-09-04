@@ -72,7 +72,13 @@
                     </thead>
                     <tbody>
                         <?php foreach($depositos as $deposito): 
-                            $comision = (($deposito->monto_deposito / 1.16 ) * $cliente->comision)   ?>
+                            if($cliente->tipo_cliente == 'A'):
+                                $comision = (($deposito->monto_deposito) * $cliente->comision) ;
+                            else:
+                                $comision = (($deposito->monto_deposito / 1.16 ) * $cliente->comision)  ;
+                            endif;
+
+                             ?>
                         <tr>
                             <td><?=formato_fecha_ddmmaaaa($deposito->fecha_deposito)?></td>
                             <td>$<?=convierte_moneda($deposito->monto_deposito)?></td>

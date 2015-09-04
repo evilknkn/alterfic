@@ -162,12 +162,12 @@
  <SCRIPT TYPE="text/javascript">
 $('#empresa_retorno').change(function(){
     var empresa = $('#empresa_retorno').val();
-    var id_banco = $('#banco_hidden').val();
+    
     $.ajax({
             type: "POST",
             datatype: 'html',
             url: '<?php echo base_url("cuentas/depositos/bancos_empresa")?>',
-            data: "id_empresa=" + empresa + "&id_banco=" + id_banco , 
+            data: "id_empresa=" + empresa , 
             success: function(data)
             {
                  $("#id_banco").html(data);

@@ -89,7 +89,8 @@ class Caja_chica extends CI_Controller
 		$this->load->helper('funciones_externas_helper');
 		$this->load->helper('utilerias');
 
-		$month 	= parse_date($this->input->post('mes'));
+		$month 	= ( $this->input->post('mes') < 10)? '0'.$this->input->post('mes'): $this->input->post('mes');
+
 		$year 	= $this->input->post('ano');
 		$date_now = $year.'-'.$month;
 
@@ -107,6 +108,7 @@ class Caja_chica extends CI_Controller
 						'deposito_gral' => convierte_moneda($deposito_gral->total_deposito),
 						'salida_gral' => convierte_moneda($salida_gral->total_salida),
 						'saldo_disponible' => convierte_moneda($saldo_disponible));
+		//print_r($data);exit;
 		echo json_encode($data);
 	}
 

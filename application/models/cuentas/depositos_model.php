@@ -8,6 +8,7 @@ class  Depositos_model extends CI_Model
 		$this->db->join('ad_catalogo_bancos acb', 'acb.id_banco = abe.id_banco', 'inner');
 		$this->db->where($filtro);
 		$this->db->where('ace.estatus',1);
+		$this->db->where('abe.status_cta',1);
 		$this->db->order_by('ace.nombre_empresa', 'asc');
 		$query = $this->db->get();
 		return $query->result();

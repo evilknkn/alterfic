@@ -31,7 +31,8 @@
                 <tbody>
                     <?php $total_salida = 0 ;
                     foreach($clientes as $cliente): 
-                    $total_comisiones= genera_comision_total($db_com, $cliente->id_cliente, $cliente->comision);
+
+                    $total_comisiones= genera_comision_total($db_com, $cliente->id_cliente, $cliente->comision, $cliente->tipo_cliente );
                     $total_salida = $total_salida + $total_comisiones;
                     ?>
                     <tr>

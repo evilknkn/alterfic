@@ -6,14 +6,19 @@ $active_record = TRUE;
 
 
 $db['default']['hostname'] = 'localhost';
+//$db['default']['username'] = 'User_Production';
+//$db['default']['password'] = 'n^#uM$#Twux4';
 $db['default']['username'] = 'root';
 $db['default']['password'] = '';
-$db['default']['database'] = 'alterfisc_prod';
+//$db['default']['database'] = 'gto_prod';
+//$db['default']['database'] = 'guanajuato';
+//$db['default']['database'] = 'gto_version1';
+$db['default']['database'] = 'administrativo_prod';
 //$db['default']['database'] = 'administrativo';
 
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
-$db['default']['pconnect'] = TRUE;
+$db['default']['pconnect'] = FALSE;
 $db['default']['db_debug'] = TRUE;
 $db['default']['cache_on'] = FALSE;
 $db['default']['cachedir'] = '';
@@ -22,5 +27,8 @@ $db['default']['dbcollat'] = 'utf8_general_ci';
 $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
+
+
+
 /* End of file database.php */
 /* Location: ./application/config/database.php */

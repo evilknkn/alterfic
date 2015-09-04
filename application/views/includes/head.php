@@ -32,7 +32,7 @@
         <!-- ace settings handler -->
 
         <script src="<?=base_url()?>/assets/js/ace-extra.min.js"></script>
-         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 

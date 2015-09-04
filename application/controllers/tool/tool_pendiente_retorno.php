@@ -93,4 +93,31 @@ class Tool_pendiente_retorno extends  CI_Controller
 		}#fin lista_empresas
 
 	}
+
+	public function rollback_retorno()
+	{	
+		$this->load->helper('cuentas_helper');
+		$this->load->helper('funciones_externas');
+		$this->load->model('cuentas/Pendiente_retorno_model', 'retorno_db');
+		$this->load->model('cuentas/retorno_model');
+		$db = $this->retorno_model;
+		//$db_mov = $this->movimiento_model;
+
+		$pendientes = $this->retorno_db->get_all_query('ad_pendiente_retorno');
+
+		foreach($pendientes as $pendiente)
+		{
+			echo 'folio deposito:'.$pendiente->folio_deposito.' // id_deposito:'.$pendiente->id_deposito.' // monto_deposito:'.$pendiente->monto_deposito.' // total_pagos:'.$pendiente->total_pagos.' // pendiente_retornar:'.$pendiente->pendiente_retornar.'<br>';
+			$pago = total_pagos($db, $pendiente->id_empresa, $pendiente->id_banco, $pendiente->id_deposito);
+
+			$pendiente_retornar = $pendiente_return = ($pendiente->monto_deposito - ($pendiente->comision + $pago) );
+			echo '//////////////////////////////////// total de pagos '.number_format($pago,2).'/////////////////////////////////////////<br>';
+			echo '//////////////////////////////////// pendiente_retornar '.number_format($pendiente_retornar,2).'/////////////////////////////////////////<br><br><br>';
+
+			$data_up = array('total_pagos' => $pago, 'pendiente_retornar' => $pendiente_retornar);
+			$array_where = array('id_pendiente' => $pendiente->id_pendiente);
+			$this->retorno_db->update_where_query('ad_pendiente_retorno',  $data_up, $array_where);
+
+		}
+	}
 }

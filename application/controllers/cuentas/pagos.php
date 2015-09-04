@@ -306,6 +306,165 @@ class Pagos extends CI_Controller
 		endif;
 	}
 
+	public function pending_pay_client()
+	{	
+		$this->load->model('cuentas/Pendiente_retorno_model', 'db_retorno');
+		$db = $this->db_retorno;
+
+		$det_depto = $db->row_quey('ad_pendiente_retorno', array('id_deposito' => $this->input->post('id_deposito') ) );
+		//print_r($det_depto->id_cliente);exit;
+		$ctas_pendiente = $db->get_query('ad_pendiente_retorno', array('id_cliente'=> $det_depto->id_cliente, 'pendiente_retornar >'=>10));
+		$data = array();
+		foreach($ctas_pendiente as $ctas )
+		{
+			$data[] = array('id_deposito' 		=> $ctas->id_pendiente,
+							'folio_deposito' 	=> $ctas->folio_deposito,
+							'monto_deposito' 	=> number_format($ctas->monto_deposito,2),
+							'comision'			=> number_format($ctas->comision, 2),
+							'pendiente_retornar'=> number_format($ctas->pendiente_retornar, 2),
+							'checked' 			=> ($ctas->id_deposito == $det_depto->id_deposito)? true:false );
+		}
+		//print_r(($data));exit;
+
+		return $this->output->set_content_type('application/json')->set_status_header(200)->set_output(json_encode($data)); 
+	}
+	public function pay_bills()
+	{	
+		$this->load->model('cuentas/depositos_model');
+		$this->load->model('catalogo/empresas_model');
+		$this->load->model('cuentas/retorno_model');
+		$this->load->helper('funciones_externas');
+
+		$this->load->model('cuentas/Pendiente_retorno_model', 'db_retorno');
+		$db = $this->db_retorno;
+
+		//print_r($_POST);exit;
+
+		$empresa_retorno = $this->input->post('empresa_retorno');
+		$banco_retorno 	= $this->input->post('banco_retorno');
+		$id_depositos 	= $this->input->post('id_depositos');
+		$fecha_pago 	= $this->input->post('fecha_pago');
+     	$comprobante 	= $this->input->post('comprobante');
+     	$id_depositos   = $this->input->post('id_depositos');
+     	$monto_pago 	= $this->input->post('monto_pago');
+     	$folio_form 	= $this->input->post("folio_pago");
+
+     	//echo "este es el folo enviado en post ".$folio_form;exit;
+
+     	if($empresa_retorno == 15 )
+     	{
+     		$empresa_retorno 	= 15;
+     		$banco_retorno 		= 6;
+     	}else{
+     		$empresa_retorno 	= $empresa_retorno;
+     		$banco_retorno 		= $banco_retorno;
+     	}
+	   	
+
+     	$deposito = explode(',', $id_depositos);
+
+		$array = $db->get_in_query('ad_pendiente_retorno', $deposito, 'id_pendiente');
+		$i=0;
+		foreach($array as $depto )
+		{	
+			if(empty($folio_form) and $empresa_retorno != 15){
+				$folio_ant = $this->depositos_model->numero_folio('EFE');
+				$folio_mov = generar_folio('EFE', ($folio_ant+1) );
+			}else{
+				$folio_mov = $folio_form;
+			}
+			
+
+			$pago_add = $monto_pago ;
+			//echo $pago_add.'---'.$i++.'--- pendente--'.$depto->pendiente_retornar."<br>";
+			if($pago_add > 0)
+			{	
+				if($pago_add > $depto->pendiente_retornar)
+				{
+					$pago_add = $depto->pendiente_retornar;
+				}	else{
+					$pago_add = $monto_pago;
+				}
+
+				echo $depto->id_empresa.'-----'. $depto->id_banco.'---'.$depto->id_deposito;
+				//echo 'se pagara '. $pago_add."<br>";
+				# Inserta deposito a la tabla ad_deposito_pago, estos deben ir en la funcion de pendiente de retorno 
+				$array_first = array('id_empresa' 			=> 	$depto->id_empresa,
+								'id_banco' 				=> 	$depto->id_banco,
+								'id_deposito'			=> 	$depto->id_deposito,
+								'monto_pago'			=> 	$pago_add,
+								'empresa_retorno'		=> 	$empresa_retorno,
+								'banco_retorno'			=> 	$banco_retorno,
+								'folio_pago'			=>	$folio_mov,
+								'ruta_comprobante'		=>	$comprobante,
+								'fecha_pago'			=>  formato_fecha_ddmmaaaa($fecha_pago));
+
+				$this->depositos_model->insert_pago($array_first);
+
+				# Agregamos la salida con los id de empresa de retorno  a la tabla ad_salidas
+				$array_second = array('fecha_salida' => formato_fecha_ddmmaaaa($fecha_pago),
+								'monto_salida' => $pago_add,
+								'folio_salida'	=> 	$folio_mov,
+								'detalle_salida' => 'Se realizó un pago a la empresa con id '.$depto->id_empresa.' en el banco con id '.$depto->id_banco.' por la cantidad de '.$pago_add. ' al depósito con folio '.$depto->folio_deposito );
+
+				$reg = $this->depositos_model->insert_salida($array_second);
+
+				// Se inserta el movimiento en detalle de movimiento 
+				$datos = array(	'id_empresa'		=>	$empresa_retorno,
+								'id_banco'			=>	$banco_retorno,
+								'id_movimiento'		=> 	$reg,
+								'fecha_movimiento'	=> 	formato_fecha_ddmmaaaa($fecha_pago),
+								'folio_mov'			=>  $folio_mov,
+								'tipo_movimiento'	=>	'salida_pago');
+
+				$this->depositos_model->insert_movimiento($datos);
+			
+
+				#Se inserta en la tabla de pendiente de retorno 
+				#treaemos todos los pagos hechos
+				$pago = total_pagos($this->retorno_model, $depto->id_empresa, $depto->id_banco, $depto->id_deposito);
+				$pendiente = $depto->monto_deposito - ($depto->comision + $pago) ;
+
+				$data_pendiente	= array('total_pagos'			=> $pago, 	
+										'pendiente_retornar' 	=> $pendiente );
+
+				$this->retorno_model->update_pendiente_retorno($data_pendiente,array('id_deposito' => $depto->id_deposito,'id_empresa' => $depto->id_empresa, 'id_banco' => $depto->id_banco));
+
+
+				$array  = array('id_user'   =>  $this->session->userdata('ID_USER') ,
+		                        'accion'    =>  'El usuario '.$this->session->userdata('USERNAME'). ' registró  un pago en el depósito con folio '.$folio_mov.' con un monto de '.$pago_add.' en la empresa '. $depto->id_empresa.' del banco '. $depto->id_banco.'.' ,
+		                        'lugar'     =>  'Pago',
+		                        'usuario'   =>  $this->session->userdata('USERNAME'));
+
+		        $this->bitacora_model->insert_log($array);
+		   }
+
+		    $monto_pago = $monto_pago - $depto->pendiente_retornar;
+		}
+
+		// $data['message'] = 'success';
+
+		// echo json_encode($data); 
+	}
+
+
+	public function empresas()
+	{
+		$this->load->model('cuentas/Pendiente_retorno_model', 'db_retorno');
+		$db = $this->db_retorno;
+
+		$list_empresas =  $db->get_query('ad_catalogo_empresa', array('tipo_usuario'=>1, 'estatus' => 1));
+
+		$data = array();
+		
+		foreach($list_empresas as $empresa)
+		{
+			$data[] = array('id_empresa' =>  $empresa->id_empresa, 'name_empresa' => $empresa->nombre_empresa );
+		}
+
+		//return json_encode($data);
+		return $this->output->set_content_type('application/json')->set_status_header(200)->set_output(json_encode($data)); 
+	}
 	function unique_folio($folio)
 	{	
 		$this->load->model('validate_model');
@@ -347,4 +506,6 @@ class Pagos extends CI_Controller
 			return TRUE;
 		endif;
 	}
+
+
 }

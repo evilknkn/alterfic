@@ -63,7 +63,11 @@ $id_deposito  = (!empty($deposito->id_deposito))? $deposito->id_deposito : set_v
 
 	<div class="clearfix text-center">
 		<button class="btn btn-primary"> <i class="fa fa-save "></i> Guardar</button>
-		<a href="<?=base_url('cuentas/deposito_persona/detalle_cuenta/'.$empresa->id_empresa.'/'.$id_banco)?>" style="margin-left:15px" class="btn btn-grey"> <i class="fa fa-undo"></i> Regresar</a>
+		<?php if($empresa->id_empresa == 48): ?>
+			<a href="<?=base_url('cuentas/gastos_camion')?>" style="margin-left:15px" class="btn btn-grey"> <i class="fa fa-undo"></i> Regresar</a>
+		<?php else: ?> 
+			<a href="<?=base_url('cuentas/deposito_persona/detalle_cuenta/'.$empresa->id_empresa.'/'.$id_banco)?>" style="margin-left:15px" class="btn btn-grey"> <i class="fa fa-undo"></i> Regresar</a>
+		<?php endif;?>
 	</div>
 
 	<?=form_close()?>

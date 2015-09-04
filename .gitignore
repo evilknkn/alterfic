@@ -9,3 +9,4 @@ application/views/admin/home.php.orig
 application/config/constants.php.orig
 application/controllers/admin/dashboard.php.orig
 application/controllers/tool/tool_master_controller.php.orig
+*.orig

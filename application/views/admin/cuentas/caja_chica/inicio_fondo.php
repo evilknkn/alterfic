@@ -172,11 +172,27 @@
 <script src="<?php echo base_url()?>assets/js/jquery.dataTables.min.js"></script>
 <script src="<?php echo base_url()?>assets/js/jquery.dataTables.bootstrap.js"></script>
 <script type="text/javascript">
+// jQuery(function($) {
+//     var oTable1 = $('#sample-table-2').dataTable( {
+//     "aoColumns": [
+//       { "bSortable": true },
+//         null, null, null, null, null, 
+//       { "bSortable": false }
+//     ] } );
+        
+// });
+
 jQuery(function($) {
     var oTable1 = $('#sample-table-2').dataTable( {
+        'aaSorting' : [[3, 'desc']],
+        aLengthMenu: [
+        [25, 50, 100, 200, -1],
+        [25, 50, 100, 200, "All"]
+    ],
+    iDisplayLength: 100,
     "aoColumns": [
       { "bSortable": true },
-        null, null, null, null, null, 
+        null, null, null, null, null,
       { "bSortable": false }
     ] } );
         

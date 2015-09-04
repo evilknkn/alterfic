@@ -81,9 +81,14 @@ function create_file($carpeta){
 
 function genera_comision($db, $id_cliente, $deposito)
 {	
+
 	if($id_cliente != 0 ):
 		$res = $db->datos_cliente(array('id_cliente'=> $id_cliente));
-		$comision = (($deposito / 1.16 ) * $res->comision);
+		if($res->tipo_cliente == 'A'):
+			$comision = ($deposito  * $res->comision);
+		else:
+			$comision = (($deposito / 1.16 ) * $res->comision);
+		endif;
 	else:
 		$comision = 0;
 	endif;
@@ -104,13 +109,18 @@ function total_pagos($db, $id_empresa, $id_banco, $id_deposito)
 	return ($total_pagos);
 }
 
-function genera_comision_total($db, $id_cliente, $comision)
+function genera_comision_total($db, $id_cliente, $comision, $tipo_cliente = null)
 {	
 	$depositos = $db->lista_depositos(array('id_cliente' => $id_cliente));
 	
 	$total_comision = 0;
 	foreach($depositos as $deposito):
-		$comision_depto = (($deposito->monto_deposito / 1.16 ) * $comision);
+		if( $tipo_cliente == 'A'):
+			$comision_depto = (($deposito->monto_deposito  ) * $comision);
+		else:
+			$comision_depto = (($deposito->monto_deposito / 1.16 ) * $comision);
+		endif;
+
 		$total_comision = $total_comision + $comision_depto;
 	endforeach;
 
@@ -167,15 +177,35 @@ function gastos_cuenta($db, $id_empresa, $id_banco)
 }
 
 function fechas_rango_inicio($month)
-{
+{	
+	$fecha_anterior = '';
+
 	if($month == '01' or $month == '03' or $month =='04' or $month == '07' or $month == '08' or $month == '10' or $month == '12')
-	{
+	{	
+		// if($month < 10){
+		// 	$fecha_anterior = ($month == '01') ? (date('Y') -1).'-12-15':  date('Y').'-0'.($month - 1).'-15'; 
+		// }else{
+		// 	$fecha_anterior = ($month == '01') ? (date('Y') -1).'-12-15':  date('Y').($month - 1).'-15'; 
+		// }
+
 		$fecha['fecha_inicio'] = date('Y-m-').'01';
 		$fecha['fecha_fin'] = date('Y-m-').'31';
+
 	}elseif($month == '04' or $month == '06' or $month == '09' or $month == '11'){
+		// if($month < 10){
+		// 	$fecha_anterior = ($month == '01') ? (date('Y') -1).'-12-15':  date('Y').'-0'.($month - 1).'-15'; 
+		// }else{
+		// 	$fecha_anterior = ($month == '01') ? (date('Y') -1).'-12-15':  date('Y').($month - 1).'-15'; 
+		// }
+
 		$fecha['fecha_inicio'] = date('Y-m-').'01';
 		$fecha['fecha_fin'] = date('Y-m-').'30';
 	}else{
+		// if($month < 10){
+		// 	$fecha_anterior = ($month == '01') ? (date('Y') -1).'-12-15':  date('Y').'-0'.($month - 1).'-15'; 
+		// }else{
+		// 	$fecha_anterior = ($month == '01') ? (date('Y') -1).'-12-15':  date('Y').($month - 1).'-15'; 
+		// }
 		$fecha['fecha_inicio'] = date('Y-m-').'01';
 		$fecha['fecha_fin'] = date('Y-m-').'28';
 	}
