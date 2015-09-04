@@ -44,7 +44,11 @@ class Salida extends CI_Controller
 			$this->detalle_cuenta_model->insert_movimiento($datos);
 
 			$this->session->set_flashdata('success', 'Salida registrada correctamente');
-			redirect(base_url('cuentas/depositos/detalle_cuenta/'.$id_empresa.'/'.$id_banco));
+			if($id_empresa == 30):
+				redirect(base_url('cuentas/caja_chica'));
+			else:
+				redirect(base_url('cuentas/depositos/detalle_cuenta/'.$id_empresa.'/'.$id_banco));
+			endif;
 
 		else:
 			$data = array(	'menu' 	=>  'menu/menu_admin',
@@ -136,7 +140,13 @@ class Salida extends CI_Controller
 			$this->detalle_cuenta_model->insert_movimiento($datos);
 
 			$this->session->set_flashdata('success', 'Salida registrada correctamente');
-			redirect(base_url('cuentas/deposito_persona/detalle_cuenta/'.$id_empresa.'/'.$id_banco));
+
+			if($id_empresa == 30):
+				redirect(base_url('cuentas/caja_chica'));
+			else:
+				redirect(base_url('cuentas/deposito_persona/detalle_cuenta/'.$id_empresa.'/'.$id_banco));
+			endif;
+			
 
 		else:
 			$data = array(	'menu' 	=>  'menu/menu_admin',
@@ -228,7 +238,7 @@ class Salida extends CI_Controller
 			$this->detalle_cuenta_model->insert_movimiento($datos);
 
 			$this->session->set_flashdata('success', 'Salida registrada correctamente');
-			redirect(base_url('cuentas/caja_chica/'.$id_empresa.'/'.$id_banco));
+			redirect(base_url('cuentas/caja_chica'));
 
 		else:
 			$data = array(	'menu' 	=>  'menu/menu_admin',

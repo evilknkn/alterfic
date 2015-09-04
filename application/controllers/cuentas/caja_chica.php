@@ -83,6 +83,33 @@ class Caja_chica extends CI_Controller
 		endif;
 	}
 
+	public function saldo_caja_chica()
+	{
+		$this->load->model('cuentas/caja_chica_model', 'caja_model');
+		$this->load->helper('funciones_externas_helper');
+		$this->load->helper('utilerias');
+
+		$month 	= parse_date($this->input->post('mes'));
+		$year 	= $this->input->post('ano');
+		$date_now = $year.'-'.$month;
+
+		$deposito = $this->caja_model->total_depositos($date_now);
+		$salida   = $this->caja_model->total_salida($date_now);
+		$saldo 	  = $deposito->total_deposito - $salida->total_salida;
+
+		$deposito_gral 		= $this->caja_model->total_depositos_gral();
+		$salida_gral  		= $this->caja_model->total_salida_gral();
+		$saldo_disponible 	= $deposito_gral->total_deposito - $salida_gral->total_salida;
+
+		$data[] = array('deposito' => convierte_moneda($deposito->total_deposito), 
+						'salida' =>convierte_moneda($salida->total_salida),
+						'saldo' => convierte_moneda($saldo), 
+						'deposito_gral' => convierte_moneda($deposito_gral->total_deposito),
+						'salida_gral' => convierte_moneda($salida_gral->total_salida),
+						'saldo_disponible' => convierte_moneda($saldo_disponible));
+		echo json_encode($data);
+	}
+
 	################ Callback ################################
 	function unique_folio($folio)
 	{	
