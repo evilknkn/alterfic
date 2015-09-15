@@ -33,6 +33,10 @@
                     <i class="fa fa-plus"></i> Agregar Salida</a>
                 <a href="<?=base_url('cuentas/movimientos_internos/lista/'.$id_empresa.'/'.$id_banco)?>" style="margin-left:15px" class="btn btn-primary"> 
                     <i class="fa fa-plus"></i> Movimientos internos</a>
+
+                <a href="<?=base_url('cuentas/movimientos_internos_express/lista/'.$id_empresa.'/'.$id_banco)?>" style="margin-left:15px" class="btn btn-primary"> 
+                    <i class="fa fa-plus"></i> Movimientos internos express</a>
+                
                 <a href="<?=base_url('cuentas/depositos')?>" style="margin-left:15px" class="btn btn-grey"> 
                     <i class="fa fa-undo"></i> Regresar</a>
             </div>

@@ -134,6 +134,7 @@
                     </table>
                 </div>
                 <div class="text-center" style="margin-top:20px"> 
+                    <a id="" class="btn btn-info" >Agregar pago</a>
                     <a href="<?=base_url('cuentas/pendiente_retorno')?>" class="btn btn-grey"><i class="icon-undo"></i> Regresar</a>
                 </div>
             <!-- PAGE CONTENT ENDS -->
