@@ -16,5 +16,14 @@ class Validate_model extends CI_Model
 		$query = $this->db->get();
 		return $query->row();
 	}
+
+	public function valid_clave($clave = null)
+	{
+		$this->db->where('clave', $clave);
+		$this->db->from('ad_bancos_empresa');
+		$query = $this->db->get();
+		return $query->row();
+
+	}
 	
 }

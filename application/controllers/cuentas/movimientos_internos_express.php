@@ -46,6 +46,9 @@ class Movimientos_internos_express extends CI_Controller
     {	
     	$this->load->model('cuentas/movimientos_internos_model', 'movimientos_model');
     	$this->load->model('catalogo/empresas_model');
+    	$this->load->model('cuentas/pendiente_retorno_model');
+
+		$db = $this->pendiente_retorno_model;
 
     	$empresa_data = $this->empresas_model->empresa(array('id_empresa'=>$id_empresa));
     	
@@ -62,10 +65,29 @@ class Movimientos_internos_express extends CI_Controller
 	    	$data['id_empresa'] = $id_empresa;
 	    	$data['id_banco'] 	= $id_banco;
 
+	    	$where_empresa = array('estatus' => 1, 'tipo_usuario' => 1 );
+			$data['cat_empresas'] = $db->get_query('ad_catalogo_empresa', $where_empresa);
+			$data['cat_bancos'] = $db->get_all_query('ad_catalogo_bancos');
 
 	    	$this->load->view('layer/layerout', $data);
     	endif;
     }
+
+    public function catalogo_claves()
+	{
+		$this->load->model('cuentas/pendiente_retorno_model');
+
+		$db = $this->pendiente_retorno_model;
+
+		$where_empresa = array('estatus' => 1, 'tipo_usuario' => 1 );
+		$data['cat_empresas'] = $db->get_query('ad_catalogo_empresa', $where_empresa);
+
+
+		$data['cat_bancos'] = $db->get_all_query('ad_catalogo_bancos');
+
+		print_r($data['cat_bancos']);
+
+	}  
 
     #### callbacks de validaciones
 
@@ -73,6 +95,22 @@ class Movimientos_internos_express extends CI_Controller
 	{	
 		$this->load->model('validate_model');
 
+		$explode_folio = explode('-', $folio);
+		
+		if( count($explode_folio) < 2)
+		{
+			$this->form_validation->set_message('unique_folio', 'Este folio es incorrecto, verifique su formato.');
+            return FALSE;
+		}
+		
+		$valida_clave = $this->validate_model->valid_clave($explode_folio[0]);
+
+		if( count($valida_clave) == 0)
+		{
+			$this->form_validation->set_message('unique_folio', 'Este folio es incorrecto, verifique que el banco corresponda a la empresa.');
+            return FALSE;
+		}
+		
 		$search_folio = $this->validate_model->unique_folio(trim($folio));
 
 		if(count($search_folio) > 0 ):

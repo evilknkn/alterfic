@@ -1,6 +1,7 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /
+    RewriteBase /alterfisc
+    
     
 
     #Removes access to the system folder by users.
