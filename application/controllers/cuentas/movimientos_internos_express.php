@@ -54,7 +54,14 @@ class Movimientos_internos_express extends CI_Controller
 		$this->form_validation->set_rules('folio_salida', 'folio de salida', 'required|callback_unique_folio');
     	
     	if($this->form_validation->run()):
-    		print_r($_POST);exit;
+    		$folio_salida = $this->input->post('folio_entrada');
+    		$folio_entrada = $this->input->post('folio_salida');
+
+    		$array_abc = array('A','B','C','D');
+
+    		$pos = strpos($folio_salida, $array_abc);
+    		echo $pos;
+
     	else:
 	    	$data['menu'] = 'menu/menu_admin';
 	    	$data['body'] = 'admin/cuentas/movimientos/form_movimiento_express';
