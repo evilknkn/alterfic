@@ -26,12 +26,16 @@
                 <?php endif;?>
 
                 <?=form_open('', array('class' => 'form-horizontal'))?> 
+                <div class="text-center row" style="margin-bottom:10px">
+                    <a href="#catalogo_empresa" class="btn btn-info" data-toggle="modal"> Catálogos de claves empresa </a>
+                    <a href="#catalogo_bancos" class="btn btn-info" data-toggle="modal" style="margin-left:10px"> Catálogos de claves bancos </a>
+                </div>
                     <div class="form-group">
                         <label class="control-label col-sm-4 col-xs-4" > Folio salida</label>
                         <div class="col-sm-8 col-xs-8">
                             <input type="text" id="folio_salida" name="folio_salida" value="<?=set_value('folio_salida')?>">
                         </div>
-                        <div class="col-sm-5 col-xs-5"><?=form_error('folio_salida')?></div>
+                        <div class="col-sm-5 col-xs-5 col-sm-offset-4" style="margin-top:10px"><?=form_error('folio_salida')?></div>
                     </div>
 
                     <div class="form-group">
@@ -39,7 +43,7 @@
                         <div class="col-sm-8 col-xs-8">
                             <input type="text" id="folio_entrada" name="folio_entrada" value="<?=set_value('folio_entrada')?>">
                         </div>
-                        <div class="col-sm-5 col-xs-5"><?=form_error('folio_entrada')?></div>
+                        <div class="col-sm-5 col-xs-5 col-sm-offset-4" style="margin-top:10px"><?=form_error('folio_entrada')?></div>
                     </div>
 
                     <div class="form-group">
@@ -50,9 +54,12 @@
                         <div class="col-sm-5 col-xs-5"><?=form_error('monto')?></div>
                     </div>
 
-                    <div class="clearfix text-center">
-                        <button class="btn btn-primary" type="submit"> <i class="fa fa-save "></i> Guardar </button>
-                        <a href="<?=base_url('cuentas/movimientos_internos_express/lista/'.$id_empresa.'/'.$id_banco)?>" class="btn btn-grey" style="margin-left:15px"><i class="fa fa-undo"></i>Regresar</a>
+                    <div class="form-group">
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-8">
+                            <button class="btn btn-primary" type="submit"> <i class="fa fa-save "></i> Guardar </button>
+                            <a href="<?=base_url('cuentas/movimientos_internos_express/lista/'.$id_empresa.'/'.$id_banco)?>" class="btn btn-grey" style="margin-left:15px"><i class="fa fa-undo"></i>Regresar</a>
+                        </div>
                     </div>
 
                 <?=form_close() ?> 
@@ -62,3 +69,82 @@
     </div><!-- /.row -->
 </div><!-- /.page-content -->
 
+<div id="catalogo_empresa" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    Datos de captura para empresa
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <table class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">
+                    <thead>
+                        <tr>
+                            <th>Empresa</th>
+                            <th>Clave</th>
+                          
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <?php foreach ($cat_empresas as $emp_cat):?>
+                        <tr>
+                            <td>
+                               <?=$emp_cat->nombre_empresa?>
+                            </td>
+                            <td> <?=$emp_cat->clave_cta?> </td>
+                        </tr>
+                    <?php endforeach ?>
+                    </tbody>
+                </table>
+            </div>
+
+            
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- PAGE CONTENT ENDS -->
+
+<div id="catalogo_bancos" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    Datos de captura de bancos
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <table class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">
+                    <thead>
+                        <tr>
+                            <th>Banco</th>
+                            <th>Clave</th>
+                          
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <?php foreach ($cat_bancos as $emp_ban):?>
+                        <tr>
+                            <td>
+                               <?=$emp_ban->nombre_banco?>
+                            </td>
+                            <td> <?=$emp_ban->clave_banco?> </td>
+                        </tr>
+                    <?php endforeach ?>
+                    </tbody>
+                </table>
+            </div>
+
+            
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- PAGE CONTENT ENDS -->
