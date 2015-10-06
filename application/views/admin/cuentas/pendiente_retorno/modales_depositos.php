@@ -303,6 +303,12 @@ function pagos(id_empresa, id_banco, id_deposito)
                 }
         });
 
+        /* Suma de total pagos */
+        $(document).ready(function(){
+
+        });
+        /* */
+
         $.ajax({
                 type: "POST",
                 dataType: "json",

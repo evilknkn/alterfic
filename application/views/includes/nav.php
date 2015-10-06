@@ -11,10 +11,17 @@
 					ALTERFISC
 				</small>
 			</a><!-- /.brand -->
+
 		</div><!-- /.navbar-header -->
+		<div class="navbar-header pull-left" role="navigation">
+			<ul class="nav ace-nav">
+				<li><input type="text" placeholder="Buscar folio" id="search_folio" > <button class="btn btn-minier btn-yellow" id="execute_search">Buscar</button></li>
+			</ul>
+		</div>
 
 		<div class="navbar-header pull-right" role="navigation">
 			<ul class="nav ace-nav">
+				
 				<!-- <li class="grey">
 					<a data-toggle="dropdown" class="dropdown-toggle" href="#">
 						<i class="icon-tasks"></i>
@@ -262,5 +269,41 @@
 				</li>
 			</ul><!-- /.ace-nav -->
 		</div><!-- /.navbar-header -->
+
 	</div><!-- /.container -->
+
 </div>
+
+<script type="text/javascript">
+$('#execute_search').click(function(){
+	var folio_busqueda = $('#search_folio').val();
+	
+	if(folio_busqueda == ''){
+		$('#search-fail').show();
+	}else{
+		$('#search-fail').hide();
+	$.ajax({    type: "POST",
+                dataType: "json",
+                url: '/tool/search_folio/lookFor',
+                data: "buscar_folio=" + folio_busqueda, 
+                success: function(data)
+                {  	console.log(data);
+                	var html = '<button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>';
+                	if(data.success == 'success'){
+						html += data.;
+						$('#search-info').show();
+						$('#search-info').html(html);
+                	}else{
+						html += 'No se encontró información del folio <b>'+folio_busqueda+'</b>';
+						$('#search-info').show();
+						$('#search-info').html(html);
+                	}
+ 						
+                }
+              });//fin accion ajax
+	}
+	
+
+} );
+
+</script>
