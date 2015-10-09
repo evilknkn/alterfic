@@ -1,4 +1,5 @@
 <?php 
+date_default_timezone_set('America/Mexico_City');
 class Caja_chica extends CI_Controller
 {
 	public function index()

@@ -1,4 +1,5 @@
 <?php 
+date_default_timezone_set('America/Mexico_City');
 class Gastos_camion extends CI_Controller
 {
 	public function index()

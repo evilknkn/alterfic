@@ -1,4 +1,5 @@
 <?php 
+date_default_timezone_set('America/Mexico_City');
 class exportaExcel extends CI_Controller
 {
 	function __construct()

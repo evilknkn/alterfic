@@ -1,4 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+date_default_timezone_set('America/Mexico_City');
 class Pagos extends CI_Controller
 {	
 	function __construct()
@@ -322,6 +323,7 @@ class Pagos extends CI_Controller
 							'monto_deposito' 	=> number_format($ctas->monto_deposito,2),
 							'comision'			=> number_format($ctas->comision, 2),
 							'pendiente_retornar'=> number_format($ctas->pendiente_retornar, 2),
+							'monto_pendiente_retorno' => round($ctas->pendiente_retornar, 2),
 							'checked' 			=> ($ctas->id_deposito == $det_depto->id_deposito)? true:false );
 		}
 		//print_r(($data));exit;

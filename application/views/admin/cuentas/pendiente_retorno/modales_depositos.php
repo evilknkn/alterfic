@@ -53,19 +53,14 @@ function pagos(id_empresa, id_banco, id_deposito)
 /* Suma o resta */
 function suma_resta(deposito_id, monto){
     var monto_hiden = Number($('#monto_pagar').val());
-    console.log((monto_hiden + monto )+'   '+ monto);
-
     var field = 'id_deposito_json'+deposito_id;
-    console.log(field);
     if($('#'+field).is(':checked') ){
-        console.log('debe sumar');
         var total = monto_hiden+ monto;
     }else{
        var total = monto_hiden - monto;
-       console.log('debe restar');
     }
-    console.log(total);
-    $('#monto_pagar').val(total);
+    $('#monto_pagar').val(total.toFixed(2));
+    $("#monto_pagar_bottom").val(total.toFixed(2));
 }
 /* Suma o resta */
 </script>
@@ -241,8 +236,8 @@ function suma_resta(deposito_id, monto){
                             *No puedes ingresar más de un pago en este tipo de movimiento
                         </div>
 
-                        <div class="row text-center text-danger"  id="fail_depositos_array_folio">
-                            $<input type="text" id="monto_pagar" value="0" disabled>
+                        <div class="row text-center " style = "margin-bottom:15px" >
+                            Total a pagar $ <input type="text" id="monto_pagar" value="0" disabled>
                         </div>
 
                         <table class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">
@@ -257,6 +252,10 @@ function suma_resta(deposito_id, monto){
                             </thead>
                             <tbody id="pendientes_retornar"></tbody>
                         </table>
+
+                        <div class="row text-center " style = "margin-top:15px" >
+                            Total a pagar $ <input type="text" id="monto_pagar_bottom" value="0" disabled>
+                        </div>
                     </form>
                 </div>   
 
@@ -308,10 +307,10 @@ function suma_resta(deposito_id, monto){
                     for(var i=0; i<data.length; i++){
                         html_pendiente += "<tr>";
                         if(data[i].checked == true){
-                            html_pendiente += "<td><input type='checkbox' name='id_deposito_json' id='id_deposito_json"+data[i].id_deposito+"' value='"+data[i].id_deposito+"' checked=checked onclick='suma_resta("+data[i].id_deposito+","+data[i].pendiente_retornar+")'></td>";
-                            value_paid = value_paid + data[i].pendiente_retornar;
+                            html_pendiente += "<td><input type='checkbox' name='id_deposito_json' id='id_deposito_json"+data[i].id_deposito+"' value='"+data[i].id_deposito+"' checked=checked onclick='suma_resta("+data[i].id_deposito+","+data[i].monto_pendiente_retorno+")'></td>";
+                            value_paid = value_paid + data[i].monto_pendiente_retorno;
                         }else{
-                            html_pendiente += "<td><input type='checkbox' name='id_deposito_json' id='id_deposito_json"+data[i].id_deposito+"' value='"+data[i].id_deposito+"' onclick='suma_resta("+data[i].id_deposito+","+data[i].pendiente_retornar+")' ></td>";
+                            html_pendiente += "<td><input type='checkbox' name='id_deposito_json' id='id_deposito_json"+data[i].id_deposito+"' value='"+data[i].id_deposito+"' onclick='suma_resta("+data[i].id_deposito+","+data[i].monto_pendiente_retorno+")' ></td>";
                         }
 
                         html_pendiente += "<td>"+data[i].folio_deposito+"</td>";
@@ -324,6 +323,7 @@ function suma_resta(deposito_id, monto){
 
                     $("#pendientes_retornar").html(html_pendiente);
                     $("#monto_pagar").val(value_paid);
+                    $("#monto_pagar_bottom").val(value_paid);
                 }
         });
 

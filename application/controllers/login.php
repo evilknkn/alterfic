@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
+date_default_timezone_set('America/Mexico_City');
 class Login extends CI_Controller {
 
 	var $usuario_recuperar;

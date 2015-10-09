@@ -1,4 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+date_default_timezone_set('America/Mexico_City');
 class Tool_master_controller extends  CI_Controller
 {	public function index()
 	{

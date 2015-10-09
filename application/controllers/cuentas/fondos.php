@@ -1,4 +1,5 @@
 <?php 
+date_default_timezone_set('America/Mexico_City');
 class Fondos extends CI_Controller
 {
 	public function index()
