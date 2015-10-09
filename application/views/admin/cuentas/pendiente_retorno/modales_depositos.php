@@ -49,6 +49,25 @@ function pagos(id_empresa, id_banco, id_deposito)
             }
           });//fin accion ajax
 };
+
+/* Suma o resta */
+function suma_resta(deposito_id, monto){
+    var monto_hiden = Number($('#monto_pagar').val());
+    console.log((monto_hiden + monto )+'   '+ monto);
+
+    var field = 'id_deposito_json'+deposito_id;
+    console.log(field);
+    if($('#'+field).is(':checked') ){
+        console.log('debe sumar');
+        var total = monto_hiden+ monto;
+    }else{
+       var total = monto_hiden - monto;
+       console.log('debe restar');
+    }
+    console.log(total);
+    $('#monto_pagar').val(total);
+}
+/* Suma o resta */
 </script>
 <div class="modal fade" id="modalPagos" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
@@ -222,7 +241,10 @@ function pagos(id_empresa, id_banco, id_deposito)
                             *No puedes ingresar más de un pago en este tipo de movimiento
                         </div>
 
-                        
+                        <div class="row text-center text-danger"  id="fail_depositos_array_folio">
+                            $<input type="text" id="monto_pagar" value="0" disabled>
+                        </div>
+
                         <table class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">
                             <thead>
                                 <tr>
@@ -279,16 +301,17 @@ function pagos(id_empresa, id_banco, id_deposito)
                 url:    "<?=base_url('cuentas/pagos/pending_pay_client')?>",
                 data:   "id_deposito=" +deposito,
                 success: function(data){
-                    //console.log(data.length);
-
+                    
                     var html_pendiente = '';
+                    var value_paid = 0;
 
                     for(var i=0; i<data.length; i++){
                         html_pendiente += "<tr>";
                         if(data[i].checked == true){
-                            html_pendiente += "<td><input type='checkbox' name='id_deposito_json' value='"+data[i].id_deposito+"' checked=checked ></td>";
+                            html_pendiente += "<td><input type='checkbox' name='id_deposito_json' id='id_deposito_json"+data[i].id_deposito+"' value='"+data[i].id_deposito+"' checked=checked onclick='suma_resta("+data[i].id_deposito+","+data[i].pendiente_retornar+")'></td>";
+                            value_paid = value_paid + data[i].pendiente_retornar;
                         }else{
-                            html_pendiente += "<td><input type='checkbox' name='id_deposito_json' value='"+data[i].id_deposito+"' ></td>";
+                            html_pendiente += "<td><input type='checkbox' name='id_deposito_json' id='id_deposito_json"+data[i].id_deposito+"' value='"+data[i].id_deposito+"' onclick='suma_resta("+data[i].id_deposito+","+data[i].pendiente_retornar+")' ></td>";
                         }
 
                         html_pendiente += "<td>"+data[i].folio_deposito+"</td>";
@@ -300,14 +323,11 @@ function pagos(id_empresa, id_banco, id_deposito)
 
 
                     $("#pendientes_retornar").html(html_pendiente);
+                    $("#monto_pagar").val(value_paid);
                 }
         });
 
-        /* Suma de total pagos */
-        $(document).ready(function(){
 
-        });
-        /* */
 
         $.ajax({
                 type: "POST",
