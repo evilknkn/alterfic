@@ -290,7 +290,7 @@ $('#execute_search').click(function(){
                 {  	console.log(data);
                 	var html = '<button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>';
                 	if(data.success == 'success'){
-						//html += data.;
+						html += data.message;
 						$('#search-info').show();
 						$('#search-info').html(html);
                 	}else{

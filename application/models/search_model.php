@@ -13,5 +13,7 @@ class Search_model extends CI_Model
 		$query = $this->db->get_where($table, $array);	
 		return $query->row();
 	}
+
+	
 	
 }
