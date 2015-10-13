@@ -353,10 +353,15 @@ class Pagos extends CI_Controller
 
      	//echo "este es el folo enviado en post ".$folio_form;exit;
 
-     	if($empresa_retorno == 15 )
-     	{
-     		$empresa_retorno 	= 15;
-     		$banco_retorno 		= 6;
+     	if($empresa_retorno == 15  or $empresa_retorno == 47)
+     	{	
+     		if($empresa_retorno == 15):
+		 		$empresa_retorno 	= 15;
+		 		$banco_retorno 		= 6;
+		 	else:
+		 		$empresa_retorno 	= 47;
+		 		$banco_retorno 		= 1;
+		 	endif;
      	}else{
      		$empresa_retorno 	= $empresa_retorno;
      		$banco_retorno 		= $banco_retorno;
@@ -372,6 +377,10 @@ class Pagos extends CI_Controller
 			if($empresa_retorno == 15){
 				$folio_ant = $this->depositos_model->numero_folio('EFE');
 				$folio_mov = generar_folio('EFE', ($folio_ant+1) );
+			}else if($empresa_retorno == 47){
+				$folio_ant = $this->depositos_model->numero_folio('AAI');
+				$folio_mov = generar_folio('AAI', ($folio_ant+1) );
+				
 			}else{
 				$folio_mov = $folio_form;
 			}
