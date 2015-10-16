@@ -62,21 +62,45 @@
 
     function validate_unique_folio()
     {
+        var empresa  = $('#empresa_retorno').val();
+        var banco    = $('#id_banco_option').val();
+        var folio    =  $("#folio_pago_retorno").val();
+       console.log(empresa.length+' --- '+ banco.length);
+       if(empresa.length ==0){
+            $('#fail_folio_pago_existe').show();
+            $('#message_fail').html('*Debe seleccionar la empresa de retorno');
+        return false;
+       }
+
+       if(banco.length ==0){
+            $('#fail_folio_pago_existe').show();
+            $('#message_fail').html('*Debe seleccionar el banco de retorno');
+        return false;
+       }
+
+       if(folio.length ==0){
+            $('#fail_folio_pago_existe').show();
+            $('#message_fail').html('*Debe ingresar un folio');
+        return false;
+       }
        $.ajax({
                                 type: "POST",
                                 dataType: "json",
                                 url: '<?php echo base_url("cuentas/pagos/unique_folio_ajax")?>',
-                                data: "folio_pago=" + $("#folio_pago_retorno").val(),
+                                data: "folio_pago=" + folio+ '&empresa_retorno='+empresa+'&banco_retorno='+banco,
                                 success: function(data)
                                 {       
-                                   console.log(data.success);
                                     if(data.success  == false )    {
+                                         var fail_txt = data.fail_txt;
                                         //console.log("este folio existe");
                                         $('#fail_folio_pago_existe').show();
                                         $('#fail_folio_pago_success').hide();
+                                        $('#message_fail').html(fail_txt);
+                                        $('#success_folio_pago').hide();
                                         
                                     }else{
-                                        $('#fail_folio_pago_success').show();
+                                        $('#success_folio_pago').show();
+                                        
                                         $('#fail_folio_pago_existe').hide();
                                     }
                                     
