@@ -83,13 +83,17 @@ class Depositos extends CI_controller
 		$this->load->model('cuentas/retorno_model');
 		$this->load->helper('funciones_externas');
 
-		$empresa = $this->depositos_model->empresa(array('ace.id_empresa' => $id_empresa));
+		$params = array('id_banco' => $banco,'id_empresa'=>$id_empresa );
 
-		$this->form_validation->set_rules('fecha_depto' ,'fecha del depoósito', 'required|callback_fecha_limite');
-		$this->form_validation->set_rules('monto_depto' ,'monto del depoósito', 'required');
+		$empresa = $this->depositos_model->empresa(array('ace.id_empresa' => $id_empresa, 'abe.id_banco' => $banco ));
+		//print_r($empresa);exit;
+
+		$this->form_validation->set_rules('fecha_depto' ,'fecha del depósito', 'required|callback_fecha_limite');
+		$this->form_validation->set_rules('monto_depto' ,'monto del depósito', 'required');
 		$this->form_validation->set_rules('folio_depto' ,'folio', 'required|trim|callback_unique_folio');
 
 		if($this->form_validation->run()):
+			echo "llego el post";exit;
 			$array = array('fecha_deposito' => formato_fecha_ddmmaaaa($this->input->post('fecha_depto')),
 							'monto_deposito' => $this->input->post('monto_depto'),
 							'folio_depto'	=> 	trim($this->input->post('folio_depto')));
@@ -132,6 +136,7 @@ class Depositos extends CI_controller
 
 			$data['empresa'] 	= $empresa;
 			$data['id_banco'] 	= $banco; 
+			//$data['clave_factory'] = $empresa->
 		
 			$this->load->view('layer/layerout', $data);
 		endif;	
@@ -472,16 +477,23 @@ class Depositos extends CI_controller
 
 	function unique_folio($folio)
 	{	
-		$this->load->model('validate_model');
+		$this->load->helper('search');
+		$this->load->model('tool/eloquent_model','search_db');
+		$db = $this->search_db;
 
-		$search_folio = $this->validate_model->unique_folio(trim($folio));
+		$id_empresa = $this->uri->segment(4);
+		$id_banco = $this->uri->segment(5);
 
-		if(count($search_folio) > 0 ):
-			$this->form_validation->set_message('unique_folio', 'Este folio ya  esta registrado.');
+		$array_search = array('db' => $db, 'folio' => trim($folio),'id_empresa' => $id_empresa, 'id_banco'=> $id_banco );
+		//return false;
+		$search_folio = clave_factory($array_search);
+
+		if($search_folio['success'] == 'false' ):
+			$this->form_validation->set_message('unique_folio', $search_folio['fail_txt']);
             return FALSE;
 		else:
 			return true;
-		endif;
+		 endif;
 	}
 
 	function unique_folio_other($folio)

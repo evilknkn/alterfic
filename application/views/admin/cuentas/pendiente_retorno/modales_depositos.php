@@ -103,7 +103,7 @@
                                 </div>
                                 <label class="text-danger" id="fail_folio_pago" style="display:none">*Este campo es requerido</label>
                                 <label class="text-danger" id="fail_folio_pago_existe" style="display:none"><div id="message_fail">*</div></label> 
-                                <label class="text-success" id="success_folio_pago" style="display:none">*Este folio es valido</label> 
+                                <label class="text-success" id="success_folio_pago" style="display:none">*Este folio es válido</label> 
                             </div>
                         </div>
 

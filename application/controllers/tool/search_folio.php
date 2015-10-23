@@ -17,7 +17,7 @@ class Search_folio extends  CI_Controller
 			$type_mov 			= indefity_mov($row->tipo_movimiento);
 			$data['empresa']	= indetify_factory($db, $row->id_empresa);
 			$data['banco'] 		= indetify_bank($db, $row->id_banco);
-			$data['message'] 	= 'El folio '.$folio.' es un movimiento '.$type_mov.' en la empresa '.$data['empresa'].' en el banco '.$data['banco'] ;
+			$data['message'] 	= 'El folio '.$folio.' es un movimiento '.$type_mov.' en la empresa '.$data['empresa'].' en el banco '.$data['banco'].' con fecha '. $row->fecha_movimiento ;
 			$data['success'] 	= 'success';
 			$data['info'] 		= $row->tipo_movimiento;
 		else:
