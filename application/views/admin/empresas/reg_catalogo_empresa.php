@@ -56,21 +56,32 @@
                     </div>
                 </div>
 
+                <div class="form-group" id="claveMovimiento" style="display:none">
+                    <label class="control-label col-sm-4 col-xs-4"> Clave movimientos</label>
+                    <div class="control-sm-8 col-xs-8">
+                        <div class="col-xs-5 col-sm-5">
+                            <input type="text" class="form-control" name="clave_movimiento">
+                        </div>
+                        <div class="col-xs-12 col-sm-12">&nbsp;</div>
+                        <div class="col-xs-12 col-sm-12"><?=form_error('clave_movimiento')?></div>
+                    </div>
+                </div>
+
                 <div class="form-group">
-                    <label class=" control-label col-sm-4 col-xs-4">Banco de depósito </label>
+                    <label class=" control-label col-sm-4 col-xs-4">Banco de depósito</label>
                     <div class="col-xs-8 col-sm-8">
                         <div class="col-sm-4 col-xs-4">
                             <select name="id_banco" class="form-control" required>
-                                <option value="">Seleccione un banco</option>
+                                <option value="">Seleccione un banco </option>
                                 <?php foreach($bancos as $banco):?>
-                                    <option value="<?=$banco->id_banco?>" <?=(set_value('tipo_cuenta') == $banco->id_banco)?"selected=selected":"";?> ><?=$banco->nombre_banco?></option>
+                                    <option value="<?=$banco->id_banco?>" <?= (set_value('id_banco') == $banco->id_banco)? "selected=selected" :"";?> ><?=$banco->nombre_banco?></option>
                                 <?php endforeach;?>
                             </select>
                             
                         </div>
                     </div>
                     <div class="col-sm-12 col-xs-12">&nbsp;</div>
-                    <div class="col-xs-12  col-sm-12"><?=form_error('nombre_empresa')?></div>
+                    <div class="col-xs-12  col-sm-12"><?=form_error('id_banco')?></div>
                 </div>
 
                 <div class="form-group">
@@ -98,11 +109,19 @@
 
             <script type="text/javascript">
             $('#tipo_cuenta').change(function (){
+                console.log()
                 if($('#tipo_cuenta').val()==2)
                 {
                     $('#clave_cta').show();
                 }else{
                     $('#clave_cta').hide();
+                }
+
+                if($('#tipo_cuenta').val() == 1)
+                {
+                    $("#claveMovimiento").show();
+                }else{
+                    $("#claveMovimiento").hide();
                 }
             });
             $(document).ready(function (){
@@ -111,6 +130,13 @@
                     $('#clave_cta').show();
                 }else{
                     $('#clave_cta').hide();
+                }
+
+                if($('#tipo_cuenta').val() == 1)
+                {
+                    $("#claveMovimiento").show();
+                }else{
+                    $("#claveMovimiento").hide();
                 }
             });
             </script>

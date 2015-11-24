@@ -498,7 +498,7 @@ class Pagos extends CI_Controller
 			
 		}else{
 			$data['success'] = false;
-			$data['fail_txt'] = '*Este folio no es valido, verifique el formato';
+			$data['fail_txt'] = '*Este folio no es válido, verifique el formato';
 			return $this->output->set_content_type('application/json')->set_status_header(200)->set_output(json_encode($data)); 
 		}
 		//print_r($detail_folio);

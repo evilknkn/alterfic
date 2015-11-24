@@ -116,7 +116,7 @@ class Salida extends CI_Controller
 
 		$this->form_validation->set_rules('fecha_salida', 'fecha de salida', 'required|callback_fecha_limite');
 		$this->form_validation->set_rules('monto_salida', 'monto de salida', 'required');
-		//$this->form_validation->set_rules('folio_salida', 'folio de salida', 'required|trim|callback_unique_folio');
+		//$this->form_validation->set_rules('folio_salida', 'folio de salida', 'required|trim|callback_valida_folio');
 		$this->form_validation->set_rules('detalle_salida', 'detalle de salida', 'required');
 
 		if($this->form_validation->run()):

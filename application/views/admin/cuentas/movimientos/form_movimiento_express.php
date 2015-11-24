@@ -7,7 +7,7 @@
     <ul class="breadcrumb">
        <li><a href="<?=base_url($this->session->userdata('base_perfil'))?>">Inicio</a></li>
         <li>Lista de depósitos</li>
-        <li>Movimientos internos</li>
+        
         <li>Agregar movimiento interno</li>
     </ul>
 </div>
@@ -17,7 +17,7 @@
         <div class="col-xs-12">
             <!-- PAGE CONTENT BEGINS -->
                 <div class="page-header">
-                    <h1>Nuevo movimiento en <?=$nombre_empresa?></h1>
+                    <h1>Nuevo movimiento express</h1>
                 </div><!-- /.page-header -->
                 <?php if($this->session->flashdata('success')):?>
                     <div class="text-center col-sm-12 col-xs-12">
@@ -58,7 +58,11 @@
                         <div class="col-sm-4"></div>
                         <div class="col-sm-8">
                             <button class="btn btn-primary" type="submit"> <i class="fa fa-save "></i> Guardar </button>
-                            <a href="<?=base_url('cuentas/movimientos_internos_express/lista/'.$id_empresa.'/'.$id_banco)?>" class="btn btn-grey" style="margin-left:15px"><i class="fa fa-undo"></i>Regresar</a>
+                            <? if(isset($id_empresa)):?>
+                                <a href="<?=base_url('cuentas/movimientos_internos_express/lista/'.$id_empresa.'/'.$id_banco)?>" class="btn btn-grey" style="margin-left:15px"><i class="fa fa-undo"></i>Regresar</a>
+                            <? else:?>
+                                <a href="<?=base_url('cuentas/depositos')?>" class="btn btn-grey" style="margin-left:15px"><i class="fa fa-undo"></i>Regresar</a>
+                            <? endif;?>
                         </div>
                     </div>
 

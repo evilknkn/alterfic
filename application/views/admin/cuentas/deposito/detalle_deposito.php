@@ -103,7 +103,7 @@
                     
                     <?php 
                    $total_depto    = 0 ;
-                    $total_sal      = 0 ;
+                    $total_sal     = 0 ;
                    
                     $deposito =0;
                     $cantidad_deposito = 0;

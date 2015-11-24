@@ -10,6 +10,7 @@ class Movimientos_internos_model extends CI_Model
 	public function insert_movimiento($datos)
 	{
 		$this->db->insert('ad_movimientos_internos', $datos);
+		return $this->db->insert_id();
 	}
 
 	public function detalle_pago($id_pago)
@@ -26,6 +27,7 @@ class Movimientos_internos_model extends CI_Model
 	public function insert_movimiento_detalle($array)
 	{
 		$this->db->insert('ad_detalle_cuenta', $array);
+
 	}
 
 	public function registra_depto($array)
@@ -79,5 +81,10 @@ class Movimientos_internos_model extends CI_Model
 	{
 		$this->db->where($filtro_depto);
 		$this->db->update('ad_depositos', $array);
+	}
+
+	public function insertMovimiento($datos)
+	{
+		$this->db->insert('ad_log_movimiento_express', $datos);
 	}
 }

@@ -24,7 +24,9 @@
                 
                 <div class="col-xs-12 col-sm-12">
 <!--                     <a href="<?=base_url()?>excel/exportaExcel/depositos" class="btn btn-success" target="_blank"> <i class="icon-file"></i> Exportar a excel</a>
- -->                    <br><br>
+ -->                <a href="<?=base_url('cuentas/movimientos_internos_express/create_movimiento_express')?>" style="" class="btn btn-primary"> 
+                    <i class="fa fa-plus"></i> Movimientos internos express</a>
+                    <br><br>
                     <table id="sample-table-2" class="table table-striped table-bordered table-hover">
                         <thead>
                             <tr>

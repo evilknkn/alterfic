@@ -4,7 +4,7 @@ function indefity_mov($mov_detail = null )
 	//print_r($mov_detail);exit;
 	switch ($mov_detail) {
 		case 'deposito':
-				$text = 'depósito';
+				$text = 'de depósito';
 			break;
 
 		case 'mov_int':
@@ -12,19 +12,19 @@ function indefity_mov($mov_detail = null )
 			break;
 
 		case 'deposito_interno':
-				$text = 'depósito en movimiento interno';
+				$text = 'de depósito en movimiento interno';
 			break;
 
 		case 'salida_pago':
-				$text = 'salida de movimiento de pago';
+				$text = 'de salida de movimiento de pago';
 			break;
 
 		case 'salida':
-				$text = 'salida';
+				$text = 'de salida';
 			break;
 
 		case 'salida_comision':
-				$text = 'salida pago de comisión';
+				$text = 'de salida pago de comisión';
 			break;
 	}
 
@@ -85,3 +85,4 @@ function clave_factory($dataArray)
 			return $data;
 		}
 }
+

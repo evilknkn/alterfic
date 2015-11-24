@@ -38,6 +38,7 @@
 			</div>
 		</div>
 
+
 		<div class="form-group">
 			<label class=" control-label col-sm-4 col-xs-4">Nombre de empresa </label>
 			<div class="col-xs-8 col-sm-8">
@@ -82,7 +83,7 @@
 	    </div>
 
 		<div class="text-center">
-			<button class="btn "><i class=" fa fa-plus"></i> Agregar </button>
+			<button class="btn "><i class=" fa fa-plus"></i> Agregar_ </button>
 			<a href="<?=base_url('catalogos/corps')?>"></a>
 		</div>
 		<?=form_close();?>
@@ -99,5 +100,7 @@
 		}else{
 			$("#clave_cta").hide();
 		}
+
+		
 	});
 </script>
