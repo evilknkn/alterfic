@@ -27,15 +27,17 @@
             <?php endif;?>
 
             <div class="row">
+                <?php if($this->session->userdata('ID_PERFIL') != 5): ?>
                 <a href="<?=base_url('cuentas/depositos/insert_deposito/'.$id_empresa.'/'.$id_banco)?>" style="margin-left:15px" class="btn btn-primary"> 
                     <i class="fa fa-plus"></i> Agregar depósito</a>
                 <a href="<?=base_url('cuentas/salida/insertar_salida/'.$id_empresa.'/'.$id_banco)?>" style="margin-left:15px" class="btn btn-primary"> 
                     <i class="fa fa-plus"></i> Agregar Salida</a>
+                <?php endif;?>
                 <a href="<?=base_url('cuentas/movimientos_internos/lista/'.$id_empresa.'/'.$id_banco)?>" style="margin-left:15px" class="btn btn-primary"> 
                     <i class="fa fa-plus"></i> Movimientos internos</a>
 
-                <a href="<?=base_url('cuentas/movimientos_internos_express/lista/'.$id_empresa.'/'.$id_banco)?>" style="margin-left:15px" class="btn btn-primary"> 
-                    <i class="fa fa-plus"></i> Movimientos internos express</a>
+                <!-- <a href="<?=base_url('cuentas/movimientos_internos_express/lista/'.$id_empresa.'/'.$id_banco)?>" style="margin-left:15px" class="btn btn-primary"> 
+                    <i class="fa fa-plus"></i> Movimientos internos express</a> -->
                 
                 <a href="<?=base_url('cuentas/depositos')?>" style="margin-left:15px" class="btn btn-grey"> 
                     <i class="fa fa-undo"></i> Regresar</a>
@@ -103,7 +105,7 @@
                     
                     <?php 
                    $total_depto    = 0 ;
-                    $total_sal     = 0 ;
+                    $total_sal      = 0 ;
                    
                     $deposito =0;
                     $cantidad_deposito = 0;
@@ -151,14 +153,18 @@
                                 <a data-toggle="modal" href="#modalPagos" class="btn btn-info" onclick="pagos(<?=$id_empresa?>,<?=$id_banco?>, <?=$deposito->id_deposito?>)">Ver Pagos</a>
                             </td>
                             <td class="text-center">
-                                <a href="<?=base_url('cuentas/depositos/editar_deposito/'.$id_empresa.'/'.$id_banco.'/'.$movimiento->id_detalle.'/'.$movimiento->id_movimiento)?>" >
-                                    <i class="fa fa-edit fa-lg"></i>
-                                </a>
+                                <?php if($this->session->userdata('ID_PERFIL') != 5): ?>
+                                    <a href="<?=base_url('cuentas/depositos/editar_deposito/'.$id_empresa.'/'.$id_banco.'/'.$movimiento->id_detalle.'/'.$movimiento->id_movimiento)?>" >
+                                        <i class="fa fa-edit fa-lg"></i>
+                                    </a>
+                                <?php endif;?>
                             </td>
                             <td class="text-center">
-                                <a href="<?=base_url('cuentas/mov_delete/deposito/'.$id_empresa.'/'.$id_banco.'/'.$movimiento->id_detalle.'/'.$movimiento->id_movimiento)?>" onclick="return confirm('¿Esta seguro que quiere eliminar el depósito?');" data-toggle-title="Haga clic aquí para borrar depósito">
-                                    <i class="fa fa-trash fa-lg"></i>
-                                </a>
+                                <?php if($this->session->userdata('ID_PERFIL') != 5): ?>
+                                    <a href="<?=base_url('cuentas/mov_delete/deposito/'.$id_empresa.'/'.$id_banco.'/'.$movimiento->id_detalle.'/'.$movimiento->id_movimiento)?>" onclick="return confirm('¿Esta seguro que quiere eliminar el depósito?');" data-toggle-title="Haga clic aquí para borrar depósito">
+                                        <i class="fa fa-trash fa-lg"></i>
+                                    </a>
+                                <?php endif;?>
                             </td>
                        </tr>
                 <?php }else if( $type_mov == 'deposito_interno' )
@@ -202,18 +208,22 @@
                             <td></td>
                             <td><?=$salida->detalle_salida?></td>
                             <td class="text-center">
+                                <?php if($this->session->userdata('ID_PERFIL') != 5): ?>
                                 <?php if($type_mov == 'salida'){?>
                                 <a href="<?=base_url('cuentas/salida/editar_salida/'.$id_empresa.'/'.$id_banco.'/'.$salida->id_salida)?>"  data-toggle-title="Haga clic aquí para borrar depósito">
                                     <i class="fa fa-edit fa-lg"></i>
                                 </a>
                                <?php }?> 
+                           <?php endif; ?>
                             </td>
                             <td class="text-center">
+                                <?php if($this->session->userdata('ID_PERFIL') != 5): ?>
                                 <?php if($type_mov == 'salida'){?>
                                 <a href="<?=base_url('cuentas/mov_delete/salida/'.$id_empresa.'/'.$id_banco.'/'.$movimiento->id_detalle.'/'.$salida->id_salida)?>" onclick="return confirm('¿Esta seguro que quiere eliminar esta salida?');" data-toggle-title="Haga clic aquí para borrar depósito">
                                     <i class="fa fa-trash fa-lg"></i>
                                 </a>
                                <?php }?>
+                                <?php endif;?>
                             </td>
                        </tr>
                 <?php } ?>

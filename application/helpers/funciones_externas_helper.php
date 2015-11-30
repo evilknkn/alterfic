@@ -233,33 +233,6 @@ function fechas_rango_mes($month)
 	return $fecha;
 }
 
-function parse_date($num){
-
-	if($num == 1){
-		$month = '01';
-	}elseif($num == 2){
-		$month = '02';
-	}elseif($num == 3){
-		$month = '03';
-	}elseif($num == 4){
-		$month = '04';
-	}elseif($num == 5){
-		$month = '05';
-	}elseif($num == 6){
-		$month = '06';
-	}elseif($num == 7){
-		$month = '07';
-	}elseif($num == 8){
-		$month = '08';
-	}elseif($num == 9){
-		$month = '09';
-	}else{
-		$month = $num;
-	}
-	return $month;
-}
-
-
 function cliente_asignado_deposito($db, $id_cliente)
 {
 	$res = $db->cliente_asignado_depto(array('id_cliente'=>$id_cliente));

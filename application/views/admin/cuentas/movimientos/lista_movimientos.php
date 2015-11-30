@@ -29,7 +29,8 @@
 
 
             <div class="row">
-                <?php if($this->session->userdata('consulta') == 'active'): ?>
+                
+                <?php if($this->session->userdata('consulta') == 'active' and  $this->session->userdata('ID_PERFIL') != 5): ?>
                     <a href="<?=base_url('cuentas/movimientos_internos/add_mov_interno/'.$id_empresa.'/'.$id_banco)?>" class="btn btn-primary">Agregar movimiento</a>
                     <br><br>
                 <?php endif; ?>
@@ -92,14 +93,18 @@
                                 <td><?=$movimiento->folio_entrada?></td>
                                 <td><?=$movimiento->folio_salida?></td>
                                 <td class="text-center">
+                                    <?php if($this->session->userdata('ID_PERFIL') != 5): ?>
                                     <a href="<?=base_url('cuentas/movimientos_internos/editar_movimiento/'.$id_empresa.'/'.$id_banco.'/'.$movimiento->id_movimiento)?>"> 
                                         <i class="fa fa-edit fa-2x"></i>
                                     </a>
+                                <?php endif;?>
                                 </td>
                                 <td class="text-center">
+                                    <?php if($this->session->userdata('ID_PERFIL') != 5): ?>
                                     <a href="<?=base_url('cuentas/mov_delete/movimiento_interno/'.$id_empresa.'/'.$id_banco.'/'.$movimiento->id_movimiento)?>" onclick="return confirm('¿Esta seguro que quiere eliminar el movimiento interno?');"> 
                                         <i class="fa fa-trash fa-2x"></i>
                                     </a>
+                                <?php endif; ?>
                                 </td>
                            </tr>
                         <?php endforeach; ?>

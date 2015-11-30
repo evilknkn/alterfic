@@ -338,6 +338,13 @@ class Depositos extends CI_controller
 			$fecha = formato_fecha_ddmmaaaa($pagos[$i]->fecha_pago);
 
 			$total = $total + $pagos[$i]->monto_pago;
+			/**********************************************************/
+			/* Valida si es perfil uno no puede borrar el movimiento */
+			/********************************************************/
+			
+			$link_delete = "<a href='".base_url('cuentas/mov_delete/pago/'.$this->input->post('id_empresa').'/'.$this->input->post('id_banco').'/'.$pagos[$i]->id_pago)."'><i class='fa fa-trash fa-lg'></i></a>";
+			$validate_perfil = ($this->session->userdata('ID_PERFIL') == 1 or $this->session->userdata('ID_PERFIL') == 5  )? '' : $link_delete; 
+			
 			echo "<tr>
 				<td class='text-center'> Pago ".($i+1)."</td>
 				<td class='text-center'>".$pago."</td>
@@ -349,9 +356,7 @@ class Depositos extends CI_controller
 				</a>
 				</td>
 				<td class='text-center'>
-					<a href='".base_url('cuentas/mov_delete/pago/'.$this->input->post('id_empresa').'/'.$this->input->post('id_banco').'/'.$pagos[$i]->id_pago)."'>
-						<i class='fa fa-trash fa-lg'></i>
-					</a>
+					".$validate_perfil."
 				</td>
 				
 			</tr>";

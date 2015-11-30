@@ -71,7 +71,9 @@
                                 <th>Fecha de depósito</th>
                                 <th>Folio</th>
                                 <th>Nombre cliente</th>
-                                <th>Cliente</th> 
+                                <?php if($this->session->userdata('ID_PERFIL') !=4):?>
+                                    <th>Cliente</th> 
+                                <?php endif;?>
                                 <th>Depósito</th>
                                 <th>Pagos</th>
                                 <th>Comisión </th>
@@ -106,17 +108,19 @@
                                         <td><?=formato_fecha_ddmmaaaa($data->fecha_movimiento)?></td>
                                         <td><?=$data->folio_deposito?></td>
                                         <td><?=$nombre_cliente?></td>
+                                        <?php if($this->session->userdata('ID_PERFIL') !=4):?>
                                         <td>
                                             <input type="hidden" id="id_deposito" value="<?=$data->id_deposito?>">
                                             
-                                            <select class="input-large" name="cliente_deposito" id="cliente_deposito_<?=$data->id_deposito?>" onchange="actualiza_cliente_deposito(<?=$data->id_deposito?>, this.value)" <?=($data->id_cliente!=0)? 'disabled=disabled' : '';?> >
+                                            <select class="input-large" name="cliente_deposito" id="cliente_deposito_<?=$data->id_deposito?>" onchange="actualiza_cliente_deposito(<?=$data->id_deposito?>, this.value)" <?=($data->id_cliente!=0 or $this->session->userdata('ID_PERFIL')  == 5)? 'disabled=disabled' : '';?> >
                                                 <option value=""> Seleccione un cliente</option>
                                                 <?php foreach($clientes as $cliente):?>
                                                     <option value="<?=$cliente->id_cliente?>" <?=($data->id_cliente ==$cliente->id_cliente)? 'selected=selected' : '';?>><?=$cliente->nombre_cliente?></option>
                                                 <?php endforeach;?>
                                             </select>
                                             <a style="cursor:pointer;width:60px" onclick="editar_cliente(<?=$data->id_deposito?>)" class="btn btn-primary" >Editar</a>
-                                        </td>  
+                                        </td> 
+                                        <?php endif;?> 
                                         <td>$<?=convierte_moneda($data->monto_deposito)?></td>
                                      	<td>$<?=convierte_moneda($data->total_pagos)?></td>
                                      	<td>$<?=convierte_moneda($data->comision)?></td>
@@ -134,7 +138,6 @@
                     </table>
                 </div>
                 <div class="text-center" style="margin-top:20px"> 
-                    <a id="" class="btn btn-info" >Agregar pago</a>
                     <a href="<?=base_url('cuentas/pendiente_retorno')?>" class="btn btn-grey"><i class="icon-undo"></i> Regresar</a>
                 </div>
             <!-- PAGE CONTENT ENDS -->
@@ -145,8 +148,10 @@
 <?=$this->load->view('admin/cuentas/pendiente_retorno/modales_depositos')?>
 <script src="<?php echo base_url()?>assets/js/jquery.dataTables.min.js"></script>
 <script src="<?php echo base_url()?>assets/js/jquery.dataTables.bootstrap.js"></script>
+
 <script type="text/javascript">
 jQuery(function($) {
+    <?php if($this->session->userdata('ID_PERFIL') !=4):?>
     var oTable1 = $('#sample-table-2').dataTable( {
         aLengthMenu: [
         [25, 50, 100, 200, -1],
@@ -158,6 +163,19 @@ jQuery(function($) {
         null, null, null, null, null, null, null,null,null,
       { "bSortable": true }
     ] } );
+    <?php else: ?>
+    var oTable1 = $('#sample-table-2').dataTable( {
+        aLengthMenu: [
+        [25, 50, 100, 200, -1],
+        [25, 50, 100, 200, "All"]
+    ],
+    iDisplayLength: 100,
+    "aoColumns": [
+      { "bSortable": true },
+        null, null, null, null, null, null, null,null,
+      { "bSortable": true }
+    ] } );
+    <?php endif; ?>
         
 });
 

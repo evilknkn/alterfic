@@ -23,7 +23,9 @@
                 <?php endif;?>
 
                 <div class="clearfix"></div>
-                <a href="<?=base_url('users/admin_users/create_user/1')?>" class="btn btn-info">Crear usuario</a>
+                <?php if($this->session->userdata('ID_PERFIL') == 6): ?>
+                    <a href="<?=base_url('users/admin_users/create_user/1')?>" class="btn btn-info">Crear usuario</a>
+                <?php endif; ?>
                 <br><br>
 
                 <div class="table-responsive overflow">
@@ -45,8 +47,10 @@
                                 <td><?=$user->username?></td>
                                 <td><?=$acceso?> </td>
                                 <td >
-                                	<a href="<?=base_url()?>" class="tooltips tile-menu" data-original-title="Haga clic aquí para ver detalle del usuario">
-                                	<i class="glyphicon glyphicon-search fa-2x"></i> 
+                                    <?php if($this->session->userdata('ID_PERFIL') == 6): ?>
+                                    	<a href="<?=base_url('users/admin_users/editUser/'.$user->id_user)?>" class="tooltips tile-menu" data-original-title="Haga clic aquí para ver detalle del usuario">
+                                    	<i class="glyphicon glyphicon-search fa-2x"></i> 
+                                    <?php endif;?>
                                 	</a>
                                 </td>
                             </tr>

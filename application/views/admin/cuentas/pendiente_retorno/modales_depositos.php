@@ -200,11 +200,14 @@
             </div>
             
             <div class="modal-footer">
-                <div id="button-list-pays">
-                    <a id="show-add-pay" class="btn btn-info" >Agregar pago</a>
-                    <button type="button" class="btn btn-grey" data-dismiss="modal">Cerrar</button>
-                </div>
-
+                <?php if($this->session->userdata('ID_PERFIL') !=1  ): ?>
+                    <?php if($this->session->userdata('ID_PERFIL') !=5  ): ?>
+                        <div id="button-list-pays">
+                            <a id="show-add-pay" class="btn btn-info" >Agregar pago</a>
+                            <button type="button" class="btn btn-grey" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    <?php endif;?>
+                <?php endif;?>
                 <div id="button-add-pay" style="display:none">
                     <a id="pay-bill" class="btn btn-info" >Guardar</a>
                     <button type="button" class="btn btn-grey" id="cancel-pay">Cancelar</button>

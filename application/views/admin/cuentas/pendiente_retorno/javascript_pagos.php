@@ -313,19 +313,19 @@
             return false;
         }
 
-        if( $("#ruta_comprobante").val() == '' || $("#ruta_comprobante").val() == undefined  ){
-            $('#fail_monto').hide();
-            $('#fail_fecha').hide();
-            $('#fail_archivo').hide();
-            $('#fail_empresa_retorno').hide();
-            $('#fail_banco_retorno').hide();
-            $('#fail_folio_pago').hide();
-            $('#fail_archivo').show();
+        // if( $("#ruta_comprobante").val() == '' || $("#ruta_comprobante").val() == undefined  ){
+        //     $('#fail_monto').hide();
+        //     $('#fail_fecha').hide();
+        //     $('#fail_archivo').hide();
+        //     $('#fail_empresa_retorno').hide();
+        //     $('#fail_banco_retorno').hide();
+        //     $('#fail_folio_pago').hide();
+        //     $('#fail_archivo').show();
 
-            console.log('tercero ',$("#ruta_comprobante").val());
-            console.log('falta comprobante');
-            return false;
-        }
+        //     console.log('tercero ',$("#ruta_comprobante").val());
+        //     console.log('falta comprobante');
+        //     return false;
+        // }
 
         var type = [];
         $("input[name=id_deposito_json]:checked").each(function() {type.push(this.value)});

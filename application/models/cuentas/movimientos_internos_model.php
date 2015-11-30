@@ -27,7 +27,6 @@ class Movimientos_internos_model extends CI_Model
 	public function insert_movimiento_detalle($array)
 	{
 		$this->db->insert('ad_detalle_cuenta', $array);
-
 	}
 
 	public function registra_depto($array)
