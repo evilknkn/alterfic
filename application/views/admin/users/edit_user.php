@@ -23,6 +23,7 @@
 						<label class="control-label col-sm-4 col-xs-4 no-padding-rigth">Nombre de usuario</label>
 						<div class="col-xs-8 col-sm-8">
 							<div class="ol-sm-12 col-xs-12">
+								<input type="hidden" value="general_data" name="type_change">
 								<input type="text" class="form-control" value="<?=$getUser->username?>" name="username">
 							</div>
 							<div class="col-sm-12 col-xs-12"> &nbsp;</div>
@@ -34,11 +35,11 @@
 					<div class="form-group">
 						<label class="control-label col-sm-4 col-xs-4"> Tipo admin </label>
 						<div class="col-sm-8 col-xs-8"> 
-							<div class="col-sm-5 col-xs-5">
+							<div class="col-sm-8 col-xs-8">
 								<select name="privilegios" class="form-control input-lg m-b-10" required>
 									<option value="">Seleccione una opción</option>
 									<?php foreach ($list_admin as $key):?>
-										<option value="<?=$key->id_privilegio?>" <?=($getUser->privilegios == $key->id_privilegio )?'selected=selected':'';?>><?=$key->nombre?></option>
+										<option value="<?=$key->id_perfil?>" <?=($getUser->privilegios == $key->id_perfil )?'selected=selected':'';?>><?=$key->nombre_perfil?></option>
 									<?endforeach;?>
 								</select>
 							</div>
@@ -54,12 +55,15 @@
 
 				<h3 class="block-title">Cambiar contraseña</h3>
 
-				<?=form_open('',array('class'	=> 'form-horizontal'))?>
+				<?=form_open('update_',array('class'	=> 'form-horizontal'))?>
 					<div class="form-group">
 						<label class="control-label col-sm-4 col-xs-4 no-padding-rigth">Contraseña</label>
 						<div class="col-xs-8 col-sm-8">
 							<div class="col-sm-6 col-xs-6">
-								<input type="text" class="form-control" value="<?=set_value('password')?>" name="password" id="password">
+								<input type="hidden" value="password" name="type_change">
+								<input type="password" class="form-control" value="<?=set_value('password')?>" name="password" id="password">
+
+								<label id="generate-Key"></label>
 							</div>
 							<div class="col-sm-6 col-xs-6">
 								<a id="clave_ramdom" class="btn m-r-5"> <i class="fa fa-lock"></i> Generar contraseña </a>
@@ -71,14 +75,13 @@
 					</div>
 
 					<div class="form-group">
-						<label class="control-label col-sm-4 col-xs-4 no-padding-rigth">Contraseña</label>
+						<label class="control-label col-sm-4 col-xs-4 no-padding-rigth">Confirmar contraseña</label>
 						<div class="col-xs-8 col-sm-8">
 							<div class="col-sm-6 col-xs-6">
-								<input type="text" class="form-control" value="<?=set_value('password')?>" name="password" id="password">
+								<input type="password" class="form-control" value="<?=set_value('password')?>" name="confirm_password" id="confirm_password">
+								
 							</div>
-							<div class="col-sm-6 col-xs-6">
-								<a id="clave_ramdom" class="btn m-r-5"> <i class="fa fa-lock"></i> Generar contraseña </a>
-							</div>
+							
 						</div>
 
 						<div class="col-sm-12 col-xs-12"> &nbsp;</div>
@@ -104,6 +107,7 @@ $("#clave_ramdom").click(function(){
            	{
            		
            		$('#password').val(data);
+           		$('#generate-Key').html('<b>'+data+'</b><br> Copiar y pegar para confirmar contraseña.');
            	}
     });//fin accion ajax
 });
