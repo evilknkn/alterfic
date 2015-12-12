@@ -103,6 +103,7 @@
                     </a>
                 </li>
 
+              
                 <li>
                     <a href="#" class="dropdown-toggle">
                         <i class="icon-dollar "></i>
@@ -130,6 +131,13 @@
                             <a href="<?=base_url('cuentas/comisiones')?>">
                                 <i class="icon-double-angle-right"></i>
                                 Comisiones
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="<?=base_url('cuentas/comisiones/clientes_pagos')?>">
+                                <i class="icon-double-angle-right"></i>
+                                <span class="menu-text"> Clientes lista de pagos </span>
                             </a>
                         </li>
 
