@@ -284,7 +284,7 @@ $('#execute_search').click(function(){
 		$('#search-fail').hide();
 	$.ajax({    type: "POST",
                 dataType: "json",
-                url: '/tool/search_folio/lookFor',
+                url: '<?= base_url()?>/tool/search_folio/lookFor',
                 data: "buscar_folio=" + folio_busqueda, 
                 success: function(data)
                 {  	console.log(data);
