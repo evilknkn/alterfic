@@ -97,6 +97,7 @@
                             <th class="text-center">Total retornado</th>
                             <th class="text-center" >Cliente</th>
                             <th class="text-center">Detalle</th>
+                            <th class="text-center">Forma de retorno</th>
                             <th class="text-center">Editar</th>
                             <th class="text-center">Borrar</th>
                         </tr>
@@ -151,6 +152,9 @@
                             </td>
                             <td class="text-center">
                                 <a data-toggle="modal" href="#modalPagos" class="btn btn-info" onclick="pagos(<?=$id_empresa?>,<?=$id_banco?>, <?=$deposito->id_deposito?>)">Ver Pagos</a>
+                            </td>
+                            <td class="text-center">
+                                <a href="<?=base_url('/cuentas/formato_retorno/deposito/'.$deposito->id_deposito.'/'.$id_empresa.'/'.$id_banco)?>"> <i class="icon-retweet bigger-160"></i></a>
                             </td>
                             <td class="text-center">
                                 <?php if($this->session->userdata('ID_PERFIL') != 5): ?>
