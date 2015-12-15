@@ -179,6 +179,21 @@ class Comisiones extends CI_Controller
 		$this->load->view('layer/layerout', $data);
 	}
 
+	public function pagos_deposito()
+	{
+		$this->load->model('users/clientes_model');	
+		$this->load->model('cuentas/comision_model');
+		$this->load->helper('funciones_externas');
+		$this->load->helper('cuentas');
+
+		$deposito_id = $this->input->post('deposito_id');
+
+		$data['lista_pagos']=$this->comision_model->lista_pagos_deposito($deposito_id);
+		print_r($data['lista_pagos']);exit;
+		return json_decode($data);
+
+	}
+
 	#### callbacks de validaciones
 	function unique_folio($folio)
 	{	

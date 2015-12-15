@@ -40,16 +40,49 @@
                             <td><?=$deposito->nombre_banco?></td>
                             <td class="text-center"><?=convierte_moneda($deposito->monto_deposito)?></td>
                             <td><?=$deposito->folio_mov?></td>
-                            <td class="text-center"><i class="icon-list"></i></td>
+                            <td class="text-center">
+                                <a onclick="showPays(<?=$deposito->id_deposito?>)" style="cursor:pointer">
+                                    <i class="icon-list bigger-160"></i>
+                                </a>
+                            </td>
                         </tr>
                     <?php endforeach;?>                        
                     </tbody>
                 </table>
 
+                <script type="text/javascript">
+                    function showPays(deposito_id){
+                        
+                    
+                    $.ajax({
+                          type:'POST',
+                          dataType:'json',
+                          url:"<?php echo base_url('cuentas/comisiones/pagos_deposito')?>",
+                          data:'deposito_id='+deposito_id,
+                          success: function(data){
+                            console.log(data)
+                            var html = '';
+                            for(vari=0; i<data.length;i++)
+                            {
+                                html+= "<tr>";
+                                html += "<td>"+data[i].nombre_empresa+"</td>";
+                                html += "<td"+data[i].nombre_banco+"></td>";
+                                html += "<td"+data[i].mongo_pago+"></td>";
+                                html += "<td>"+data[i].folio_pago+"</td>";
+                                html += "<td>"+data[i].fecah_pago+"</td>";                                
+                                html+= "</tr>";
+                            }
+                            $('#detalle-pagos').show();
+                            $('#movimientos-pagos-depositos').html(html);
+                          }
+                        })
+                    }
+                </script>
+
                  <a href="<?=base_url('cuentas/comisiones/clientes_pagos')?>" class="btn btn-default" style="margin-top:15px;"> Lista de clientes</a> 
             </div>
 
-            <div class="table-responsive col-sm-6" >
+            <div class="table-responsive col-sm-6" id="detalle-pagos" style = "" >
                 <div style="margin-bottom:15%;"></div>
                 <table id="sample-table-3" class="table table-striped table-bordered table-hover">
                     <thead>
@@ -58,9 +91,10 @@
                             <th>Banco de retorno</th>
                             <th class="text-center">Monto depósito</th>
                             <th class="text-center">Folio depósito</th>
+                            <th class="text-center">Fecha</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="movimientos-pagos-depositos">
                    
                         <tr>
                             <td></td>
