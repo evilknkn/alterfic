@@ -187,7 +187,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            
+                            <td></td> 
                             <td></td>
                             <td>Movimiento depósito interno</td>
                             <td></td>
@@ -211,6 +211,8 @@
                             <td></td>
                             <td></td>
                             <td><?=$salida->detalle_salida?></td>
+                            <td></td>
+
                             <td class="text-center">
                                 <?php if($this->session->userdata('ID_PERFIL') != 5): ?>
                                 <?php if($type_mov == 'salida'){?>
@@ -242,6 +244,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
+                         <td></td>
                     </tfoot>
                 </table>
             </div>
@@ -268,7 +271,7 @@ jQuery(function($) {
     iDisplayLength: 100,
     "aoColumns": [
       { "bSortable": true },
-        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,null,
       { "bSortable": false }
     ] } );
         

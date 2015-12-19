@@ -1,6 +1,12 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Formato_retorno_model extends CI_Model
-{
+{	
+
+	public function insert_query($table, $data)
+	{	
+		$this->db->insert($table, $data); 
+		return $this->db->insert_id();
+	}
 	public function row_quey($table, $array)
 	{
 		$this->db->from($table);
@@ -38,6 +44,14 @@ class Formato_retorno_model extends CI_Model
 		
 	}
 
+	public function get_like_query($table = null, $where_like = null)
+	{
+		$this->db->from($table);
+		$this->db->like($where_like);
+		
+		return $this->db->count_all_results();
+	}
+
 	public function info_depto($id_deposito = null)
 	{	
 		$this->db->from('ad_depositos dep');
@@ -51,10 +65,11 @@ class Formato_retorno_model extends CI_Model
 /*
 CREATE TABLE `ad_formato_retorno` (
   `id_formato` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_cliente` int(11) DEFAULT NULL,
   `folio_cliente` varchar(50) DEFAULT NULL,
   `id_deposito` int(11) DEFAULT NULL,
   `tipo_retorno` varchar(10) DEFAULT NULL,
-  `nombe` varchar(250) DEFAULT NULL,
+  `nombre` varchar(250) DEFAULT NULL,
   `monto` float(10,2) DEFAULT NULL,
   `parametro` varchar(100) DEFAULT NULL,
   `reg_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
