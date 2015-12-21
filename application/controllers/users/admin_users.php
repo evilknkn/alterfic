@@ -19,7 +19,7 @@ class Admin_users extends CI_Controller
 		$data['menu'] 	= 'menu/menu_admin';
 		$data['body'] 	= 'admin/users/list_users' ;
 
-		$data['list_users'] = $this->users_model->list_users(array('id_perfil' => $perfil));
+		$data['list_users'] = $this->users_model->list_users(array(	));
 
 		$this->load->view('layer/layerout', $data);
 	}
@@ -85,11 +85,11 @@ class Admin_users extends CI_Controller
 								//'password'	=>	sha1($this->input->post('password')),
 								//'id_perfil' =>	$perfil,
 								'estatus'	=> 	1,
-								'privilegios'=> $this->input->post('privilegios'));
+								'id_perfil'=> $this->input->post('privilegios'));
 
 				$db->update('ad_usuarios', $array, array('id_user'=>$id_user));
 			else:
-				$array = array('password' 	=>	$this->input->post('password') );
+				$array = array('password' 	=>	sha1($this->input->post('password')) );
 
 				$db->update('ad_usuarios', $array, array('id_user'=>$id_user));
 			endif;

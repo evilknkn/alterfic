@@ -39,7 +39,7 @@
 								<select name="privilegios" class="form-control input-lg m-b-10" required>
 									<option value="">Seleccione una opción</option>
 									<?php foreach ($list_admin as $key):?>
-										<option value="<?=$key->id_perfil?>" <?=($getUser->privilegios == $key->id_perfil )?'selected=selected':'';?>><?=$key->nombre_perfil?></option>
+										<option value="<?=$key->id_perfil?>" <?=($getUser->id_perfil == $key->id_perfil )?'selected=selected':'';?>><?=$key->nombre_perfil?></option>
 									<?endforeach;?>
 								</select>
 							</div>
@@ -49,13 +49,13 @@
 					</div>
 
 					<div class="text-center">
-						<button class="btn btn-info"> <i class="glyphicon glyphicon-ok"></i> Guardar</button>
+						<button class="btn btn-info"> <i class="icon-ok"></i> Guardar</button>
 					</div>
 				<?=form_close()?>
 
 				<h3 class="block-title">Cambiar contraseña</h3>
 
-				<?=form_open('update_',array('class'	=> 'form-horizontal'))?>
+				<?=form_open('',array('class'	=> 'form-horizontal'))?>
 					<div class="form-group">
 						<label class="control-label col-sm-4 col-xs-4 no-padding-rigth">Contraseña</label>
 						<div class="col-xs-8 col-sm-8">
@@ -89,7 +89,7 @@
 					</div>
 
 					<div class="text-center">
-						<button class="btn btn-info"> <i class="glyphicon glyphicon-ok"></i> Guardar</button>
+						<button class="btn btn-info"> <i class="icon-ok"></i> Guardar</button>
 					</div>
 				<?=form_close()?>
 		</div>
