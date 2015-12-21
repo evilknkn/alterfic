@@ -61,6 +61,16 @@ class Formato_retorno_model extends CI_Model
 		$query = $this->db->get();
 		return $query->row();
 	}
+
+	public function folio_cliente($array=null)
+	{	
+		$this->db->from('ad_folio_cliente fol_cli');
+		$this->db->join('ad_formato_retorno forma_r', 'fol_cli.id_cliente = forma_r.id_cliente', 'inner');
+		$this->db->where($array);
+		
+		$query = $this->db->get();
+		return $query->row();
+	}
 }
 /*
 CREATE TABLE `ad_formato_retorno` (

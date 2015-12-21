@@ -15,15 +15,17 @@ class Formato_retorno extends CI_Controller
 
 		$data['menu'] 			= 'menu/menu_admin';
 		$data['body'] 			= 'admin/cuentas/formatoRetorno/Formato_retorno_pagos';
+		$deposito 				= $db->info_depto($id_deposito);
+		$seek_folio 			= $db->get_like_query('ad_formato_retorno', array('folio_cliente'=> $deposito->clave_folio));
+		//$existe_folio 			= $db->folio_cliente(array('forma_r.id_cl'=> $deposito->id_cliente, 'forma_r.id_deposito' => $id_deposito));
+
+		$data['folio_cliente']  = generar_folio($deposito->clave_folio, ($seek_folio + 1));
+			
+
 		$data['empresa'] 		= $db->row_quey('ad_catalogo_empresa', array('id_empresa'=> $id_empresa));
 		$data['banco'] 			= $db->row_quey('ad_catalogo_bancos', array('id_banco'=> $id_banco));
 		
-		$deposito 				= $db->info_depto($id_deposito);
-		$seek_folio 			= $db->get_like_query('ad_formato_retorno', array('folio_cliente'=> $deposito->clave_folio));
-		
-		$data['folio_cliente']  = generar_folio($deposito->clave_folio, ($seek_folio + 1));
 		$data['info_deposito'] 	= $deposito;
-
 		$data['comision_cliente']= genera_comision($this->clientes_model, $deposito->id_cliente, $deposito->monto_deposito);
 		$data['monto_retornar'] =	$deposito->monto_deposito - $data['comision_cliente'];
 		
