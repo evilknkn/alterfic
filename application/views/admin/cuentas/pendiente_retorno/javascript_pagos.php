@@ -239,6 +239,7 @@
 
     $("#pay-bill").click(function(){
         console.log($("#empresa_retorno").val());
+
         if( $("#monto").val() == '' || $("#monto").val() == undefined ){
             
             $('#fail_monto').show();
@@ -362,31 +363,42 @@
         var deposito = $('#deposito_id').val();
 
         //console.log('--id_empresa:'+empresa+ ' - id_banco:'+banco+' -empresa:'+deposito);
+        var monto_Apagar        = ($("#monto_pagar_bottom").val());
+        var monto_introducido   = ($("#monto").val());
 
-        $.ajax({
-                type: "POST",
-                dataType: "json",
-                url: '<?php echo base_url("cuentas/pagos/pay_bills")?>',
-                data: "fecha_pago=" + $("input:text[name=fecha_pago]").val() + "&comprobante="+ $("#ruta_comprobante").val()  + "&id_depositos=" + type+"&monto_pago="+$("#monto").val() + "&empresa_retorno="+$("#empresa_retorno").val()+"&banco_retorno="+$("#id_banco_option").val()+"&folio_pago="+$("#folio_pago_retorno").val(), 
-                success: function(data)
-                {   
-                    pagos(empresa, banco, deposito);
+        if(monto_introducido < monto_Apagar)
+        {
+            console.log('el monto introducido  '+ monto_introducido+' es mayor al monto a pagar  '+ monto_Apagar);
+        }else{
+            console.log('el monto introducido  '+ monto_introducido+' es menor al monto a pagar '+ monto_Apagar);
+        }
 
-                    $('#monto').val('');
-                    $("input:text[name=fecha_pago]").val('');
-                    $('#ruta_comprobante').val('');
-                    $("#folio_pago_retorno").val('');
+        return false;
+
+        // $.ajax({
+        //         type: "POST",
+        //         dataType: "json",
+        //         url: '<?php echo base_url("cuentas/pagos/pay_bills")?>',
+        //         data: "fecha_pago=" + $("input:text[name=fecha_pago]").val() + "&comprobante="+ $("#ruta_comprobante").val()  + "&id_depositos=" + type+"&monto_pago="+$("#monto").val() + "&empresa_retorno="+$("#empresa_retorno").val()+"&banco_retorno="+$("#id_banco_option").val()+"&folio_pago="+$("#folio_pago_retorno").val(), 
+        //         success: function(data)
+        //         {   
+        //             pagos(empresa, banco, deposito);
+
+        //             $('#monto').val('');
+        //             $("input:text[name=fecha_pago]").val('');
+        //             $('#ruta_comprobante').val('');
+        //             $("#folio_pago_retorno").val('');
 
 
-                    $("#add-pay").hide();
-                    $("#button-add-pay").hide();
+        //             $("#add-pay").hide();
+        //             $("#button-add-pay").hide();
                     
-                    $("#table-pays").show();
-                    $("#button-list-pays").show();
+        //             $("#table-pays").show();
+        //             $("#button-list-pays").show();
 
 
-                }
-              });//fin accion ajax
+        //         }
+        //       });//fin accion ajax
     });
 
     $("#cancel-pay").click(function(){
