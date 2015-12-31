@@ -49,7 +49,7 @@
                                 <td >
                                     <?php if($this->session->userdata('ID_PERFIL') == 6): ?>
                                     	<a href="<?=base_url('users/admin_users/editUser/'.$user->id_user)?>" class="tooltips tile-menu" data-original-title="Haga clic aquí para ver detalle del usuario">
-                                    	<i class="glyphicon glyphicon-search fa-2x"></i> 
+                                    	<i class="icon-search"></i> 
                                     <?php endif;?>
                                 	</a>
                                 </td>

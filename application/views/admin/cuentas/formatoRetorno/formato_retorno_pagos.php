@@ -21,6 +21,7 @@
                     <h1>Formato de retorno</h1>
                 </div><!-- /.page-header -->
             </div>
+           
            	<div class="col-xs-6">
 	            <div class="profile-user-info profile-user-info-striped ">
 					<div class="profile-info-row">
@@ -83,6 +84,7 @@
 						<div class="profile-info-name"> Retornar </div>
 
 						<div class="profile-info-value">
+							<input type="hidden" value="<?=round($monto_retornar,2)?>" id="monto_a_retornar">
 							<span class="editable" id="login">$<?=convierte_moneda($monto_retornar)?></span>
 						</div>
 					</div>
@@ -90,7 +92,7 @@
 			</div>
 
 			<div class="form-horizontal col-xs-12" style='margin-top:20px'>
-        		<div class="form-group">
+        		<div class="form-group" id="option-retorno">
         			<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Selecciona una forma </label>
 					<div class="col-sm-3">
 						<select id="forma-retorno" onchange="agrega_forma_retorno(this.value, '<?=$folio_cliente?>', <?=$info_deposito->id_deposito?>)" class="form-control">
@@ -108,13 +110,42 @@
 	        		<thead>
 		        		<tr>
 		        			<th>Forma de retorno</th>
+		        			<th>Monto</th>
 		        			<th>Edit</th>
 		        			<th>View</th>
 		        			<th>Delete</th>
 		        		</tr>
 	        		</thead>
 	        		<tbody id="lista-retornos">
+	        			<?php 
+	        				$total_retornado = 0;
+	        			 	foreach($lista_retornos as $movimiento):
+	        			 		$total_retornado = $total_retornado + $movimiento->monto;
+	        			 		$monto_mov = $movimiento->monto;
+	        			 		if($movimiento->tipo_retorno == 'spei'):
+	        			 		 	$txtMov = "Transferencia Spei a nombre de ".$movimiento->nombre;
+	        			 		elseif($movimiento->tipo_retorno == 'cheque'):
+	        			 			$txtMov = "Cheque a nombre de ".$movimiento->nombre;
+	        			 		else:
+	        			 			$txtMov = "Entrega en efectivo";
+	        			 		endif;
+	        			 	?>
+	        				<tr>
+	        					<td><?=$txtMov?></td>
+	        					<td>$<?=convierte_moneda($movimiento->monto)?></td>
+	        					<td></td>
+	        					<td></td>
+	        					<td></td>
+	        				</tr>	        				
+	        			<?php endforeach ?>
 	        		</tbody>
+	        		<tfoot>
+	        			<tr>
+	        				<th class="text-right">Total</th>
+	        				<th class="text-left" id="total_retornado">$<?=convierte_moneda($total_retornado)?> </th>
+	        				<th colspan='3'><input type="text" id="inputTotal_retornado" value = "<?=$total_retornado?>"> </th>
+	        			</tr>
+	        		</tfoot>
 	        	</table>
 	        </div>
 

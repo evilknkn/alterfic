@@ -37,6 +37,15 @@ class Formato_retorno_model extends CI_Model
 		return $query->result();
 	}
 
+	public function sum_montos_retorno($folio = null)
+	{
+		$this->db->select_sum('monto');
+		$this->db->from('ad_formato_retorno');
+		$this->db->where('folio_cliente', $folio);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
 	public function update_where_query($table,  $data_up, $array_where )
 	{
 		$this->db->where($array_where);
@@ -44,12 +53,14 @@ class Formato_retorno_model extends CI_Model
 		
 	}
 
-	public function get_like_query($table = null, $where_like = null)
+	public function get_like_query($table = null, $where_like = null, $array_where= null)
 	{
 		$this->db->from($table);
 		$this->db->like($where_like);
-		
-		return $this->db->count_all_results();
+		$this->db->where($array_where);
+		//return $this->db->count_all_results();
+		$query = $this->db->get();
+		return $query->result();
 	}
 
 	public function info_depto($id_deposito = null)
