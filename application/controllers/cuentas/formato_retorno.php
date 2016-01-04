@@ -28,11 +28,12 @@ class Formato_retorno extends CI_Controller
 	public function create($id_cliente = null)
 	{	
 		$this->load->model('users/clientes_model');
+		$this->load->model('tool/formato_retorno_model');
 		$db = $this->clientes_model;
+		$db2 = $this->formato_retorno_model;
 
 		$info = $db->datos_cliente(array('id_cliente' => $id_cliente));
 		
-
 		$data['menu'] 			= 'menu/menu_admin';
 		$data['body'] 			= 'admin/solicitudes/formatoRetorno/formato_retorno_pagos';
 		$data['id_cliente'] 	= $id_cliente;
@@ -40,10 +41,42 @@ class Formato_retorno extends CI_Controller
 		$data['folio_cliente']  = 'ANG-00001';
 		$data['comision_empresa']= number_format(0,2);
 		$data['sobrante']		= number_format(0,2);
+		$data['empresas'] 		= $db2->get_query('ad_catalogo_empresa',array('tipo_usuario'=>1), true);
 
 		$this->load->view('layer/layerout', $data);
 
 		//$seek_folio 			= $db->get_like_query('ad_folio_cliente', array('folio_cliente'=> $deposito->clave_folio), array("id_cliente" => $deposito->id_cliente, "id_deposito" => $id_deposito));
+	}
+
+	public function banco_empresa()
+	{	
+		$this->load->model('tool/formato_retorno_model');
+		$id_empresa = $this->input->post('id_empresa');
+		$db = $this->formato_retorno_model;
+
+		$data['bancos'] = $db->bancos_empresa($id_empresa);
+
+		return $this->output->set_content_type('application/json')->set_output(json_encode($data));
+	}
+
+	public function guardar_deposito()
+	{	
+		$this->load->model('tool/formato_retorno_model');
+		$this->load->helper('funciones_externas');
+
+		$db = $this->formato_retorno_model;
+
+		$data = array(	'id_empresa' 	=> $this->input->post('id_empresa'),
+						'id_banco' 		=> $this->input->post('id_banco'),
+						'monto' 		=> $this->input->post('monto'),
+						'fecha_deposito'=> formato_fecha_ddmmaaaa($this->input->post('fecha')),
+						'folio_cliente'	=> $this->input->post('folio_cliente'));
+
+		$db->insert_query('ad_formato_retorno_deposito', $data);
+
+		$response['success'] = 'true';
+
+		return $this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
 
 	public function deposito($id_deposito = null, $id_empresa = null , $id_banco = null)

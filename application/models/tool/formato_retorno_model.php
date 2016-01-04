@@ -15,11 +15,25 @@ class Formato_retorno_model extends CI_Model
 		return $query->row();
 	}
 
-	public function get_query($table, $array)
+	public function get_query($table, $array, $order)
 	{
 		$this->db->from($table);
 		$this->db->where($array);
+
+		if($order == true):
+			$this->db->order_by('nombre_empresa','asc');
+		endif;
 		$query = $this->db->get();
+
+		return $query->result();
+	}
+
+	public function get_data($table= null)
+	{
+		$this->db->from($table);
+		
+		$query = $this->db->get();
+
 		return $query->result();
 	}
 
@@ -81,6 +95,16 @@ class Formato_retorno_model extends CI_Model
 		
 		$query = $this->db->get();
 		return $query->row();
+	}
+
+	public function bancos_empresa($id_empresa = null)
+	{
+		$this->db->from('ad_bancos_empresa abe');
+		$this->db->join('ad_catalogo_bancos acb', 'acb.id_banco = abe.id_banco', 'inner');
+		$this->db->where('abe.id_empresa', $id_empresa);
+		$this->db->where('abe.status_cta', 1);
+		$query =  $this->db->get();
+		return $query->result();
 	}
 }
 /*
