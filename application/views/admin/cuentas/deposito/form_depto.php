@@ -40,7 +40,8 @@
 		<label class="control-label col-sm-4 col-xs-4">Folio</label>
 		<div class="col-sm-8 col-xs-8">
 			<div class="col-sm-4 col-xs-4">
-				<input type="text" class="form-control" name="folio_depto" value=" <?=set_value('folio_depto')?>" >
+				
+				<input type="text" class="form-control" name="folio_depto" value="<?=set_value('folio_depto')?>" placeholder="<?= $empresa->clave_cta.$empresa->clave_banco.'-' ?>" >
 			</div>
 			<div class="col-sm-12 col-xs-12">&nbsp;</div>
 	        <div class="col-sm-4 col-xs-4"><?=form_error('folio_depto')?></div>

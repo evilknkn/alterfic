@@ -41,19 +41,26 @@ class Corps extends CI_Controller
 	{
 
 		$this->load->model('catalogo/empresas_model');
+		$this->load->model('catalogo/catalogo_banco_model', 'db_banco');
 		$this->load->helper('funciones_externas_helper');
 
 		$this->form_validation->set_rules('nombre_empresa', 'nombre de empresa', 'required');
 		$this->form_validation->set_rules('tipo_cuenta', 'tipo de cuenta', 'required');
 		if($this->input->post('tipo_cuenta')==2):
 			$this->form_validation->set_rules('clave_cuenta', 'clave de cuenta para folio', 'required');
+		else:
+			$this->form_validation->set_rules('clave_movimiento', 'clave de movimiento', 'required');
 		endif;	
 		$this->form_validation->set_message('required', 'El campo %s es requerido');
 	
 		if($this->form_validation->run()):
+			$where_array = array('id_banco' => $this->input->post('id_banco') ) ;
+			$banco_detail = $this->db_banco->datos_banco($where_array);
+			//print_r($banco_detail);exit;
+
 			$array = array('nombre_empresa' 	=> 	$this->input->post('nombre_empresa'),
 							'tipo_usuario'		=> 	$this->input->post('tipo_cuenta'),
-							'clave_cta'			=>	$this->input->post('clave_cuenta'),
+							'clave_cta'			=>	($this->input->post('tipo_cuenta')==2)? $this->input->post('clave_cuenta'): strtoupper($this->input->post('clave_movimiento')),
 							'clabe_bancaria' 	=>	$this->input->post('clabe'),
 								'no_cuenta'		=> 	$this->input->post('no_cuenta'),
 								'estatus'		=>	1);
@@ -61,7 +68,9 @@ class Corps extends CI_Controller
 			$req = $this->empresas_model->insert_empresa($array);
 
 			$datos = array('id_banco' 		=>	$this->input->post('id_banco'),
-							'id_empresa'	=>	$req);
+							'id_empresa'	=>	$req,
+							'clave'			=> ($this->input->post('tipo_cuenta')==1)? strtoupper($this->input->post('clave_movimiento').$banco_detail->clave_banco) :'',
+							'status_cta' 	=> 1);
 
 			$this->empresas_model->create_vinculo($datos);
 
@@ -81,13 +90,17 @@ class Corps extends CI_Controller
 
 
 	}
-
 	public function add_banco()
 	{
 		$this->load->model('catalogo/empresas_model');
 
+		$filtro = array('id_empresa' => $this->input->post('id_empresa'));
+		$detail_empresa = $this->empresas_model->empresa($filtro);
+
 		$datos = array('id_banco' 		=>	$this->input->post('id_banco'),
-						'id_empresa'	=>	$this->input->post('id_empresa'));
+						'id_empresa'	=>	$this->input->post('id_empresa'),
+						'clave' 		=>  $detail_empresa->clave_cta,
+						'status_cta' 	=> 1);
 
 		$this->empresas_model->create_vinculo($datos);
 		

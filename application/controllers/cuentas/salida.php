@@ -23,7 +23,7 @@ class Salida extends CI_Controller
 
 		$this->form_validation->set_rules('fecha_salida', 'fecha de salida', 'required|callback_fecha_limite');
 		$this->form_validation->set_rules('monto_salida', 'monto de salida', 'required');
-		$this->form_validation->set_rules('folio_salida', 'folio de salida', 'required|trim|callback_valida_folio');
+		$this->form_validation->set_rules('folio_salida', 'folio de salida', 'required|trim|callback_unique_folio');
 		$this->form_validation->set_rules('detalle_salida', 'detalle de salida', 'required');
 
 		if($this->form_validation->run()):
@@ -345,6 +345,27 @@ class Salida extends CI_Controller
 		endif;
 	}
 	/// Callback
+
+	function unique_folio($folio)
+	{	
+		$this->load->helper('search');
+		$this->load->model('tool/eloquent_model','search_db');
+		$db = $this->search_db;
+
+		$id_empresa = $this->uri->segment(4);
+		$id_banco = $this->uri->segment(5);
+
+		$array_search = array('db' => $db, 'folio' => trim($folio),'id_empresa' => $id_empresa, 'id_banco'=> $id_banco );
+		//return false;
+		$search_folio = clave_factory($array_search);
+
+		if($search_folio['success'] == 'false' ):
+			$this->form_validation->set_message('unique_folio', $search_folio['fail_txt']);
+            return FALSE;
+		else:
+			return true;
+		 endif;
+	}
 
 	function valida_folio($folio)
 	{	

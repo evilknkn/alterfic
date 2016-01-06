@@ -136,6 +136,102 @@ class Movimientos_internos_express extends CI_Controller
     	endif;
     }
 
+    public function create_movimiento_express()
+    {
+    	$this->load->model('cuentas/movimientos_internos_model', 'movimientos_model');
+    	$this->load->model('catalogo/empresas_model');
+    	$this->load->model('cuentas/pendiente_retorno_model');
+    	$db = $this->pendiente_retorno_model;
+
+    	$this->form_validation->set_rules('monto', 'fecha', 'required');
+		$this->form_validation->set_rules('folio_entrada', 'folio de entrada', 'required|callback_unique_folio');
+		$this->form_validation->set_rules('folio_salida', 'folio de salida', 'required|callback_unique_folio');
+    	
+    	if($this->form_validation->run()):
+    		
+    		$folio_salida 	= $this->input->post('folio_salida');
+    		$folio_entrada 	= $this->input->post('folio_entrada');
+    		$monto 			= $this->input->post('monto');
+
+    		$explode_salida 	=  explode('-', $folio_salida);
+    		$explode_entrada 	=  explode('-', $folio_entrada);
+    		
+    		$info_salida 	=  $db->row_quey('ad_bancos_empresa' , array('clave' => $explode_salida[0]) );
+    		$info_entrada 	= $db->row_quey('ad_bancos_empresa' , array('clave' => $explode_entrada[0]) );
+
+    		$empresa_salida 	= $info_salida->id_empresa;
+    		$banco_salida		= $info_salida ->id_banco;
+
+    		$empresa_entrada 	= $info_entrada->id_empresa;
+    		$banco_entrada 		= $info_entrada ->id_banco;
+
+    		$datos = array('id_empresa' 		=> $empresa_salida,	
+							'id_banco' 			=> $banco_salida,
+							'empresa_destino' 	=> $empresa_entrada,
+							'banco_destino'		=> $banco_entrada,
+							'monto' 			=> $monto,
+							'fecha_mov' 		=> date('Y-m-d'),
+							'folio_entrada' 	=> $folio_entrada,
+							'folio_salida' 		=> $folio_salida);
+
+			$movimiento_id = $this->movimientos_model->insert_movimiento($datos);
+
+			$userData = array('id_movimiento' 	=> $movimiento_id,
+							  'id_user' 		=>$this->session->userdata('ID_USER'),
+							  'username' 		=>$this->session->userdata('USERNAME'),
+							  'fecha' 			=> date('Y-m-d'));
+
+			$this->movimientos_model->insertMovimiento($userData);
+
+			$array= array(	'fecha_salida' 	=>	date('Y-m-d'), 
+							'monto_salida'	=>	$monto,
+							'folio_salida' 	=>	$folio_salida,
+							'detalle_salida'=>	'movimiento interno');
+
+			$reg = $this->movimientos_model->insert_salida($array);
+
+			$datos = array(	'id_empresa'		=>	$empresa_salida,
+							'id_banco'			=>	$banco_salida,
+							'id_movimiento'		=> 	$reg,
+							'fecha_movimiento'	=> 	date('Y-m-d'),
+							'folio_mov'			=>	$folio_salida,
+							'tipo_movimiento'	=>	'mov_int');
+
+			$this->movimientos_model->insert_movimiento_detalle($datos);
+
+			$array = array('fecha_deposito' =>  date('Y-m-d'),
+							'monto_deposito' => $monto,
+							'folio_depto'	=> 	$folio_entrada);
+
+			$reg = $this->movimientos_model->registra_depto($array);
+
+			$datos_depto = array(	'id_empresa'=>	$empresa_entrada,
+							'id_banco'			=>	$banco_entrada,
+							'id_movimiento'		=> 	$reg,
+							'fecha_movimiento'	=> 	date('Y-m-d'),
+							'folio_mov'			=>	$folio_entrada,
+							'tipo_movimiento'	=>	'deposito_interno');
+
+			$this->movimientos_model->insert_movimiento_detalle($datos_depto);
+
+
+			$this->session->set_flashdata('success', 'Movimiento agregado correctamente');
+			redirect(base_url('cuentas/depositos'));
+    	else:
+    		$data['menu'] = 'menu/menu_admin';
+	    	$data['body'] = 'admin/cuentas/movimientos/form_movimiento_express';
+	    	//$data['nombre_empresa'] = $empresa_data->nombre_empresa;
+	    	
+
+	    	$where_empresa = array('estatus' => 1, 'tipo_usuario' => 1 );
+			$data['cat_empresas'] = $db->get_query('ad_catalogo_empresa', $where_empresa);
+			$data['cat_bancos'] = $db->get_all_query('ad_catalogo_bancos');
+
+	    	$this->load->view('layer/layerout', $data);
+    	endif;
+
+    }
+
     public function catalogo_claves()
 	{
 		$this->load->model('cuentas/pendiente_retorno_model');
@@ -163,6 +259,12 @@ class Movimientos_internos_express extends CI_Controller
 		if( count($explode_folio) < 2)
 		{
 			$this->form_validation->set_message('unique_folio', 'Este folio es incorrecto, verifique su formato.');
+            return FALSE;
+		}
+
+		if(strlen($explode_folio[1]) != 5 )
+		{
+			$this->form_validation->set_message('unique_folio', 'El folio debe contener 5 dígitos.');
             return FALSE;
 		}
 		

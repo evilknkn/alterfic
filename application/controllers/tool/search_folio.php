@@ -15,9 +15,15 @@ class Search_folio extends  CI_Controller
 		//print_r($row);exit;
 		if(count($row) > 0 ):
 			$type_mov 			= indefity_mov($row->tipo_movimiento);
+
 			$data['empresa']	= indetify_factory($db, $row->id_empresa);
 			$data['banco'] 		= indetify_bank($db, $row->id_banco);
-			$data['message'] 	= 'El folio '.$folio.' es un movimiento '.$type_mov.' en la empresa '.$data['empresa'].' en el banco '.$data['banco'] ;
+			if($row->tipo_movimiento == 'deposito_interno'):
+				$detalle = $db->detailMovimientoInterno($folio);
+				$data['message'] 	= 'El folio '.$folio.' es un movimiento '.$type_mov.' en la empresa '.$data['empresa'].' en el banco '.$data['banco'].' desde la empresa '.$detalle->nombre_empresa.' en el banco '.$detalle->nombre_banco.' por un monto de $'.number_format($detalle->monto,2).' con fecha '. $row->fecha_movimiento ;
+			else:
+				$data['message'] 	= 'El folio '.$folio.' es un movimiento '.$type_mov.' en la empresa '.$data['empresa'].' en el banco '.$data['banco'].' con fecha '. $row->fecha_movimiento ;
+			endif;
 			$data['success'] 	= 'success';
 			$data['info'] 		= $row->tipo_movimiento;
 		else:

@@ -20,6 +20,7 @@ class Login extends CI_Controller {
 
             $user= $this->login_model->datos_usuario($filtro);
 
+            
             $array= array(  'ID_USER'       =>  $user->id_user,
                             'USERNAME'      =>  $user->username,
                             'ID_PERFIL'     =>  $user->id_perfil,
@@ -49,7 +50,9 @@ class Login extends CI_Controller {
                     break;
                 
                 default:
-                    # code...
+                     $this->session->set_userdata('consulta', 'active');
+                      $this->session->set_userdata(array('base_perfil' => 'admin/dashboard'));
+                        redirect(base_url('admin/dashboard'));
                     break;
             }
 

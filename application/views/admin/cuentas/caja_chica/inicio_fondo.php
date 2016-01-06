@@ -26,8 +26,10 @@
                     <div class="alert alert-success text-success text-center col-xs-6 col-sm-6"> <?php echo $this->session->flashdata('success');?></div>
                 </div>
                 <?php endif;?>
+                <?php if($this->session->userdata('ID_PERFIL') != 5): ?>
                 <a href="<?=base_url('cuentas/caja_chica/insert_deposito/'.$id_empresa.'/'.$id_banco)?>" style="margin-left:15px" class="btn btn-primary"> <i class="fa fa-plus"></i> Agregar depósito</a>
                 <a href="<?=base_url('cuentas/salida/insertar_salida_caja/'.$id_empresa.'/'.$id_banco)?>" style="margin-left:15px" class="btn btn-primary"> <i class="fa fa-plus"></i> Agregar Salida</a>
+                <?php endif;?>
                 <a data-toggle="modal" href="#modalSaldosPorMes" class="btn btn-info" style="margin-left:15px"><i class="fa fa-search"></i>Consultar saldo</a>
                 <br><br>
                 <div class="row">
@@ -119,14 +121,18 @@
                                         <td class="text-center"><?=$movimiento->folio_mov?></td>
                                         <td></td>
                                         <td class="text-center">
+                                            <?php if($this->session->userdata('ID_PERFIL') != 5): ?>
                                             <a href="<?=base_url('cuentas/deposito_persona/editar_deposito/'.$id_empresa.'/'.$id_banco.'/'.$deposito->id_deposito)?>" >
                                                 <i class="fa fa-edit fa-lg"></i>
                                             </a>
+                                        <?php endif;?>
                                         </td>
                                         <td class="text-center">
+                                            <?php if($this->session->userdata('ID_PERFIL') != 5): ?>
                                             <a href="<?=base_url('cuentas/mov_delete/deposito_persona/'.$id_empresa.'/'.$id_banco.'/'.$deposito->id_deposito)?>" onclick="return confirm('¿Esta seguro que quiere eliminar el depósito?');" data-toggle-title="Haga clic aquí para borrar depósito">
                                                 <i class="fa fa-trash fa-lg"></i>
                                             </a>
+                                        <?php endif;?>
                                         </td>
                                    </tr>
                             <?php }else{
@@ -140,14 +146,18 @@
                                         <td class="text-center"><?=$movimiento->folio_mov?></td>
                                         <td><?=$salida->detalle_salida?></td>
                                         <td class="text-center">
+                                            <?php if($this->session->userdata('ID_PERFIL') != 5): ?>
                                             <a href="<?=base_url('cuentas/salida/editar_salida_persona/'.$id_empresa.'/'.$id_banco.'/'.$salida->id_salida)?>"  data-toggle-title="Haga clic aquí para borrar depósito">
                                                 <i class="fa fa-edit fa-lg"></i>
                                             </a>
+                                        <?php endif;?>
                                         </td>
                                         <td class="text-center">
+                                            <?php if($this->session->userdata('ID_PERFIL') != 5): ?>
                                             <a href="<?=base_url('cuentas/mov_delete/salida_persona/'.$id_empresa.'/'.$id_banco.'/'.$movimiento->id_detalle.'/'.$salida->id_salida)?>" onclick="return confirm('¿Esta seguro que quiere eliminar esta salida?');" data-toggle-title="Haga clic aquí para borrar depósito">
                                                 <i class="fa fa-trash fa-lg"></i>
                                             </a>
+                                        <?php endif;?>
                                         </td>                                
                                    </tr>
                             <?php }  ?>

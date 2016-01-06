@@ -83,7 +83,7 @@ class Depositos extends CI_controller
 		$this->load->model('cuentas/retorno_model');
 		$this->load->helper('funciones_externas');
 
-		$empresa = $this->depositos_model->empresa(array('ace.id_empresa' => $id_empresa));
+		$empresa = $this->depositos_model->empresa(array('ace.id_empresa' => $id_empresa, 'abe.id_banco' => $banco ));
 
 		$this->form_validation->set_rules('fecha_depto' ,'fecha del depoósito', 'required|callback_fecha_limite');
 		$this->form_validation->set_rules('monto_depto' ,'monto del depoósito', 'required');
@@ -242,7 +242,7 @@ class Depositos extends CI_controller
 		$this->form_validation->set_rules('empresa_retorno' ,'empresa de retorno', 'required');
 		$this->form_validation->set_rules('id_banco' ,'banco', 'required');
 		$this->form_validation->set_rules('fecha_pago' ,'fecha de pago', 'required|callback_fecha_pago');
-		$this->form_validation->set_rules('ruta_comprobante' ,'comprobante', 'required');
+		//$this->form_validation->set_rules('ruta_comprobante' ,'comprobante', 'required');
 
 		$this->form_validation->set_message('required', 'El campo %s es requerido');
 
@@ -338,6 +338,13 @@ class Depositos extends CI_controller
 			$fecha = formato_fecha_ddmmaaaa($pagos[$i]->fecha_pago);
 
 			$total = $total + $pagos[$i]->monto_pago;
+			/**********************************************************/
+			/* Valida si es perfil uno no puede borrar el movimiento */
+			/********************************************************/
+			
+			$link_delete = "<a href='".base_url('cuentas/mov_delete/pago/'.$this->input->post('id_empresa').'/'.$this->input->post('id_banco').'/'.$pagos[$i]->id_pago)."'><i class='fa fa-trash fa-lg'></i></a>";
+			$validate_perfil = ($this->session->userdata('ID_PERFIL') == 1 or $this->session->userdata('ID_PERFIL') == 5  )? '' : $link_delete; 
+			
 			echo "<tr>
 				<td class='text-center'> Pago ".($i+1)."</td>
 				<td class='text-center'>".$pago."</td>
@@ -349,9 +356,7 @@ class Depositos extends CI_controller
 				</a>
 				</td>
 				<td class='text-center'>
-					<a href='".base_url('cuentas/mov_delete/pago/'.$this->input->post('id_empresa').'/'.$this->input->post('id_banco').'/'.$pagos[$i]->id_pago)."'>
-						<i class='fa fa-trash fa-lg'></i>
-					</a>
+					".$validate_perfil."
 				</td>
 				
 			</tr>";
@@ -472,16 +477,23 @@ class Depositos extends CI_controller
 
 	function unique_folio($folio)
 	{	
-		$this->load->model('validate_model');
+		$this->load->helper('search');
+		$this->load->model('tool/eloquent_model','search_db');
+		$db = $this->search_db;
 
-		$search_folio = $this->validate_model->unique_folio(trim($folio));
+		$id_empresa = $this->uri->segment(4);
+		$id_banco = $this->uri->segment(5);
 
-		if(count($search_folio) > 0 ):
-			$this->form_validation->set_message('unique_folio', 'Este folio ya  esta registrado.');
+		$array_search = array('db' => $db, 'folio' => trim($folio),'id_empresa' => $id_empresa, 'id_banco'=> $id_banco );
+		//return false;
+		$search_folio = clave_factory($array_search);
+
+		if($search_folio['success'] == 'false' ):
+			$this->form_validation->set_message('unique_folio', $search_folio['fail_txt']);
             return FALSE;
 		else:
 			return true;
-		endif;
+		 endif;
 	}
 
 	function unique_folio_other($folio)

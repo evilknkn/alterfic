@@ -64,17 +64,19 @@
 						<?php endif;?>
 					</table>
 					<br>
-					<div class="col-sm-12 col-xs-12">
-						<?=form_open('',array('class' => 'form-horizontal'))?>
-							<label class="col-sm-4 col-xs-4 control-label no-padding-rigth">Nombre del banco </label>
-							<div class="col-sm-8 col-xs-8">
+					<?php if($this->session->userdata('ID_PERFIL') == 6): ?>
+						<div class="col-sm-12 col-xs-12">
+							<?=form_open('',array('class' => 'form-horizontal'))?>
+								<label class="col-sm-4 col-xs-4 control-label no-padding-rigth">Nombre del banco </label>
 								<div class="col-sm-8 col-xs-8">
-									<input type="text" class="input-xlarge" required name="nombre_banco"> 
+									<div class="col-sm-8 col-xs-8">
+										<input type="text" class="input-xlarge" required name="nombre_banco"> 
+									</div>
+									<div class="col-sm-4 col-xs-4"><button class="btn btn-primary"><i class="icon-plus"></i>Agregar</button></div>
 								</div>
-								<div class="col-sm-4 col-xs-4"><button class="btn btn-primary"><i class="icon-plus"></i>Agregar</button></div>
-							</div>
-						<?=form_close();?>
-					</div>
+							<?=form_close();?>
+						</div>
+					<?php endif?>
 				</div>
 			</div>
 			<script src="<?php echo base_url()?>assets/js/jquery.dataTables.min.js"></script>

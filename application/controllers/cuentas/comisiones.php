@@ -144,6 +144,56 @@ class Comisiones extends CI_Controller
 		endforeach;
 	}
 
+
+	public function clientes_pagos()
+	{
+		$this->load->model('users/clientes_model');
+		$this->load->model('cuentas/comision_model');
+		$this->load->helper('funciones_externas');
+		$this->load->helper('cuentas');
+
+		$db = $this->clientes_model;
+
+		$data['menu'] 			= 'menu/menu_admin';
+		$data['body'] 			= 'admin/cuentas/comision/pagos/lista_clientes';
+		$data['list_clientes'] 	= $db->lista_clientes();
+		$data['db_com'] 		= $this->comision_model;
+		
+		
+		$this->load->view('layer/layerout', $data);
+	}
+
+	public function detalle_pagos($id_cliente = null)
+	{
+		$this->load->model('users/clientes_model');	
+		$this->load->model('cuentas/comision_model');
+		$this->load->helper('funciones_externas');
+		$this->load->helper('cuentas');
+
+		$db = $this->comision_model;
+
+		$data['menu'] 			= 'menu/menu_admin';
+		$data['body'] 			= 'admin/cuentas/comision/pagos/lista_depositos_asignados';
+		$data['list_deopsito'] 	= $db->lista_depositos_asignados($id_cliente);
+		
+		$this->load->view('layer/layerout', $data);
+	}
+
+	public function pagos_deposito()
+	{
+		$this->load->model('users/clientes_model');	
+		$this->load->model('cuentas/comision_model');
+		$this->load->helper('funciones_externas');
+		$this->load->helper('cuentas');
+
+		$deposito_id = $this->input->post('deposito_id');
+
+		$data['lista_pagos']=$this->comision_model->lista_pagos_deposito($deposito_id);
+		print_r($data['lista_pagos']);exit;
+		return json_decode($data);
+
+	}
+
 	#### callbacks de validaciones
 	function unique_folio($folio)
 	{	

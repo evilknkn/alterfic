@@ -28,7 +28,9 @@
                 <?php endif;?>
 
                 <div class="row">
-                    <a href="<?=base_url('cuentas/comisiones/retiro_comision')?>" class="btn btn-info">Agregar retiro</a>
+                    <?php if($this->session->userdata('ID_PERFIL') != 5): ?>
+                        <a href="<?=base_url('cuentas/comisiones/retiro_comision')?>" class="btn btn-info">Agregar retiro</a>
+                    <?php endif;?>
                     <br><br>
                     <table id="sample-table-2" class="table table-striped table-bordered table-hover">
                         <thead>
@@ -52,9 +54,11 @@
                                     <td><?=$retiro->folio_mov?></td>
                                     <td>$<?=convierte_moneda($retiro->monto_salida)?></td>
                                     <td class="text-center">
+                                        <?php if($this->session->userdata('ID_PERFIL') != 5): ?>
                                         <a href="<?=base_url('comisiones/editar_retiro/'.$retiro->id_detalle)?>">
                                             <i class="fa fa-edit fa-2x"></i>
                                         </a>
+                                    <?php endif;?>
                                     </td>
                                 </tr>
                             <?php 

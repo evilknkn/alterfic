@@ -19,7 +19,7 @@ class Dashboard extends CI_Controller
 		$this->load->model('cuentas/comision_model');
 		$this->load->helper('funciones_externas');
 		$this->load->helper('cuentas');
-
+		//print_r($this->session->all_userdata());exit;
 		if($this->session->userdata('consulta')=='active'):
 			/*$depositos = $this->resumen_model->total_depositos();
 			//lista de empresas

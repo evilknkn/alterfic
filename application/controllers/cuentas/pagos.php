@@ -353,10 +353,15 @@ class Pagos extends CI_Controller
 
      	//echo "este es el folo enviado en post ".$folio_form;exit;
 
-     	if($empresa_retorno == 15 )
-     	{
-     		$empresa_retorno 	= 15;
-     		$banco_retorno 		= 6;
+     	if($empresa_retorno == 15  or $empresa_retorno == 47)
+     	{	
+     		if($empresa_retorno == 15):
+		 		$empresa_retorno 	= 15;
+		 		$banco_retorno 		= 6;
+		 	else:
+		 		$empresa_retorno 	= 47;
+		 		$banco_retorno 		= 1;
+		 	endif;
      	}else{
      		$empresa_retorno 	= $empresa_retorno;
      		$banco_retorno 		= $banco_retorno;
@@ -372,6 +377,10 @@ class Pagos extends CI_Controller
 			if($empresa_retorno == 15){
 				$folio_ant = $this->depositos_model->numero_folio('EFE');
 				$folio_mov = generar_folio('EFE', ($folio_ant+1) );
+			}else if($empresa_retorno == 47){
+				$folio_ant = $this->depositos_model->numero_folio('AAI');
+				$folio_mov = generar_folio('AAI', ($folio_ant+1) );
+				
 			}else{
 				$folio_mov = $folio_form;
 			}
@@ -453,17 +462,50 @@ class Pagos extends CI_Controller
 	{
 		$this->load->model('cuentas/Pendiente_retorno_model', 'db_retorno');
 		$db = $this->db_retorno;
+		$post_folio = $this->input->post('folio_pago') ;
+		
 
-		$folio= $db->row_quey('ad_detalle_cuenta', array('folio_mov'=>$this->input->post('folio_pago') ));
-
-		if(count($folio) > 0){
-			$data['success'] = false;
+		$detail_folio = explode('-', $post_folio);
+		if(count($detail_folio) ==2)
+		{	
+			if(strlen($detail_folio[1]) != 5 ){
+				$data['success'] = false;
+				$data['fail_txt'] = '*El folio debe contener 5 dígitos';
+				return $this->output->set_content_type('application/json')->set_status_header(200)->set_output(json_encode($data)); 
+			}else{
+				
+				$where_array = array('id_empresa' => $this->input->post('empresa_retorno'), 'id_banco' => $this->input->post('banco_retorno'), 'clave' => $detail_folio[0] );
+				$clave_cta = $db->row_quey('ad_bancos_empresa', $where_array );
+				//print_r($clave_cta);
+				if(count($clave_cta) == 0)
+				{
+					$data['success'] = false;
+					$data['fail_txt'] = '*La clave de empresa es incorrecta';
+					return $this->output->set_content_type('application/json')->set_status_header(200)->set_output(json_encode($data)); 
+				}else{
+					$folio= $db->row_quey('ad_detalle_cuenta', array('folio_mov'=>$post_folio ));
+					if(count($folio) > 0){
+						$data['success'] = false;
+						$data['fail_txt'] = '*Este folio ya fue registrado';
+						return $this->output->set_content_type('application/json')->set_status_header(200)->set_output(json_encode($data)); 
+					}else{
+						$data['success'] = true;
+						return $this->output->set_content_type('application/json')->set_status_header(200)->set_output(json_encode($data)); 
+					}
+				}
+				// print_r($clave_cta)
+			}
+			
 		}else{
-			$data['success'] = true;
+			$data['success'] = false;
+			$data['fail_txt'] = '*Este folio no es válido, verifique el formato';
+			return $this->output->set_content_type('application/json')->set_status_header(200)->set_output(json_encode($data)); 
 		}
+		//print_r($detail_folio);
+		
 
 
-		return $this->output->set_content_type('application/json')->set_status_header(200)->set_output(json_encode($data)); 
+//		return $this->output->set_content_type('application/json')->set_status_header(200)->set_output(json_encode($data)); 
 	}
 
 	public function empresas()

@@ -19,7 +19,7 @@ class Generate_key extends  CI_Controller
 			echo "clave:".$clave.'<br>' ;
 
 			$data_up = array('clave_cta' => $clave);
-			$db->update_where_query('ad_catalogo_empresa', $data_up, array('id_empresa' => $factory->id_empresa));
+			//$db->update_where_query('ad_catalogo_empresa', $data_up, array('id_empresa' => $factory->id_empresa));
 		}
 		
 
