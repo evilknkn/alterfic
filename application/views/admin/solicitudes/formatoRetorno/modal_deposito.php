@@ -109,7 +109,7 @@
                     $('#lista-depositos').append(html);
                     $('#th-total-depositos').html(data.total_depositos);
                     $('#comision-empresa').html(data.comision);
-                    $('#sobrante-agente').html(data.total_depositos);
+                    $('#sobrante-agente').html(data.total_depositos_sobrante);
 
                     $('#empresa').val('');
                     $('#bancos').val('');

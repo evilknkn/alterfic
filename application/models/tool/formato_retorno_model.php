@@ -60,6 +60,15 @@ class Formato_retorno_model extends CI_Model
 		return $query->result();
 	}
 
+	public function sum_montos_formato($folio = null)
+	{
+		$this->db->select_sum('monto');
+		$this->db->from('ad_formato_retorno');
+		$this->db->where('folio_cliente', $folio);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
 	public function update_where_query($table,  $data_up, $array_where )
 	{
 		$this->db->where($array_where);

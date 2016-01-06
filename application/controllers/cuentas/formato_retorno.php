@@ -79,58 +79,20 @@ class Formato_retorno extends CI_Controller
 		$db->insert_query('ad_formato_retorno_deposito', $data);
 
 		$total_depositos = $db->sum_montos_retorno($folio_cliente);
-		$response['comision'] = number_format( ($total_depositos[0]->monto / 1.16) * $comison_cliente, 2);
-		$response['total_depositos'] = number_format($total_depositos[0]->monto, 2);
+		$total_retornos  = $db->sum_montos_formato($folio_cliente);
+		$monto_deposito = round($total_depositos[0]->monto, 2);
+		$monto_retorno  = round($total_retornos[0]->monto, 2);
+		$comision_empresa= round(($total_depositos[0]->monto / 1.16) * $comison_cliente, 2);
+
+		//print_r($comision_empresa);exit;
+
+		$response['comision'] = number_format($comision_empresa,2);
+		$response['total_depositos_sobrante'] = number_format((($monto_deposito - $monto_retorno) - $comision_empresa), 2) ;
+		$response['total_depositos'] = number_format($monto_deposito,2);
+
 		$response['success'] = 'true';
 
-
-
 		return $this->output->set_content_type('application/json')->set_output(json_encode($response));
-	}
-
-	public function deposito($id_deposito = null, $id_empresa = null , $id_banco = null)
-	{	
-		$this->load->model('tool/formato_retorno_model');	
-		$this->load->model('users/clientes_model');
-		$this->load->helper('funciones_externas');
-		$this->load->helper('cuentas');
-		$this->load->helper('utilerias');
-
-		$db = $this->formato_retorno_model;
-
-
-		$data['menu'] 			= 'menu/menu_admin';
-		$data['body'] 			= 'admin/cuentas/formatoRetorno/formato_retorno_pagos';
-
-		$deposito 				= $db->info_depto($id_deposito);
-		$seek_folio 			= $db->get_like_query('ad_folio_cliente', array('folio_cliente'=> $deposito->clave_folio), array("id_cliente" => $deposito->id_cliente, "id_deposito" => $id_deposito));
-		
-		$data['empresa'] 		= $db->row_quey('ad_catalogo_empresa', array('id_empresa'=> $id_empresa));
-		$data['banco'] 			= $db->row_quey('ad_catalogo_bancos', array('id_banco'=> $id_banco));
-		
-		$data['info_deposito'] 	= $deposito;
-		$data['comision_cliente']= genera_comision($this->clientes_model, $deposito->id_cliente, $deposito->monto_deposito);
-		
-
-		if(count($seek_folio) == 0):
-			$data['folio_cliente']  = generar_folio($deposito->clave_folio, (count($seek_folio) + 1));	
-			$db->insert_query('ad_folio_cliente', array('id_cliente'=>$deposito->id_cliente, 'id_deposito' =>$id_deposito, 'folio_cliente' => $data['folio_cliente']));
-			$data['lista_retornos']=array();
-			$data['monto_retornar'] =	$deposito->monto_deposito - $data['comision_cliente'];
-		else:
-			$data['folio_cliente']  = $seek_folio[0]->folio_cliente;
-
-			$data['lista_retornos'] = $db->get_query('ad_formato_retorno', array('folio_cliente'=>$seek_folio[0]->folio_cliente ));	
-			$data['monto_retornar'] = $deposito->monto_deposito - $data['comision_cliente'];
-		endif;
-		
-		
-		
-		//$data['list_deopsito'] 	= $db->lista_depositos_asignados($id_cliente);
-
-		
-		$this->load->view('layer/layerout', $data);
-	
 	}
 
 	public function keepDataForma()
@@ -139,39 +101,47 @@ class Formato_retorno extends CI_Controller
 		$this->load->model('users/clientes_model');
 		$db = $this->formato_retorno_model;
 
-		$total_retornado 	= $this->input->post('total_retornado');
-		$monto_retornar 	= $this->input->post('monto_retornar');
+		$id_cliente 		= $this->input->post('id_cliente');
+		$folio_cliente 		= $this->input->post('folio_cliente');
+		$tipo_retorno 		= $this->input->post('tipo_retorno');
+		$nombre_cheque 		= $this->input->post('nombre');
 		$monto 				= $this->input->post('monto');
+		$folio_cheque 		= $this->input->post('parametro');
+		$comison_cliente = $this->input->post('comision_cliente');
 
-		$valida_monto = ($total_retornado + $monto);
+		$total_depositos = $db->sum_montos_retorno($folio_cliente);
+		$total_retornos  = $db->sum_montos_formato($folio_cliente);
 
-		if($valida_monto > $monto_retornar)
+		$monto_deposito = round($total_depositos[0]->monto, 2);
+		$monto_retorno  = round($total_retornos[0]->monto, 2) + $monto;
+		$comision_empresa= round(($total_depositos[0]->monto / 1.16) * $comison_cliente, 2);
+
+		if($monto_retorno > $monto_deposito)
 		{
 			$data['success'] = 'false';
-			$data['txtAlert']= 'El monto ingresado es mayor al monto a retornar verifique el monto por favor';
+			$data['txtAlert']= 'El monto ingresado es mayor al monto a retornar verifique que sea correcta la cifra';
 
 		}else{
-			$data = array('id_cliente' 	=> $this->input->post('id_cliente'),
+			$data_insert = array('id_cliente' 	=> $this->input->post('id_cliente'),
 					'folio_cliente' => $this->input->post('folio_cliente'),
-					'id_deposito' 	=> $this->input->post('id_deposito'),
 					'tipo_retorno' 	=> $this->input->post('tipo_retorno'),
 					'nombre' 		=> $this->input->post('nombre'), 
 					'monto'			=> $this->input->post('monto'),
 					'parametro' 	=> $this->input->post('parametro'));
 
-			$reg_id = $db->insert_query('ad_formato_retorno', $data);
-
-			$suma_montos = $db->sum_montos_retorno($this->input->post('folio_cliente'));
+			$reg_id = $db->insert_query('ad_formato_retorno', $data_insert);
 			
-			$suma_movimientos = $db->get_query('ad_formato_retorno' ,array('folio_cliente'=>$this->input->post('folio_cliente')));
-					
+			$total_retornos_gral  = $db->sum_montos_formato($folio_cliente);
+
 			$data['success'] = 'true';
 			$data['forma_id'] = $reg_id;
-			$data['total_monto_format'] = number_format($suma_montos[0]->monto,2);
-			$data['total_monto'] 		= $suma_montos[0]->monto;
-			$data['total_movimientos'] 	= count($suma_movimientos);
+
+			$data['total_depositos_sobrante'] = number_format((($monto_deposito - $monto_retorno) - $comision_empresa), 2) ;
 			
+			//$data['total_depositos'] = number_format($monto_deposito - round($total_retornos_gral[0]->monto,2), 2) ;
+			$data['total_formato'] 	= number_format($total_retornos_gral[0]->monto,2);
+
 		}
-		echo json_encode($data);
+		return $this->output->set_content_type('application/json')->set_output(json_encode($data));
 	}
 }

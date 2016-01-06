@@ -150,13 +150,15 @@
 												<tr>
 													<th>Tipo de retorno</th>
 													<th>Monto</th>
+													<th>Editar</th>
+													<th>Borrar</th>
 													<th class="hidden-480">Status</th>
 												</tr>
 											</thead>
-											<tbody></tbody>
+											<tbody id="lista-retornos"></tbody>
 											<tfoot>
 												<th class="text-right">Total</th>
-												<th>$0.00</th>
+												<th>$<label id="total-formato-retorno">0.00</label></th>
 											</tfoot>
 										</table> 
 									</div>
