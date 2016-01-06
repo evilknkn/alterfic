@@ -38,6 +38,7 @@ class Formato_retorno extends CI_Controller
 		$data['body'] 			= 'admin/solicitudes/formatoRetorno/formato_retorno_pagos';
 		$data['id_cliente'] 	= $id_cliente;
 		$data['nombre_cliente'] = $info->nombre_cliente;
+		$data['comision_porcentaje']= $info->comision;
 		$data['folio_cliente']  = 'ANG-00001';
 		$data['comision_empresa']= number_format(0,2);
 		$data['sobrante']		= number_format(0,2);
@@ -66,6 +67,9 @@ class Formato_retorno extends CI_Controller
 
 		$db = $this->formato_retorno_model;
 
+		$comison_cliente = $this->input->post('comision_cliente');
+		$folio_cliente = $this->input->post('folio_cliente');
+
 		$data = array(	'id_empresa' 	=> $this->input->post('id_empresa'),
 						'id_banco' 		=> $this->input->post('id_banco'),
 						'monto' 		=> $this->input->post('monto'),
@@ -74,7 +78,12 @@ class Formato_retorno extends CI_Controller
 
 		$db->insert_query('ad_formato_retorno_deposito', $data);
 
+		$total_depositos = $db->sum_montos_retorno($folio_cliente);
+		$response['comision'] = number_format( ($total_depositos[0]->monto / 1.16) * $comison_cliente, 2);
+		$response['total_depositos'] = number_format($total_depositos[0]->monto, 2);
 		$response['success'] = 'true';
+
+
 
 		return $this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
@@ -111,8 +120,8 @@ class Formato_retorno extends CI_Controller
 		else:
 			$data['folio_cliente']  = $seek_folio[0]->folio_cliente;
 
-			$data['lista_retornos']=$db->get_query('ad_formato_retorno', array('folio_cliente'=>$seek_folio[0]->folio_cliente ));	
-			$data['monto_retornar'] =	$deposito->monto_deposito - $data['comision_cliente'];
+			$data['lista_retornos'] = $db->get_query('ad_formato_retorno', array('folio_cliente'=>$seek_folio[0]->folio_cliente ));	
+			$data['monto_retornar'] = $deposito->monto_deposito - $data['comision_cliente'];
 		endif;
 		
 		

@@ -29,6 +29,8 @@
 							<div class="profile-info-name"> Cliente </div>
 							<div class="profile-info-value">
 								<span class="editable" id="about"><?=$nombre_cliente?></span>
+								<input type="hidden" value="<?=$id_cliente?>" id="id_cliente">
+								<input type="hidden" value="<?=$comision_porcentaje?>" id="comision_cliente">    
 							</div>
 						</div>
 
@@ -43,14 +45,14 @@
 						<div class="profile-info-row">
 							<div class="profile-info-name"> Comisión  </div>
 							<div class="profile-info-value">
-								<span class="editable" id="comision-empresa"><?=$comision_empresa?></span>
+								<span class="editable" >$<label id="comision-empresa"><?=$comision_empresa?></label> </span>
 							</div>
 						</div>
 
 						<div class="profile-info-row">
 							<div class="profile-info-name"> Sobrante agente</div> 
 							<div class="profile-info-value">
-								<span class="editable" id="sobrante-agente">$<?=$sobrante?></span>
+								<span class="editable" >$<label id="sobrante-agente"><?=$sobrante?></label></span>
 							</div>
 						</div>
 
@@ -95,7 +97,7 @@
 											<tbody id="lista-depositos"></tbody>
 											<tfoot>
 												<th colspan="2" class="text-right">Total</th>
-												<th>$0.00</th>
+												<th >$<label id="th-total-depositos">0.00</label></th>
 											</tfoot>
 										</table> 
 									</div>
@@ -105,15 +107,27 @@
 					</div>
 				</div>
 
+				
+
 				<div class="col-sm-12 widget-container-span">
+					<div class="alert alert-danger text-center" id="message-error-retorno" style="display:none"> 
+						Debe seleccionar un tipo de retorno
+						<button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+					</div>
 					<div class="widget-box">
 						<div class="widget-header widget-hea1der-small header-color-dark">
-							<h6>Formas de retorno</h6>
+							<h6>Formas de retorno</h6> 
 
 							<div class="widget-toolbar">
-								<a href="#" data-action="settings">
+								<a href="#" data-action="settings" id="validate_viewForm">
 									<i class="icon-plus"></i>
 								</a>
+								<select id="tipo-retorno"> 
+									<option value = "">-seleciona retorno-</option>
+									<option value="cheque">Cheque</option>
+									<option value="spei">Spei</option>
+									<option value="efectivo">Efectivo</option>
+								</select>
 
 								<a href="#" data-action="reload">
 									<i class="icon-refresh"></i>
@@ -163,25 +177,25 @@
 
 
 <script type="text/javascript">
-$(document).ready(function(){
-
-	$('#empresas-depositos').collapse({
-	  hide: true
-	})	
-});
-
-	agrega_forma_retorno = function(tipo_forma, folio_cliente, id_deposito)
-	{
-		if(tipo_forma == 'cheque')
-		{
-			$('#modalCheque').modal('show');
-		}else if(tipo_forma == 'spei'){
-			$('#modalSpei').modal('show');
+	$("#validate_viewForm").click(function(){
+		var tipo_retorno = $("#tipo-retorno").val();
+		
+		if(tipo_retorno.length >0){
+			$("#message-error-retorno").hide();	
+			if(tipo_retorno == 'cheque'){
+				$('#modalCheque').modal('show');
+			}
+			if(tipo_retorno == 'spei'){
+				$('#modalSpei').modal('show');
+			}
+			if(tipo_retorno == 'efectivo'){
+				$('#modalEfectivo').modal('show');
+			}
+		}else{
 			
+			$("#message-error-retorno").show();
 		}
-		console.log('agregaste el tipo '+ tipo_forma);
-	}
-	
+	});
 </script>
 
 

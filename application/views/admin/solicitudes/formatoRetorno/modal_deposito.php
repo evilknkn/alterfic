@@ -59,7 +59,6 @@
                 data: "id_empresa=" + id_empresa ,
                 success: function(data)
                 {
-                    console.log(data.bancos.length);
                     var html = "";
                         html += "<option value=''>- Seleccione un banco -</option>";
                     for(var i=0; i< data.bancos.length ;i++){
@@ -71,13 +70,13 @@
    } 
 
    $("#submit_deposito").click(function(){
-        var id_empresa  = $("#empresa").val();
-        var nombre_empresa = $("#empresa option:selected").html();
-        var id_banco    = $("#bancos").val();
-        var nombre_banco = $("#bancos option:selected").html();
-        var monto       = $("#monto").val();
-        var fecha       = $("#id-date-picker-1").val();
-
+        var id_empresa          = $("#empresa").val();
+        var nombre_empresa      = $("#empresa option:selected").html();
+        var id_banco            = $("#bancos").val();
+        var nombre_banco        = $("#bancos option:selected").html();
+        var monto               = $("#monto").val();
+        var fecha               = $("#id-date-picker-1").val();
+        var comision_cliente    = $("#comision_cliente").val();
         var folio_cliente= 'ANG-00001';
         
         
@@ -88,7 +87,7 @@
         else{
             $("#errorDeposito").hide();
 
-            var sentData = 'id_empresa='+id_empresa+'&id_banco='+id_banco+'&monto='+monto+'&fecha='+fecha+'&folio_cliente='+folio_cliente;
+            var sentData = 'id_empresa='+id_empresa+'&id_banco='+id_banco+'&monto='+monto+'&fecha='+fecha+'&folio_cliente='+folio_cliente+'&comision_cliente='+comision_cliente;
 
             $.ajax({
                 type: "POST",
@@ -97,7 +96,6 @@
                 data: sentData ,
                 success: function(data)
                 {
-                    console.log(data);
                     var html = "";
                         html += "<tr>";
                     
@@ -109,6 +107,16 @@
                         html += "</tr>";
 
                     $('#lista-depositos').append(html);
+                    $('#th-total-depositos').html(data.total_depositos);
+                    $('#comision-empresa').html(data.comision);
+                    $('#sobrante-agente').html(data.total_depositos);
+
+                    $('#empresa').val('');
+                    $('#bancos').val('');
+                    $('#monto').val('');
+                    $("#id-date-picker-1").val('');
+
+                    $('#modalDeposito').modal('hide');
                     
                 }
               });//fin accion ajax

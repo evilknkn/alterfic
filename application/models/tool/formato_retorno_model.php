@@ -54,7 +54,7 @@ class Formato_retorno_model extends CI_Model
 	public function sum_montos_retorno($folio = null)
 	{
 		$this->db->select_sum('monto');
-		$this->db->from('ad_formato_retorno');
+		$this->db->from('ad_formato_retorno_deposito');
 		$this->db->where('folio_cliente', $folio);
 		$query = $this->db->get();
 		return $query->result();
