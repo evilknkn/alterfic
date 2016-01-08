@@ -92,6 +92,8 @@
 													<th>Banco</th>
 													<th>Monto</th>
 													<th class="hidden-480">Fecha</th>
+													<th class="text-center">Editar</th>
+													<th class="text-center">Borrar</th>
 												</tr>
 											</thead>
 											<tbody id="lista-depositos"></tbody>
@@ -152,7 +154,6 @@
 													<th>Monto</th>
 													<th>Editar</th>
 													<th>Borrar</th>
-													<th class="hidden-480">Status</th>
 												</tr>
 											</thead>
 											<tbody id="lista-retornos"></tbody>
@@ -198,6 +199,26 @@
 			$("#message-error-retorno").show();
 		}
 	});
+
+	function delete_retorno(forma_id){
+		var folio_cliente   	= $('#folio_cliente').val();
+		var comision_cliente    = $("#comision_cliente").val();
+
+		$.ajax({
+                type: "POST",
+                datatype: 'json',
+                url: '<?php echo base_url("cuentas/formato_retorno/delete_forma")?>',
+                data: "forma_id=" + forma_id +'&folio_cliente='+folio_cliente +'&comision_cliente='+comision_cliente ,
+                success: function(data)
+                {
+                    $("#forma_id_"+forma_id).remove();
+
+                    $('#sobrante-agente').html(data.total_depositos_sobrante);
+                    $("#total-formato-retorno").html(data.total_formato);
+                }
+              });//fin accion ajax
+	}
+
 </script>
 
 

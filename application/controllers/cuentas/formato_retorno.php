@@ -76,7 +76,7 @@ class Formato_retorno extends CI_Controller
 						'fecha_deposito'=> formato_fecha_ddmmaaaa($this->input->post('fecha')),
 						'folio_cliente'	=> $this->input->post('folio_cliente'));
 
-		$db->insert_query('ad_formato_retorno_deposito', $data);
+		$reg_id =$db->insert_query('ad_formato_retorno_deposito', $data);
 
 		$total_depositos = $db->sum_montos_retorno($folio_cliente);
 		$total_retornos  = $db->sum_montos_formato($folio_cliente);
@@ -89,7 +89,35 @@ class Formato_retorno extends CI_Controller
 		$response['comision'] = number_format($comision_empresa,2);
 		$response['total_depositos_sobrante'] = number_format((($monto_deposito - $monto_retorno) - $comision_empresa), 2) ;
 		$response['total_depositos'] = number_format($monto_deposito,2);
+		$response['deposito_id'] 	= $reg_id;
+		$response['success'] = 'true';
 
+		return $this->output->set_content_type('application/json')->set_output(json_encode($response));
+	}
+
+	public function delete_deposito()
+	{
+		$this->load->model('tool/formato_retorno_model');
+		$this->load->helper('funciones_externas');
+
+		$db = $this->formato_retorno_model;
+
+		$comison_cliente = $this->input->post('comision_cliente');
+		$folio_cliente = $this->input->post('folio_cliente');
+
+		$db->detele_query('ad_formato_retorno_deposito', array('id_reg' => $this->input->post('deposito_id') ));
+
+		$total_depositos = $db->sum_montos_retorno($folio_cliente);
+		$total_retornos  = $db->sum_montos_formato($folio_cliente);
+		
+		$monto_deposito = round($total_depositos[0]->monto, 2);
+		$monto_retorno  = round($total_retornos[0]->monto, 2);
+		$comision_empresa= round(($total_depositos[0]->monto / 1.16) * $comison_cliente, 2);
+
+		$response['comision'] = number_format($comision_empresa,2);
+		$response['total_depositos_sobrante'] = number_format((($monto_deposito - $monto_retorno) - $comision_empresa), 2) ;
+		$response['total_depositos'] = number_format($monto_deposito,2);
+		
 		$response['success'] = 'true';
 
 		return $this->output->set_content_type('application/json')->set_output(json_encode($response));
@@ -143,5 +171,65 @@ class Formato_retorno extends CI_Controller
 
 		}
 		return $this->output->set_content_type('application/json')->set_output(json_encode($data));
+	}
+
+	public function delete_forma()
+	{
+		$this->load->model('tool/formato_retorno_model');
+		$this->load->helper('funciones_externas');
+
+		$db = $this->formato_retorno_model;
+
+		$comison_cliente = $this->input->post('comision_cliente');
+		$folio_cliente = $this->input->post('folio_cliente');
+
+		$db->detele_query('ad_formato_retorno', array('id_formato' => $this->input->post('forma_id') ));
+
+		$total_depositos = $db->sum_montos_retorno($folio_cliente);
+		$total_retornos  = $db->sum_montos_formato($folio_cliente);
+		
+		$monto_deposito = round($total_depositos[0]->monto, 2);
+		$monto_retorno  = round($total_retornos[0]->monto, 2);
+		$comision_empresa= round(($total_depositos[0]->monto / 1.16) * $comison_cliente, 2);
+
+		$data['total_depositos_sobrante'] = number_format((($monto_deposito - $monto_retorno) - $comision_empresa), 2) ;
+		$data['total_formato'] 	= number_format($monto_retorno,2);
+		
+		$response['success'] = 'true';
+
+		return $this->output->set_content_type('application/json')->set_output(json_encode($data));		
+	}
+
+	public function data_deposito()
+	{
+		$this->load->model('tool/formato_retorno_model');
+		$this->load->helper('funciones_externas');
+
+		$db = $this->formato_retorno_model;
+
+		$comison_cliente = $this->input->post('comision_cliente');
+		$folio_cliente = $this->input->post('folio_cliente');
+
+		//////
+
+
+		//////
+
+		$total_depositos = $db->sum_montos_retorno($folio_cliente);
+		$total_retornos  = $db->sum_montos_formato($folio_cliente);
+		
+		$monto_deposito = round($total_depositos[0]->monto, 2);
+		$monto_retorno  = round($total_retornos[0]->monto, 2);
+		$comision_empresa= round(($total_depositos[0]->monto / 1.16) * $comison_cliente, 2);
+
+		$response['deposito'] = '';
+		$response['comision'] = number_format($comision_empresa,2);
+		$response['total_depositos_sobrante'] = number_format((($monto_deposito - $monto_retorno) - $comision_empresa), 2) ;
+		$response['total_depositos'] = number_format($monto_deposito,2);
+		
+		$response['success'] = 'true';
+
+
+		return $this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
 }

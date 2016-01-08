@@ -51,6 +51,7 @@
 </div>
 
 <script type="text/javascript">
+
     function BancosEmpresa(id_empresa){
         $.ajax({
                 type: "POST",
@@ -77,6 +78,7 @@
         var monto               = $("#monto").val();
         var fecha               = $("#id-date-picker-1").val();
         var comision_cliente    = $("#comision_cliente").val();
+        
         var folio_cliente= 'ANG-00001';
         
         
@@ -97,13 +99,14 @@
                 success: function(data)
                 {
                     var html = "";
-                        html += "<tr>";
+                        html += "<tr id='deposito_"+data.deposito_id+"'>";
                     
                         html += "<td>"+nombre_empresa+"</td>";
                         html += "<td>"+nombre_banco+"</td>";
                         html += "<td>"+monto+"</td>";
                         html += "<td>"+fecha+"</td>";
-                    
+                        html += "<td class='text-center'><a onclick='edit_deposito("+data.deposito_id+")' style='cursor:pointer'><i class='icon-edit bigger-160'></i></a></td>";
+                        html += "<td class='text-center'><a onclick='delete_deposito("+data.deposito_id+")' style='cursor:pointer'><i class='icon-trash bigger-160'></i></a></td>";
                         html += "</tr>";
 
                     $('#lista-depositos').append(html);
@@ -120,7 +123,56 @@
                     
                 }
               });//fin accion ajax
-
         }
    });
+
+    function delete_deposito(deposito_id){
+        var id = deposito_id;
+        var comision_cliente    = $("#comision_cliente").val();
+        var folio_cliente       = $('#folio_cliente').val();
+        
+
+        $.ajax({
+                type: "POST",
+                datatype: 'json',
+                url: '<?php echo base_url("cuentas/formato_retorno/delete_deposito")?>',
+                data: "deposito_id=" + id +'&comision_cliente='+comision_cliente+'&folio_cliente='+folio_cliente,
+                success: function(data)
+                {   
+                    $("#deposito_"+id).remove();
+
+                    $('#th-total-depositos').html(data.total_depositos);
+                    $('#comision-empresa').html(data.comision);
+                    $('#sobrante-agente').html(data.total_depositos_sobrante);
+
+                    $('#empresa').val('');
+                    $('#bancos').val('');
+                    $('#monto').val('');
+                    $("#id-date-picker-1").val('');
+
+                    $('#modalDeposito').modal('hide');
+
+                }
+              });//fin accion ajax
+    }
+
+    function edit_deposito(deposito_id){
+        $('#modalDeposito').modal('show');
+        $.ajax({
+                type: "POST",
+                datatype: 'json',
+                url: '<?php echo base_url("cuentas/formato_retorno/data_deposito")?>',
+                data: "deposito_id=" + deposito_id ,
+                success: function(data)
+                {
+                    var html = "";
+                        html += "<option value=''>- Seleccione un banco -</option>";
+                    for(var i=0; i< data.bancos.length ;i++){
+                        html += "<option value='"+data.bancos[i].id_banco+"'>"+data.bancos[i].nombre_banco+"</option>";
+                    }
+                    $("#bancos").html(html);
+                }
+              });//fin accion ajax
+        console.log(deposito_id);
+    }
 </script>

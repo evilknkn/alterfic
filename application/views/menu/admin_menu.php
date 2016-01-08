@@ -159,12 +159,12 @@
                             </a>
                         </li>
 
-                       <!--  <li>
+                        <li>
                             <a href="<?=base_url('cuentas/gastos')?>">
                                 <i class="icon-double-angle-right"></i>
                                 Gastos
                             </a>
-                        </li> -->
+                        </li>
 
                         <li>
                             <a href="<?=base_url('cuentas/caja_chica')?>">

@@ -51,6 +51,12 @@ class Formato_retorno_model extends CI_Model
 		return $query->result();
 	}
 
+	public function detele_query($table = null, $array=null)
+	{
+		$this->db->where($array);
+		$this->db->delete($table);
+	}
+
 	public function sum_montos_retorno($folio = null)
 	{
 		$this->db->select_sum('monto');
@@ -114,6 +120,16 @@ class Formato_retorno_model extends CI_Model
 		$this->db->where('abe.status_cta', 1);
 		$query =  $this->db->get();
 		return $query->result();
+	}
+
+	public function info_deposito($id = null)
+	{
+		$this->db->from('ad_formato_retorno_deposito as depto');
+		$this->db->join('ad_catalogo_empresa as empresa', 'empresa.id_empresa = depto.id_empresa', 'inner');
+		$this->db->join('ad_catalogo_bancos as banco', 'depto.id_banco = banco.id_banco', 'inner');
+		$this->db->where('depto.id_reg', $id);
+		$query =  $this->db->get();
+		return $query->row();
 	}
 }
 /*
