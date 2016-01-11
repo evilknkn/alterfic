@@ -188,9 +188,9 @@ class Comisiones extends CI_Controller
 
 		$deposito_id = $this->input->post('deposito_id');
 
-		$data['lista_pagos']=$this->comision_model->lista_pagos_deposito($deposito_id);
-		print_r($data['lista_pagos']);exit;
-		return json_decode($data);
+		$data=$this->comision_model->lista_pagos_deposito($deposito_id);
+		//print_r($data['lista_pagos']);exit;
+		echo json_encode($data);
 
 	}
 

@@ -81,6 +81,7 @@
                 </li>
             <?php endif;?>
 
+
             <?php if($this->session->userdata('ID_PERFIL') == 6 or $this->session->userdata('ID_PERFIL') == 5): ?>
                 <li>
                     <a href="<?=base_url('catalogos/banks')?>">
@@ -102,7 +103,24 @@
                         <span class="menu-text"> Clientes </span>
                     </a>
                 </li>
+                    <?php if($this->session->userdata('ID_PERFIL') == 6 or $this->session->userdata('ID_PERFIL') == 5): ?>
+                    <li>
+                       <a href="#" class="dropdown-toggle">
+                            <i class="icon-folder-open "></i>
+                            <span class="menu-text"> Solicitudes </span>
 
+                            <b class="arrow icon-angle-down"></b>
+                        </a> 
+                        <ul class="submenu">
+                            <li>
+                                <a href="<?=base_url('cuentas/formato_retorno/getClientes')?>">
+                                    <i class="icon-double-angle-right"></i>
+                                    Formato de retorno
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <?php endif; ?>
               
                 <li>
                     <a href="#" class="dropdown-toggle">
@@ -141,12 +159,12 @@
                             </a>
                         </li>
 
-                       <!--  <li>
+                        <li>
                             <a href="<?=base_url('cuentas/gastos')?>">
                                 <i class="icon-double-angle-right"></i>
                                 Gastos
                             </a>
-                        </li> -->
+                        </li>
 
                         <li>
                             <a href="<?=base_url('cuentas/caja_chica')?>">

@@ -52,7 +52,6 @@
 
                 <script type="text/javascript">
                     function showPays(deposito_id){
-                        
                     
                     $.ajax({
                           type:'POST',
@@ -60,16 +59,17 @@
                           url:"<?php echo base_url('cuentas/comisiones/pagos_deposito')?>",
                           data:'deposito_id='+deposito_id,
                           success: function(data){
-                            console.log(data)
+                            console.log(data[0]);
                             var html = '';
-                            for(vari=0; i<data.length;i++)
-                            {
+                            for(var i =0; i<data.length;i++)
+                            {   
+
                                 html+= "<tr>";
                                 html += "<td>"+data[i].nombre_empresa+"</td>";
-                                html += "<td"+data[i].nombre_banco+"></td>";
-                                html += "<td"+data[i].mongo_pago+"></td>";
+                                html += "<td>"+data[i].nombre_banco+"</td>";
+                                html += "<td>"+data[i].monto_pago+"</td>";
                                 html += "<td>"+data[i].folio_pago+"</td>";
-                                html += "<td>"+data[i].fecah_pago+"</td>";                                
+                                html += "<td>"+data[i].fecha_pago+"</td>";                                                                
                                 html+= "</tr>";
                             }
                             $('#detalle-pagos').show();
@@ -82,7 +82,7 @@
                  <a href="<?=base_url('cuentas/comisiones/clientes_pagos')?>" class="btn btn-default" style="margin-top:15px;"> Lista de clientes</a> 
             </div>
 
-            <div class="table-responsive col-sm-6" id="detalle-pagos" style = "" >
+            <div class="table-responsive col-sm-6" id="detalle-pagos" style = "display:none" >
                 <div style="margin-bottom:15%;"></div>
                 <table id="sample-table-3" class="table table-striped table-bordered table-hover">
                     <thead>
@@ -117,10 +117,10 @@
 jQuery(function($) {
     var oTable1 = $('#sample-table-2').dataTable( {
      aLengthMenu: [
-        [25, 50, 100, 200, -1],
-        [25, 50, 100, 200, "All"]
+        [10, 50, 100, 200, -1],
+        [10, 50, 100, 200, "All"]
     ],
-    iDisplayLength: 100,
+    iDisplayLength: 10,
     "aoColumns": [
       { "bSortable": true },
         null, null, null,
