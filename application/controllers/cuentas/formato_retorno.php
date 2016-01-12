@@ -67,8 +67,11 @@ class Formato_retorno extends CI_Controller
 
 		$db = $this->formato_retorno_model;
 
-		$comison_cliente = $this->input->post('comision_cliente');
-		$folio_cliente = $this->input->post('folio_cliente');
+		$comison_cliente 	= $this->input->post('comision_cliente');
+		$folio_cliente 		= $this->input->post('folio_cliente');
+		$deposito_id 		= $this->input->post('deposito_id'); 
+
+		print_r($deposito_id);exit;
 
 		$data = array(	'id_empresa' 	=> $this->input->post('id_empresa'),
 						'id_banco' 		=> $this->input->post('id_banco'),
@@ -207,28 +210,13 @@ class Formato_retorno extends CI_Controller
 
 		$db = $this->formato_retorno_model;
 
-		$comison_cliente = $this->input->post('comision_cliente');
-		$folio_cliente = $this->input->post('folio_cliente');
+		$deposito_id = $this->input->post('deposito_id');
+		$depto = $db->info_deposito($deposito_id);
 
-		//////
-
-
-		//////
-
-		$total_depositos = $db->sum_montos_retorno($folio_cliente);
-		$total_retornos  = $db->sum_montos_formato($folio_cliente);
-		
-		$monto_deposito = round($total_depositos[0]->monto, 2);
-		$monto_retorno  = round($total_retornos[0]->monto, 2);
-		$comision_empresa= round(($total_depositos[0]->monto / 1.16) * $comison_cliente, 2);
-
-		$response['deposito'] = '';
-		$response['comision'] = number_format($comision_empresa,2);
-		$response['total_depositos_sobrante'] = number_format((($monto_deposito - $monto_retorno) - $comision_empresa), 2) ;
-		$response['total_depositos'] = number_format($monto_deposito,2);
-		
-		$response['success'] = 'true';
-
+		$response['empresa'] 		= $depto->nombre_empresa;
+		$response['banco'] 			= $depto->nombre_banco;
+		$response['monto_depto'] 	= $depto->monto;
+		$response['fecha']			= formato_fecha_ddmmaaaa($depto->fecha_deposito);
 
 		return $this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
