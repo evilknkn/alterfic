@@ -9,7 +9,7 @@
             <i class="icon-home home-icon"></i>
             <a href="<?=base_url('/admin/dashboard')?>">Inicio</a>
         </li>
-        <li>Lista de clientes</li>
+        <li>Lista de formatos del cliente </li>
 </div>
 
 <div class="page-content">
@@ -18,42 +18,25 @@
             <!-- PAGE CONTENT BEGINS -->
                 <div class="col-xs-12 col-sm-12" >
                     <div class="page-header">
-                        <h1>Lista de clientes</h1>
+                        <h1>Lista de formatos</h1>
                     </div><!-- /.page-header -->
-
-                    <?php if($this->session->flashdata('success')):?>
-                    <div class="text-center col-sm-12 col-xs-12">
-                        <div class="alert alert-success text-success text-center"> <?php echo $this->session->flashdata('success');?></div>
-                    </div>
-                    <?php endif;?>
                     
                     <div class="col-sm-12 col-xs-12">
                         <table id="sample-table-2" class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th>Nombre cliente</th>
-                                    <th>Comisión</th>
-                                    <th>Clave folio</th>
-                                    <th>Ver formatos</th>
-                                    <th>Agregar formato</th>
+                                    <th>Folio</th>
+                                    <th>Ver detalle</th>
+                                    
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach($lista_clientes as $cliente): ?>
+                                <?php foreach($lista_folios as $folio): ?>
                                     <tr>
-                                        <td><?=$cliente->nombre_cliente?></td>
+                                        <td><?=$folio->folio_cliente?></td>
                                         
-                                        <td><?=($cliente->comision * 100)?> %</td>
-                                        <td><?=$cliente->clave_folio?></td>
-                                        <td class="text-center"> 
-                                            <a href="<?=base_url()?>cuentas/formato_retorno/getFormatos/<?=$cliente->id_cliente?>">
-                                                <i class="icon-list bigger-160"></i>
-                                            </a>
-                                        </td>
-                                        <td class="text-center">
-                                            <a href="<?=base_url()?>cuentas/formato_retorno/create/<?=$cliente->id_cliente?>"><i class="icon-file bigger-160"></i>
-                                            </a>
-                                        </td>
+                                        <td class="text-center"><i class="icon-list bigger-160"></i> </td>
+                                        
                                     </tr>
                                 <?php endforeach;?>
                             </tbody>
@@ -76,7 +59,6 @@
 
                     "aoColumns": [
                       { "bSortable": true },
-                        null, null, null, 
                       { "bSortable": false }
                     ] } );
                         

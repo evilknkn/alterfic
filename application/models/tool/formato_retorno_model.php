@@ -86,7 +86,7 @@ class Formato_retorno_model extends CI_Model
 	{
 		$this->db->from($table);
 		$this->db->like($where_like);
-		$this->db->where($array_where);
+		///$this->db->where($array_where);
 		//return $this->db->count_all_results();
 		$query = $this->db->get();
 		return $query->result();

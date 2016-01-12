@@ -29,20 +29,26 @@ class Formato_retorno extends CI_Controller
 	{	
 		$this->load->model('users/clientes_model');
 		$this->load->model('tool/formato_retorno_model');
+		$this->load->helper('funciones_externas');
 		$db = $this->clientes_model;
 		$db2 = $this->formato_retorno_model;
 
 		$info = $db->datos_cliente(array('id_cliente' => $id_cliente));
 		
-		$data['menu'] 			= 'menu/menu_admin';
-		$data['body'] 			= 'admin/solicitudes/formatoRetorno/formato_retorno_pagos';
-		$data['id_cliente'] 	= $id_cliente;
-		$data['nombre_cliente'] = $info->nombre_cliente;
+		$_folioCliente = $db2->get_like_query('ad_folio_cliente',array('folio_cliente'=>$info->clave_folio));
+		$next_folio = generar_folio($info->clave_folio , count($_folioCliente) +1 );
+		$array_data = array('id_cliente' => $id_cliente, 'folio_cliente' => $next_folio);
+		$db2->insert_query('ad_folio_cliente', $array_data);
+
+		$data['menu'] 				= 'menu/menu_admin';
+		$data['body'] 				= 'admin/solicitudes/formatoRetorno/formato_retorno_pagos';
+		$data['id_cliente'] 		= $id_cliente;
+		$data['nombre_cliente'] 	= $info->nombre_cliente;
 		$data['comision_porcentaje']= $info->comision;
-		$data['folio_cliente']  = 'ANG-00001';
-		$data['comision_empresa']= number_format(0,2);
-		$data['sobrante']		= number_format(0,2);
-		$data['empresas'] 		= $db2->get_query('ad_catalogo_empresa',array('tipo_usuario'=>1), true);
+		$data['folio_cliente']  	= $next_folio;
+		$data['comision_empresa']	= number_format(0,2);
+		$data['sobrante']			= number_format(0,2);
+		$data['empresas'] 			= $db2->get_query('ad_catalogo_empresa',array('tipo_usuario'=>1), true);
 
 		$this->load->view('layer/layerout', $data);
 
@@ -71,7 +77,7 @@ class Formato_retorno extends CI_Controller
 		$folio_cliente 		= $this->input->post('folio_cliente');
 		$deposito_id 		= $this->input->post('deposito_id'); 
 
-		print_r($deposito_id);exit;
+		//print_r($deposito_id);exit;
 
 		$data = array(	'id_empresa' 	=> $this->input->post('id_empresa'),
 						'id_banco' 		=> $this->input->post('id_banco'),
@@ -220,4 +226,19 @@ class Formato_retorno extends CI_Controller
 
 		return $this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
+
+	public function getFormatos($id_cliente=null)
+	{
+		$this->load->model('tool/formato_retorno_model');
+		$this->load->helper('funciones_externas');
+		$db = $this->formato_retorno_model;
+
+		$data['menu'] 				= 'menu/menu_admin';
+		$data['body'] 				= 'admin/solicitudes/lista_formatos';
+		$data['lista_folios']		= $db->get_query('ad_folio_cliente', array('id_cliente'=>$id_cliente), '');
+		$data['id_cliente'] 		= $id_cliente;
+
+		$this->load->view('layer/layerout', $data);
+
+	}	
 }
