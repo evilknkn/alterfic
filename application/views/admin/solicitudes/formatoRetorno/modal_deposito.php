@@ -78,8 +78,10 @@
         var monto               = $("#monto").val();
         var fecha               = $("#id-date-picker-1").val();
         var comision_cliente    = $("#comision_cliente").val();
+
+        var deposito_id         = $("#").val()
         
-        var folio_cliente= 'ANG-00001';
+        var folio_cliente       = $("#folio_cliente").val();
         
         
         if(id_empresa.length ==0 || id_banco.length == 0 || monto.length ==0 || fecha.length==0){
@@ -89,7 +91,7 @@
         else{
             $("#errorDeposito").hide();
 
-            var sentData = 'id_empresa='+id_empresa+'&id_banco='+id_banco+'&monto='+monto+'&fecha='+fecha+'&folio_cliente='+folio_cliente+'&comision_cliente='+comision_cliente;
+            var sentData = 'id_empresa='+id_empresa+'&id_banco='+id_banco+'&monto='+monto+'&fecha='+fecha+'&folio_cliente='+folio_cliente+'&comision_cliente='+comision_cliente+'&deposito_id='+ deposito_id;
 
             $.ajax({
                 type: "POST",
@@ -101,7 +103,9 @@
                     var html = "";
                         html += "<tr id='deposito_"+data.deposito_id+"'>";
                     
-                        html += "<td>"+nombre_empresa+"</td>";
+                        html += "<td>"+nombre_empresa;
+                        html += "<input value='"+data.deposito_id+"' id='no-deposito-"+data.deposito_id+"' type='text' > ";
+                        html += "</td>";
                         html += "<td>"+nombre_banco+"</td>";
                         html += "<td>"+monto+"</td>";
                         html += "<td>"+fecha+"</td>";
@@ -164,15 +168,17 @@
                 url: '<?php echo base_url("cuentas/formato_retorno/data_deposito")?>',
                 data: "deposito_id=" + deposito_id ,
                 success: function(data)
-                {
-                    var html = "";
-                        html += "<option value=''>- Seleccione un banco -</option>";
-                    for(var i=0; i< data.bancos.length ;i++){
-                        html += "<option value='"+data.bancos[i].id_banco+"'>"+data.bancos[i].nombre_banco+"</option>";
-                    }
-                    $("#bancos").html(html);
+                {   
+                    console.log(data);
+                    $( "#empresa option:selected" ).text(data.empresa);
+                    $( "#bancos option:selected" ).text(data.banco);
+                    $("#monto").val(data.monto_depto);
+                    $("#id-date-picker-1").val(data.fecha);
                 }
               });//fin accion ajax
-        console.log(deposito_id);
+    }
+
+    function saveEdit_deposito(){
+
     }
 </script>
