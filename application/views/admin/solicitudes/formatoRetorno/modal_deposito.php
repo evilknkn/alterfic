@@ -78,12 +78,14 @@
         var monto               = $("#monto").val();
         var fecha               = $("#id-date-picker-1").val();
         var comision_cliente    = $("#comision_cliente").val();
-
-        var deposito_id         = $("#").val()
         
         var folio_cliente       = $("#folio_cliente").val();
         
-        
+        console.log('este es empresa:'+id_empresa.length);
+        console.log('este es banco:'+id_banco.length);
+        console.log('este es monto:'+monto.length);
+        console.log('este es fecha:'+fecha.length);
+
         if(id_empresa.length ==0 || id_banco.length == 0 || monto.length ==0 || fecha.length==0){
             $("#errorDeposito").show();
             return false;
@@ -91,7 +93,7 @@
         else{
             $("#errorDeposito").hide();
 
-            var sentData = 'id_empresa='+id_empresa+'&id_banco='+id_banco+'&monto='+monto+'&fecha='+fecha+'&folio_cliente='+folio_cliente+'&comision_cliente='+comision_cliente+'&deposito_id='+ deposito_id;
+            var sentData = 'id_empresa='+id_empresa+'&id_banco='+id_banco+'&monto='+monto+'&fecha='+fecha+'&folio_cliente='+folio_cliente+'&comision_cliente='+comision_cliente;
 
             $.ajax({
                 type: "POST",
@@ -104,7 +106,7 @@
                         html += "<tr id='deposito_"+data.deposito_id+"'>";
                     
                         html += "<td>"+nombre_empresa;
-                        html += "<input value='"+data.deposito_id+"' id='no-deposito-"+data.deposito_id+"' type='text' > ";
+                        html += "<input value='"+data.deposito_id+"' id='no-deposito-"+data.deposito_id+"' type='hidden' > ";
                         html += "</td>";
                         html += "<td>"+nombre_banco+"</td>";
                         html += "<td>"+monto+"</td>";
@@ -170,8 +172,8 @@
                 success: function(data)
                 {   
                     console.log(data);
-                    $( "#empresa option:selected" ).text(data.empresa);
-                    $( "#bancos option:selected" ).text(data.banco);
+                    $( "#empresa option:selected" ).text(data.empresa).attr('selected', 'selected');
+                    $( "#bancos option:selected" ).text(data.banco).attr('selected', 'selected');
                     $("#monto").val(data.monto_depto);
                     $("#id-date-picker-1").val(data.fecha);
                 }

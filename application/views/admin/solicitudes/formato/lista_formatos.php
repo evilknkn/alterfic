@@ -20,6 +20,9 @@
                     <div class="page-header">
                         <h1>Lista de formatos</h1>
                     </div><!-- /.page-header -->
+                    <div class="row text-center">
+                        <a href="<?=base_url()?>cuentas/formato_retorno/getClientes" class="btn "> Regresar</a>
+                    </div>
                     
                     <div class="col-sm-12 col-xs-12">
                         <table id="sample-table-2" class="table table-striped table-bordered table-hover">

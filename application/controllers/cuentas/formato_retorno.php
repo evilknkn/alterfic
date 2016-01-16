@@ -234,11 +234,53 @@ class Formato_retorno extends CI_Controller
 		$db = $this->formato_retorno_model;
 
 		$data['menu'] 				= 'menu/menu_admin';
-		$data['body'] 				= 'admin/solicitudes/lista_formatos';
+		$data['body'] 				= 'admin/solicitudes/formato/lista_formatos';
 		$data['lista_folios']		= $db->get_query('ad_folio_cliente', array('id_cliente'=>$id_cliente), '');
 		$data['id_cliente'] 		= $id_cliente;
 
 		$this->load->view('layer/layerout', $data);
 
 	}	
+
+	public function getFormatosDetail($id_folio = null)
+	{
+		$this->load->model('users/clientes_model');
+		$this->load->model('tool/formato_retorno_model');
+		$this->load->helper('funciones_externas');
+		$db = $this->clientes_model;
+		$db2 = $this->formato_retorno_model;
+		
+		$folioCliente = $db2->row_quey('ad_folio_cliente', array('id_folio'=>$id_folio));
+		
+		$info = $db->datos_cliente(array('id_cliente' => $folioCliente->id_cliente));
+		
+		$data['depositos'] = $db2->list_deptos($folioCliente->folio_cliente);
+		
+		$data['retornos']  = $db2->get_query('ad_formato_retorno', array('folio_cliente' => $folioCliente->folio_cliente), '');
+
+		$data['menu'] 				= 'menu/menu_admin';
+		$data['body'] 				= 'admin/solicitudes/formato/detalle_formato';
+		$data['id_cliente'] 		= $folioCliente->id_cliente;
+		$data['nombre_cliente'] 	= $info->nombre_cliente;
+		$data['comision_porcentaje']= $info->comision;
+		$data['folio_cliente']  	= $folioCliente->folio_cliente;
+		$data['comision_empresa']	= number_format(0,2);
+		$data['sobrante']			= number_format(0,2);
+
+		
+		$total_depositos = $db2->sum_montos_retorno($folioCliente->folio_cliente);
+		$total_retornos  = $db2->sum_montos_formato($folioCliente->folio_cliente);
+		$monto_deposito = round($total_depositos[0]->monto, 2);
+		$monto_retorno  = round($total_retornos[0]->monto, 2);
+		$comision_empresa= round(($total_depositos[0]->monto / 1.16) * $info->comision, 2);
+		//print_r($comision_empresa);exit;
+		//print_r($comision_empresa);exit;
+
+		$data['comision'] = number_format($comision_empresa,2);
+		$data['total_depositos_sobrante'] = number_format((($monto_deposito - $monto_retorno) - $comision_empresa), 2) ;
+		$data['total_depositos'] = number_format($monto_deposito,2);
+		
+		
+		$this->load->view('layer/layerout', $data);
+	}
 }

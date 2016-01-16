@@ -45,23 +45,21 @@
 						<div class="profile-info-row">
 							<div class="profile-info-name"> Comisión  </div>
 							<div class="profile-info-value">
-								<span class="editable" >$<label id="comision-empresa"><?=$comision_empresa?></label> </span>
+								<span class="editable" >$<label id="comision-empresa"><?=$comision?></label> </span>
 							</div>
 						</div>
 
 						<div class="profile-info-row">
 							<div class="profile-info-name"> Sobrante agente</div> 
 							<div class="profile-info-value">
-								<span class="editable" >$<label id="sobrante-agente"><?=$sobrante?></label></span>
+								<span class="editable" >$<label id="sobrante-agente"><?=$total_depositos_sobrante?></label></span>
 							</div>
 						</div>
 
 					</div>
 				</div>
 			</div>
-			<div class="row text-center">
-				<a href="<?=base_url()?>cuentas/formato_retorno/getClientes" class=" btn btn-primary"> Guardar</a>
-			</div>
+			
 			<!--  Inicio de captura de  depósitos-->
 			<div class="row">
 				<div class="col-sm-12 widget-container-span">
@@ -70,13 +68,13 @@
 							<h6>Captura de depósitos</h6>
 
 							<div class="widget-toolbar">
-								<a data-toggle="modal" data-toggle="modal" data-target="#modalDeposito" style="cursor:pointer">
+								<!-- <a data-toggle="modal" data-toggle="modal" data-target="#modalDeposito" style="cursor:pointer">
 									<i class="icon-plus"></i>
 								</a>
 
 								<a href="#" data-action="reload">
 									<i class="icon-refresh"></i>
-								</a>
+								</a> -->
 
 								<a href="#empresas-depositos" data-action="collapse">
 									<i class="icon-chevron-up"></i>
@@ -94,15 +92,24 @@
 													<th>Empresa</th>
 													<th>Banco</th>
 													<th>Monto</th>
-													<th class="hidden-480">Fecha</th>
-													<th class="text-center">Editar</th>
-													<th class="text-center">Borrar</th>
 												</tr>
 											</thead>
-											<tbody id="lista-depositos"></tbody>
+											<tbody id="lista-depositos">
+												<?php 
+													$total_deposito = 0;
+													foreach($depositos as $deposito):
+														$total_deposito = $total_deposito+$deposito->monto;
+													?>
+													<tr>
+														<td><?=$deposito->nombre_empresa?></td>
+														<td><?=$deposito->nombre_banco?></td>
+														<td>$<?=number_format($deposito->monto,2)?></td>
+													</tr>
+												<?php endforeach;?>
+											</tbody>
 											<tfoot>
 												<th colspan="2" class="text-right">Total</th>
-												<th >$<label id="th-total-depositos">0.00</label></th>
+												<th >$<label id="th-total-depositos"><?=number_format($total_deposito,2)?></label></th>
 											</tfoot>
 										</table> 
 									</div>
@@ -124,7 +131,7 @@
 							<h6>Formas de retorno</h6> 
 
 							<div class="widget-toolbar">
-								<a href="#" data-action="settings" id="validate_viewForm">
+								<!-- <a href="#" data-action="settings" id="validate_viewForm">
 									<i class="icon-plus"></i>
 								</a>
 								<select id="tipo-retorno"> 
@@ -136,7 +143,7 @@
 
 								<a href="#" data-action="reload">
 									<i class="icon-refresh"></i>
-								</a>
+								</a> -->
 
 								<a href="#" data-action="collapse">
 									<i class="icon-chevron-up"></i>
@@ -155,14 +162,24 @@
 												<tr>
 													<th>Tipo de retorno</th>
 													<th>Monto</th>
-													<th>Editar</th>
-													<th>Borrar</th>
+													
 												</tr>
 											</thead>
-											<tbody id="lista-retornos"></tbody>
+											<tbody id="lista-retornos">
+												<?php  $total_retorno = 0;
+												foreach($retornos as $retorno):
+													$total_retorno = $total_retorno + $retorno->monto;
+												?>
+													<tr>
+														<td><?=$retorno->tipo_retorno?></td>
+														<td>$<?=number_format($retorno->monto,2)?></td>
+														
+													</tr>
+												<?php endforeach;?>
+											</tbody>
 											<tfoot>
 												<th class="text-right">Total</th>
-												<th>$<label id="total-formato-retorno">0.00</label></th>
+												<th>$<label id="total-formato-retorno"><?=number_format($total_retorno,2)?></label></th>
 											</tfoot>
 										</table> 
 									</div>
@@ -171,60 +188,13 @@
 						</div>
 					</div>
 				</div>
+
+				<div class="row text-center">
+					<a href="<?=base_url()?>cuentas/formato_retorno/getFormatos/<?=$id_cliente?>" class=" btn"> Regresar</a>
+				</div>
 			
 			</div>
 			<!-- Fin  de captura de  depósitos -->
 		</div>
     </div>
 </div>
-<?=$this->load->view('admin/solicitudes/formatoRetorno/modal_deposito');?>
-<?=$this->load->view('admin/solicitudes/formatoRetorno/modal_cheque');?>
-<?=$this->load->view('admin/solicitudes/formatoRetorno/modal_spei');?>
-<?=$this->load->view('admin/solicitudes/formatoRetorno/modal_efectivo');?>
-
-
-<script type="text/javascript">
-	$("#validate_viewForm").click(function(){
-		var tipo_retorno = $("#tipo-retorno").val();
-		
-		if(tipo_retorno.length >0){
-			$("#message-error-retorno").hide();	
-			if(tipo_retorno == 'cheque'){
-				$('#modalCheque').modal('show');
-			}
-			if(tipo_retorno == 'spei'){
-				$('#modalSpei').modal('show');
-			}
-			if(tipo_retorno == 'efectivo'){
-				$('#modalEfectivo').modal('show');
-			}
-		}else{
-			
-			$("#message-error-retorno").show();
-		}
-	});
-
-	function delete_retorno(forma_id){
-		var folio_cliente   	= $('#folio_cliente').val();
-		var comision_cliente    = $("#comision_cliente").val();
-
-		$.ajax({
-                type: "POST",
-                datatype: 'json',
-                url: '<?php echo base_url("cuentas/formato_retorno/delete_forma")?>',
-                data: "forma_id=" + forma_id +'&folio_cliente='+folio_cliente +'&comision_cliente='+comision_cliente ,
-                success: function(data)
-                {
-                    $("#forma_id_"+forma_id).remove();
-
-                    $('#sobrante-agente').html(data.total_depositos_sobrante);
-                    $("#total-formato-retorno").html(data.total_formato);
-                }
-              });//fin accion ajax
-	}
-
-</script>
-
-
-
-

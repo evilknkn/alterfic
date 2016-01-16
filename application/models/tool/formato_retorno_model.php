@@ -131,18 +131,22 @@ class Formato_retorno_model extends CI_Model
 		$query =  $this->db->get();
 		return $query->row();
 	}
+
+	public function list_deptos($folio = null)
+	{	
+		$this->db->select('retDep.id_empresa, retDep.id_banco, retDep.monto, catEmp.nombre_empresa, catBan.nombre_banco');
+		$this->db->from('ad_formato_retorno_deposito as retDep');
+		$this->db->join('ad_catalogo_empresa as catEmp', 'catEmp.id_empresa = retDep.id_empresa', 'inner');
+		$this->db->join('ad_catalogo_bancos as catBan', 'retDep.id_banco = catBan.id_banco', 'inner');
+		$this->db->where('retDep.folio_cliente', $folio);
+		$query =  $this->db->get();
+		return $query->result();
+	}
+
 }
 /*
-CREATE TABLE `ad_formato_retorno` (
-  `id_formato` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `id_cliente` int(11) DEFAULT NULL,
-  `folio_cliente` varchar(50) DEFAULT NULL,
-  `id_deposito` int(11) DEFAULT NULL,
-  `tipo_retorno` varchar(10) DEFAULT NULL,
-  `nombre` varchar(250) DEFAULT NULL,
-  `monto` float(10,2) DEFAULT NULL,
-  `parametro` varchar(100) DEFAULT NULL,
-  `reg_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_formato`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+select * from ad_formato_retorno_deposito as retDep
+inner join `ad_catalogo_empresa` as catEmp on retDep.id_empresa = catEmp.id_empresa 
+inner join ad_catalogo_bancos as catBan on retDep.id_banco = catBan.id_banco
+where retDep.folio_cliente = 'ANG-000001'
 */
