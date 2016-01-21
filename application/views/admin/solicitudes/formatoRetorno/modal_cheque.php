@@ -13,6 +13,7 @@
                     <div class="form-group">
                         <label class="label-control col-xs-4">Nombre</label>
                         <div class="col-xs-8">
+                            
                             <input class="form-control" type="text" id="name_cheque" placeholder="Nombre a quien se le entrega el cheque">
                         </div>
                     </div>

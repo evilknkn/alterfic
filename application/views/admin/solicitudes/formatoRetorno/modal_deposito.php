@@ -10,6 +10,7 @@
         <div class="form-horizontal">            
             <div class="form-group">
                 <label class="label-control col-xs-2">Empresa</label>
+                <input value="" id="edited_depto" type="text">
                 <select id="empresa" onchange="BancosEmpresa(this.value)">
                     <option value="">- Selecciona una empresa -</option>
                     <?php foreach($empresas as $empresa):?>
@@ -80,6 +81,8 @@
         var comision_cliente    = $("#comision_cliente").val();
         
         var folio_cliente       = $("#folio_cliente").val();
+
+        var active_edition      = $("#edited_depto").val(); 
         
         console.log('este es empresa:'+id_empresa.length);
         console.log('este es banco:'+id_banco.length);
@@ -93,12 +96,19 @@
         else{
             $("#errorDeposito").hide();
 
-            var sentData = 'id_empresa='+id_empresa+'&id_banco='+id_banco+'&monto='+monto+'&fecha='+fecha+'&folio_cliente='+folio_cliente+'&comision_cliente='+comision_cliente;
+            if(active_edition != ''){
+                var post_url = '<?php echo base_url("cuentas/formato_retorno/edicion_deposito")?>';
+                var sentData = 'id_empresa='+id_empresa+'&id_banco='+id_banco+'&monto='+monto+'&fecha='+fecha+'&folio_cliente='+folio_cliente+'&comision_cliente='+comision_cliente+'&id_reg='+active_edition;
+            }else{
+                var post_url = '<?php echo base_url("cuentas/formato_retorno/guardar_deposito")?>';
+                var sentData = 'id_empresa='+id_empresa+'&id_banco='+id_banco+'&monto='+monto+'&fecha='+fecha+'&folio_cliente='+folio_cliente+'&comision_cliente='+comision_cliente;
+            }
+            
 
             $.ajax({
                 type: "POST",
                 datatype: 'json',
-                url: '<?php echo base_url("cuentas/formato_retorno/guardar_deposito")?>',
+                url: post_url,
                 data: sentData ,
                 success: function(data)
                 {
@@ -115,7 +125,14 @@
                         html += "<td class='text-center'><a onclick='delete_deposito("+data.deposito_id+")' style='cursor:pointer'><i class='icon-trash bigger-160'></i></a></td>";
                         html += "</tr>";
 
-                    $('#lista-depositos').append(html);
+                    if(data.success == 'edited'){
+                        $("#deposito_"+data.deposito_id).remove();
+                        $('#lista-depositos').append(html);
+                    }else{
+                        $('#lista-depositos').append(html);
+                    }
+                    
+                    
                     $('#th-total-depositos').html(data.total_depositos);
                     $('#comision-empresa').html(data.comision);
                     $('#sobrante-agente').html(data.total_depositos_sobrante);
@@ -172,15 +189,16 @@
                 success: function(data)
                 {   
                     console.log(data);
-                    $( "#empresa option:selected" ).text(data.empresa).attr('selected', 'selected');
-                    $( "#bancos option:selected" ).text(data.banco).attr('selected', 'selected');
+                    $("#empresa [value='"+data.empresa+"']").attr('selected','selected');
+                    $("#bancos [value='"+data.banco+"']").attr('selected','selected');
+                    //$( "#empresa option:selected" ).text(data.empresa).attr('selected', 'selected');
+                    //$( "#bancos option:selected" ).text(data.banco).attr('selected', 'selected');
                     $("#monto").val(data.monto_depto);
                     $("#id-date-picker-1").val(data.fecha);
+
+                    $("#edited_depto").val(data.id_reg);
                 }
               });//fin accion ajax
     }
 
-    function saveEdit_deposito(){
-
-    }
 </script>

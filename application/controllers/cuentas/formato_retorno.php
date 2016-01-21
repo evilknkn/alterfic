@@ -103,6 +103,58 @@ class Formato_retorno extends CI_Controller
 
 		return $this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
+	public function edicion_deposito()
+	{
+		$this->load->model('tool/formato_retorno_model');
+		$this->load->helper('funciones_externas');
+
+		$db = $this->formato_retorno_model;
+		
+		$comison_cliente 	= $this->input->post('comision_cliente');
+		$folio_cliente 		= $this->input->post('folio_cliente');
+		$deposito_id 		= $this->input->post('deposito_id'); 
+		$id_reg 			= $this->input->post('id_reg');
+
+		//print_r($deposito_id);exit;
+		
+
+		// 	$data = array(	'id_empresa' 	=> $this->input->post('id_empresa'),
+		// 				'id_banco' 		=> $this->input->post('id_banco'),
+		// 				'monto' 		=> $this->input->post('monto'),
+		// 				'fecha_deposito'=> formato_fecha_ddmmaaaa($this->input->post('fecha')),
+		// 				'folio_cliente'	=> $this->input->post('folio_cliente'));
+
+		// $reg_id =$db->insert_query('ad_formato_retorno_deposito', $data);
+
+		// }else{
+			$data_update = array(	'id_empresa' 	=> $this->input->post('id_empresa'),
+						'id_banco' 		=> $this->input->post('id_banco'),
+						'monto' 		=> $this->input->post('monto'),
+						'fecha_deposito'=> formato_fecha_ddmmaaaa($this->input->post('fecha')),
+						'folio_cliente'	=> $this->input->post('folio_cliente'));
+
+			$array_where = array('id_reg' => $id_reg);
+
+			$db->update_where_query('ad_formato_retorno_deposito',  $data_update, $array_where );
+		
+
+		$total_depositos = $db->sum_montos_retorno($folio_cliente);
+		$total_retornos  = $db->sum_montos_formato($folio_cliente);
+		$monto_deposito = round($total_depositos[0]->monto, 2);
+		$monto_retorno  = round($total_retornos[0]->monto, 2);
+		$comision_empresa= round(($total_depositos[0]->monto / 1.16) * $comison_cliente, 2);
+
+		//print_r($comision_empresa);exit;
+
+		$response['comision'] = number_format($comision_empresa,2);
+		$response['total_depositos_sobrante'] = number_format((($monto_deposito - $monto_retorno) - $comision_empresa), 2) ;
+		$response['total_depositos'] = number_format($monto_deposito,2);
+
+		$response['deposito_id'] 	= $id_reg;
+		$response['success'] 		= 'edited';
+	
+		return $this->output->set_content_type('application/json')->set_output(json_encode($response));
+	}
 
 	public function delete_deposito()
 	{
@@ -217,10 +269,12 @@ class Formato_retorno extends CI_Controller
 		$db = $this->formato_retorno_model;
 
 		$deposito_id = $this->input->post('deposito_id');
-		$depto = $db->info_deposito($deposito_id);
 
-		$response['empresa'] 		= $depto->nombre_empresa;
-		$response['banco'] 			= $depto->nombre_banco;
+		$depto = $db->info_deposito($deposito_id);
+		
+		$response['id_reg'] 		= $depto->id_reg;
+		$response['empresa'] 		= $depto->id_empresa;
+		$response['banco'] 			= $depto->id_banco;
 		$response['monto_depto'] 	= $depto->monto;
 		$response['fecha']			= formato_fecha_ddmmaaaa($depto->fecha_deposito);
 
@@ -283,4 +337,5 @@ class Formato_retorno extends CI_Controller
 		
 		$this->load->view('layer/layerout', $data);
 	}
+	
 }

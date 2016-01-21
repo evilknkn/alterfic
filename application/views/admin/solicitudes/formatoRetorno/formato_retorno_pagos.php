@@ -70,7 +70,7 @@
 							<h6>Captura de depósitos</h6>
 
 							<div class="widget-toolbar">
-								<a data-toggle="modal" data-toggle="modal" data-target="#modalDeposito" style="cursor:pointer">
+								<a  id="createDeposito" data-action="settings" style="cursor:pointer">
 									<i class="icon-plus"></i>
 								</a>
 
@@ -184,6 +184,12 @@
 
 
 <script type="text/javascript">
+	$("#createDeposito").click(function(){
+		console.log('si se va a crear');
+		$("#edited_depto").val('');
+		$('#modalDeposito').modal('show');
+	});
+
 	$("#validate_viewForm").click(function(){
 		var tipo_retorno = $("#tipo-retorno").val();
 		
