@@ -71,7 +71,7 @@
                         html+= "<tr id='forma_id_"+data.forma_id+"'>";
                         html += "<td>Efectivo a nombre de "+nombre_efectivo+"</td>"
                         html += "<td>"+monto_efectivo+"</td>";
-                        html += "<td class='text-center'><a onclick='edit_retorno("+data.forma_id+")' style='cursor:pointer'><i class='icon-edit bigger-160'></i></a></td>";
+                        html += "<td class='text-center'><a onclick='edit_retorno("+data.forma_id+", efectivo)' style='cursor:pointer'><i class='icon-edit bigger-160'></i></a></td>";
                         html += "<td class='text-center'><a onclick='delete_retorno("+data.forma_id+")' style='cursor:pointer'><i class='icon-trash bigger-160'></i></a></td>";
                         
                         html+= "</tr>";

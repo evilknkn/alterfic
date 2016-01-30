@@ -134,7 +134,7 @@ class Formato_retorno_model extends CI_Model
 
 	public function list_deptos($folio = null)
 	{	
-		$this->db->select('retDep.id_empresa, retDep.id_banco, retDep.monto, catEmp.nombre_empresa, catBan.nombre_banco');
+		$this->db->select('retDep.id_reg, retDep.id_empresa, retDep.id_banco, retDep.monto, catEmp.nombre_empresa, catBan.nombre_banco, retDep.fecha_deposito');
 		$this->db->from('ad_formato_retorno_deposito as retDep');
 		$this->db->join('ad_catalogo_empresa as catEmp', 'catEmp.id_empresa = retDep.id_empresa', 'inner');
 		$this->db->join('ad_catalogo_bancos as catBan', 'retDep.id_banco = catBan.id_banco', 'inner');
@@ -142,6 +142,8 @@ class Formato_retorno_model extends CI_Model
 		$query =  $this->db->get();
 		return $query->result();
 	}
+
+
 
 }
 /*

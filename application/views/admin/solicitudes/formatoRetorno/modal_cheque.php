@@ -13,7 +13,7 @@
                     <div class="form-group">
                         <label class="label-control col-xs-4">Nombre</label>
                         <div class="col-xs-8">
-                            
+                            <input value="" type="hidden" id="edited-cheque">
                             <input class="form-control" type="text" id="name_cheque" placeholder="Nombre a quien se le entrega el cheque">
                         </div>
                     </div>
@@ -53,8 +53,9 @@
         var folio_cheque    = $('#folio_cheque').val();
 
         var comision_cliente    = $("#comision_cliente").val();
-
         var tipo_retorno    = "cheque";
+
+        var active_edition      = $("#edited-cheque").val(); 
 
         if( monto_cheque.length == 0 || nombre_cheque.length == 0)
         {
@@ -65,22 +66,30 @@
             $('#error-cheque').hide();
         }
     /* Fin de validaciones*/    
+        if(active_edition != ''){
+            var post_url = "<?=base_url('/cuentas/formato_retorno/editDataForma')?>";
+            var dataPost ='id_cliente='+id_cliente+'&folio_cliente='+folio_cliente+'&tipo_retorno='+tipo_retorno+'&nombre='+nombre_cheque+'&monto='+monto_cheque+'&parametro='+folio_cheque+'&comision_cliente='+comision_cliente+'&id_formato='+active_edition;;
+        }else{
+            var post_url = "<?=base_url('/cuentas/formato_retorno/keepDataForma')?>";
+            var dataPost ='id_cliente='+id_cliente+'&folio_cliente='+folio_cliente+'&tipo_retorno='+tipo_retorno+'&nombre='+nombre_cheque+'&monto='+monto_cheque+'&parametro='+folio_cheque+'&comision_cliente='+comision_cliente;
+        }
+
         var dataPost ='id_cliente='+id_cliente+'&folio_cliente='+folio_cliente+'&tipo_retorno='+tipo_retorno+'&nombre='+nombre_cheque+'&monto='+monto_cheque+'&parametro='+folio_cheque+'&comision_cliente='+comision_cliente;
 
         $.ajax({
               type:'POST',
               dataType:'json',
-              url:"<?=base_url('/cuentas/formato_retorno/keepDataForma')?>",
+              url:post_url,
               data: dataPost,
               success: function(data){
                 
                 if(data.success == 'true')
-                {   console.log(data);
+                {   
                     var html = '';
                         html+= "<tr id='forma_id_"+data.forma_id+"'>";
                         html += "<td>Cheque a nombre de "+nombre_cheque+"</td>"
                         html += "<td>"+monto_cheque+"</td>";
-                        html += "<td class='text-center'><a onclick='edit_retorno("+data.forma_id+")' style='cursor:pointer'><i class='icon-edit bigger-160'></i></a></td>";
+                        html += "<td class='text-center'><a onclick= 'edit_retorno("+data.forma_id+", 1 )' style='cursor:pointer'><i class='icon-edit bigger-160'></i></a></td>";
                         html += "<td class='text-center'><a onclick='delete_retorno("+data.forma_id+")' style='cursor:pointer'><i class='icon-trash bigger-160'></i></a></td>";
                         
                         html+= "</tr>";
@@ -105,6 +114,27 @@
               }
             })
 
+    }
+
+
+    detail_cheque = function(id_forma)
+    {
+        $('#modalCheque').modal('show');
+        $.ajax({
+                type: "POST",
+                datatype: 'json',
+                url: '<?php echo base_url("cuentas/formato_retorno/detail_forma")?>',
+                data: "id_forma=" + id_forma + "&type_form=cheque" ,
+                success: function(data)
+                {   
+                    console.log(data);
+                    $('#edited-cheque').val(data.id_forma);
+                    $('#name_cheque').val(data.nombre);
+                    $('#monto_cheque').val(data.monto);
+                    $('#folio_cheque').val(data.folio);
+
+                }
+              });//fin accion ajax
     }
 
 

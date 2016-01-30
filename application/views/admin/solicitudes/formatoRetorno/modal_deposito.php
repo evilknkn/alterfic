@@ -10,7 +10,7 @@
         <div class="form-horizontal">            
             <div class="form-group">
                 <label class="label-control col-xs-2">Empresa</label>
-                <input value="" id="edited_depto" type="text">
+                <input value="" id="edited_depto" type="hidden">
                 <select id="empresa" onchange="BancosEmpresa(this.value)">
                     <option value="">- Selecciona una empresa -</option>
                     <?php foreach($empresas as $empresa):?>

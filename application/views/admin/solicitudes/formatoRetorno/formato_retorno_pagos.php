@@ -74,7 +74,7 @@
 									<i class="icon-plus"></i>
 								</a>
 
-								<a href="#" data-action="reload">
+								<a style="cursor:pointer" data-action="reload" id="reload-depositos">
 									<i class="icon-refresh"></i>
 								</a>
 
@@ -210,6 +210,22 @@
 		}
 	});
 
+	function edit_retorno(id_forma, type_forma)
+	{
+		if(type_forma == 1 ){
+			detail_cheque(id_forma);
+		}
+		if(type_forma == 2){
+			detail_cheque(id_forma);
+		}
+		if(type_forma == 3){
+			detail_cheque(id_forma);
+		}
+		if(type_forma == 4){
+			detail_cheque(id_forma);
+		}
+	}
+
 	function delete_retorno(forma_id){
 		var folio_cliente   	= $('#folio_cliente').val();
 		var comision_cliente    = $("#comision_cliente").val();
@@ -229,6 +245,37 @@
               });//fin accion ajax
 	}
 
+	$("#reload-depositos").click(function(){
+		var folio_cliente   	= $('#folio_cliente').val();
+
+		$.ajax({
+                type: "POST",
+                datatype: 'json',
+                url: '<?php echo base_url("cuentas/formato_retorno/getDepositos")?>',
+                data: 'folio_cliente='+folio_cliente ,
+                success: function(data)
+                {
+                     var html = '';
+                     	for(var i =0; i<data.list_deptos.length; i++ )
+                     	{
+                     		html += "<tr id='deposito_"+data.list_deptos[i].id_reg+"'>";
+	                        html += "<td>"+data.list_deptos[i].nombre_empresa;
+	                        html += "<input value='"+data.list_deptos[i].id_reg+"' id='no-deposito-"+data.list_deptos[i].id_reg+"' type='hidden' > ";
+	                        html += "</td>";
+	                        html += "<td>"+data.list_deptos[i].nombre_banco+"</td>";
+	                        html += "<td>"+data.list_deptos[i].monto+"</td>";
+	                        html += "<td>"+data.list_deptos[i].fecha_deposito+"</td>";
+	                        html += "<td class='text-center'><a onclick='edit_deposito("+data.list_deptos[i].id_reg+")' style='cursor:pointer'><i class='icon-edit bigger-160'></i></a></td>";
+	                        html += "<td class='text-center'><a onclick='delete_deposito("+data.list_deptos[i].id_reg+")' style='cursor:pointer'><i class='icon-trash bigger-160'></i></a></td>";
+	                        html += "</tr>";
+                     	}
+                       
+
+                        //console.log(data.total_monto[0].monto );
+                    $('#lista-depositos').html(html);
+                }
+              });//fin accion ajax
+	});
 </script>
 
 

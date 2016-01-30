@@ -78,7 +78,7 @@
                         html+= "<tr id='forma_id_"+data.forma_id+"'>";
                         html += "<td>Spei a nombre de "+nombre_spei+"</td>"
                         html += "<td>"+monto_spei+"</td>";
-                        html += "<td class='text-center'><a onclick='edit_retorno("+data.forma_id+")' style='cursor:pointer'><i class='icon-edit bigger-160'></i></a></td>";
+                        html += "<td class='text-center'><a onclick='edit_retorno("+data.forma_id+", spei)' style='cursor:pointer'><i class='icon-edit bigger-160'></i></a></td>";
                         html += "<td class='text-center'><a onclick='delete_retorno("+data.forma_id+")' style='cursor:pointer'><i class='icon-trash bigger-160'></i></a></td>";
                         
                         html+= "</tr>";

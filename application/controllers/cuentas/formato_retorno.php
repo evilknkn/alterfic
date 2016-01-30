@@ -115,18 +115,6 @@ class Formato_retorno extends CI_Controller
 		$deposito_id 		= $this->input->post('deposito_id'); 
 		$id_reg 			= $this->input->post('id_reg');
 
-		//print_r($deposito_id);exit;
-		
-
-		// 	$data = array(	'id_empresa' 	=> $this->input->post('id_empresa'),
-		// 				'id_banco' 		=> $this->input->post('id_banco'),
-		// 				'monto' 		=> $this->input->post('monto'),
-		// 				'fecha_deposito'=> formato_fecha_ddmmaaaa($this->input->post('fecha')),
-		// 				'folio_cliente'	=> $this->input->post('folio_cliente'));
-
-		// $reg_id =$db->insert_query('ad_formato_retorno_deposito', $data);
-
-		// }else{
 			$data_update = array(	'id_empresa' 	=> $this->input->post('id_empresa'),
 						'id_banco' 		=> $this->input->post('id_banco'),
 						'monto' 		=> $this->input->post('monto'),
@@ -234,6 +222,32 @@ class Formato_retorno extends CI_Controller
 		return $this->output->set_content_type('application/json')->set_output(json_encode($data));
 	}
 
+	public function editDataForma()
+	{
+		
+	}
+
+	public function detail_forma()
+	{	
+		$this->load->model('tool/formato_retorno_model');	
+		$this->load->model('users/clientes_model');
+		$db = $this->formato_retorno_model;
+
+		$id_forma 	= $this->input->post('id_forma');
+		$type_form 	= $this->input->post('type_form');
+
+		$data_retorno = $db->row_quey('ad_formato_retorno', array('id_formato' => $id_forma));
+		if($type_form == 'cheque')
+		{	
+			$data['id_forma'] = $id_forma;
+			$data['nombre'] = $data_retorno->nombre;
+			$data['monto'] 	= $data_retorno->monto;
+			$data['folio'] 	= $data_retorno->parametro;
+		}
+		
+		return $this->output->set_content_type('application/json')->set_output(json_encode($data));
+	}
+
 	public function delete_forma()
 	{
 		$this->load->model('tool/formato_retorno_model');
@@ -336,6 +350,20 @@ class Formato_retorno extends CI_Controller
 		
 		
 		$this->load->view('layer/layerout', $data);
+	}
+
+	public function getDepositos()
+	{
+		$this->load->model('tool/formato_retorno_model');
+		$this->load->helper('funciones_externas');
+
+		$db = $this->formato_retorno_model;
+
+		$folio = $this->input->post('folio_cliente');
+
+		$response['list_deptos'] = $db->list_deptos($folio);
+
+		return $this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
 	
 }
