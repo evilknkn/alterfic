@@ -83,11 +83,7 @@
         var folio_cliente       = $("#folio_cliente").val();
 
         var active_edition      = $("#edited_depto").val(); 
-        
-        console.log('este es empresa:'+id_empresa.length);
-        console.log('este es banco:'+id_banco.length);
-        console.log('este es monto:'+monto.length);
-        console.log('este es fecha:'+fecha.length);
+       
 
         if(id_empresa.length ==0 || id_banco.length == 0 || monto.length ==0 || fecha.length==0){
             $("#errorDeposito").show();

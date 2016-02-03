@@ -225,6 +225,67 @@ class Formato_retorno extends CI_Controller
 	public function editDataForma()
 	{
 		
+		$this->load->model('tool/formato_retorno_model');	
+		$this->load->model('users/clientes_model');
+		$db = $this->formato_retorno_model;
+
+		$id_cliente 		= $this->input->post('id_cliente');
+		$folio_cliente 		= $this->input->post('folio_cliente');
+		$tipo_retorno 		= $this->input->post('tipo_retorno');
+		$nombre_cheque 		= $this->input->post('nombre');
+		$monto 				= $this->input->post('monto');
+		$folio_cheque 		= $this->input->post('parametro');
+		$comison_cliente 	= $this->input->post('comision_cliente');
+		$id_formato 		= $this->input->post('id_formato');
+		
+
+		if($tipo_retorno == 'cheque' ){
+				$data_update = array('nombre' 	=> $nombre_cheque, 'monto' => $monto );
+			}
+			// else if($tipo_retorno == 'spei'){
+			// 	$data_update = array('id_cliente' 	=> $this->input->post('id_cliente') );
+			// }else{
+			// 	$data_update = array('id_cliente' 	=> $this->input->post('id_cliente') );	
+			// }
+			
+		$array_where = array('id_formato' => $id_formato);
+
+		$db->update_where_query('ad_formato_retorno',  $data_update, $array_where );
+
+
+		$total_depositos = $db->sum_montos_retorno($folio_cliente);
+		$total_retornos  = $db->sum_montos_formato($folio_cliente);
+
+
+	
+		$monto_deposito = round($total_depositos[0]->monto, 2);	
+		$monto_retorno  = round($total_retornos[0]->monto, 2) ;
+		$comision_empresa= round(($total_depositos[0]->monto / 1.16) * $comison_cliente, 2);
+
+		
+
+		if($monto_retorno > ($monto_deposito - $comision_empresa))
+		{
+			$data['success'] = 'false';
+			$data['txtAlert']= 'El monto ingresado es mayor al monto a retornar verifique que sea correcta la cifra';
+
+		}else{
+			
+			$reg_id = $id_formato;
+			
+			$total_retornos_gral  = $db->sum_montos_formato($folio_cliente);
+
+			$data['success'] = 'true';
+			$data['forma_id'] = $reg_id;
+
+			$data['total_depositos_sobrante'] = number_format((($monto_deposito - $monto_retorno) - $comision_empresa), 2) ;
+			
+			//$data['total_depositos'] = number_format($monto_deposito - round($total_retornos_gral[0]->monto,2), 2) ;
+			$data['total_formato'] 	= number_format($total_retornos_gral[0]->monto,2);
+			$data['tipePost'] ='edit';
+
+		}
+		return $this->output->set_content_type('application/json')->set_output(json_encode($data));
 	}
 
 	public function detail_forma()
