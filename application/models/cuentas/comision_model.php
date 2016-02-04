@@ -57,13 +57,14 @@ class Comision_model extends CI_Model
 
 	}
 
-	public function lista_pagos_deposito($id_deposito = null)
+	public function lista_pagos_deposito($id_cliente = null)
 	{
 		$this->db->select('pago.monto_pago, pago.empresa_retorno, pago.banco_retorno, pago.fecha_pago, pago.folio_pago,banco.nombre_banco, empresa.nombre_empresa');
 		$this->db->from('ad_deposito_pago as pago');
+		$this->db->join('ad_depositos as deposito ','deposito.id_deposito = pago.id_deposito','inner');
 		$this->db->join('ad_catalogo_bancos as banco ','pago.banco_retorno = banco.id_banco','inner');
 		$this->db->join('ad_catalogo_empresa as empresa','pago.empresa_retorno = empresa.id_empresa','innner');
-		$this->db->where('pago.id_deposito',$id_deposito);
+		$this->db->where('deposito.id_cliente',$id_cliente);
 		$query = $this->db->get();
 		return $query->result();
 	}

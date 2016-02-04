@@ -20,70 +20,11 @@
                 <h1>Lista de clientes</h1>
             </div><!-- /.page-header -->
 
-            <div class="table-responsive col-sm-6">
-                <a href="<?=base_url('cuentas/comisiones/clientes_pagos')?>" class="btn btn-default" style="margin-bottom:15px;"> Lista de clientes</a> 
-                
-                <table id="sample-table-2" class="table table-striped table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th>Empresa </th>
-                            <th>Banco </th>
-                            <th class="text-center">Monto depósito</th>
-                            <th class="text-center">Folio depósito</th>
-                            <th>Lista depósitos</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach($list_deopsito as $deposito): ?>
-                        <tr>
-                            <td><?=$deposito->nombre_empresa?></td>
-                            <td><?=$deposito->nombre_banco?></td>
-                            <td class="text-center"><?=convierte_moneda($deposito->monto_deposito)?></td>
-                            <td><?=$deposito->folio_mov?></td>
-                            <td class="text-center">
-                                <a onclick="showPays(<?=$deposito->id_deposito?>)" style="cursor:pointer">
-                                    <i class="icon-list bigger-160"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    <?php endforeach;?>                        
-                    </tbody>
-                </table>
+            <div>
 
-                <script type="text/javascript">
-                    function showPays(deposito_id){
-                    
-                    $.ajax({
-                          type:'POST',
-                          dataType:'json',
-                          url:"<?php echo base_url('cuentas/comisiones/pagos_deposito')?>",
-                          data:'deposito_id='+deposito_id,
-                          success: function(data){
-                            console.log(data[0]);
-                            var html = '';
-                            for(var i =0; i<data.length;i++)
-                            {   
-
-                                html+= "<tr>";
-                                html += "<td>"+data[i].nombre_empresa+"</td>";
-                                html += "<td>"+data[i].nombre_banco+"</td>";
-                                html += "<td>"+data[i].monto_pago+"</td>";
-                                html += "<td>"+data[i].folio_pago+"</td>";
-                                html += "<td>"+data[i].fecha_pago+"</td>";                                                                
-                                html+= "</tr>";
-                            }
-                            $('#detalle-pagos').show();
-                            $('#movimientos-pagos-depositos').html(html);
-                          }
-                        })
-                    }
-                </script>
-
-                 <a href="<?=base_url('cuentas/comisiones/clientes_pagos')?>" class="btn btn-default" style="margin-top:15px;"> Lista de clientes</a> 
             </div>
 
-            <div class="table-responsive col-sm-6" id="detalle-pagos" style = "display:none" >
-                <div style="margin-bottom:15%;"></div>
+            <div class="table-responsive col-sm-12" id="detalle-pagos"  ng-controller="detallePagosCtrl" ng-init="retornaPagos('<?=base_url()?>',<?=$id_cliente?>)"  >
                 <table id="sample-table-3" class="table table-striped table-bordered table-hover">
                     <thead>
                         <tr>
@@ -94,13 +35,14 @@
                             <th class="text-center">Fecha</th>
                         </tr>
                     </thead>
-                    <tbody id="movimientos-pagos-depositos">
+                    <tbody id="movimientos-pagos-depositos" ng-repeat="paid in list_paids">
                    
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td class="text-center"></td>
-                            <td></td>
+                            <td>{{ paid.nombre_empresa }}</td>
+                            <td>{{ paid.nombre_banco }}</td>
+                            <td class="text-center">{{ paid.monto_pago }}</td>
+                            <td>{{ paid.folio_pago }}</td>
+                            <td>{{ paid.fecha_pago }}</td>
                         </tr>
                    
                     </tbody>
@@ -115,7 +57,7 @@
 <script src="<?php echo base_url()?>assets/js/jquery.dataTables.bootstrap.js"></script>
 <script type="text/javascript">
 jQuery(function($) {
-    var oTable1 = $('#sample-table-2').dataTable( {
+    var oTable1 = $('#sample-table-3').dataTable( {
      aLengthMenu: [
         [10, 50, 100, 200, -1],
         [10, 50, 100, 200, "All"]

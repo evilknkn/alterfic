@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
     <head>
         <meta charset="utf-8" />
         <title>ALTERFISC</title>
 
         <meta name="description" content="overview &amp; stats" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+        
         <?=$this->load->view('includes/head')?>
+        <?=$this->load->view('includes/angular')?>
     </head>
 
-    <body>
+    <body ng-app="alterfiscApp">
        <?=$this->load->view('includes/nav')?>
 
         <div class="main-container" id="main-container">

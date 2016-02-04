@@ -11,7 +11,7 @@
 </div>
 <?php //$valor = json_decode($cosas);  ?>
 
-<div class="page-content">
+<div class="page-content" >
     <div class="row">
         <div class="col-xs-12">
             <!-- PAGE CONTENT BEGINS -->

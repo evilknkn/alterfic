@@ -165,19 +165,16 @@ class Comisiones extends CI_Controller
 
 	public function detalle_pagos($id_cliente = null)
 	{
-		$this->load->model('users/clientes_model');	
-		$this->load->model('cuentas/comision_model');
-		$this->load->helper('funciones_externas');
-		$this->load->helper('cuentas');
-
-		$db = $this->comision_model;
-
+		
 		$data['menu'] 			= 'menu/menu_admin';
 		$data['body'] 			= 'admin/cuentas/comision/pagos/lista_depositos_asignados';
-		$data['list_deopsito'] 	= $db->lista_depositos_asignados($id_cliente);
+		$data['id_cliente']		= $id_cliente;
+		//$data['list_deopsito'] 	= $db->lista_depositos_asignados($id_cliente);
 		
 		$this->load->view('layer/layerout', $data);
 	}
+
+	
 
 	public function pagos_deposito()
 	{
