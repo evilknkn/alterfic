@@ -25,7 +25,9 @@
             </div>
 
             <div class="table-responsive col-sm-12" id="detalle-pagos"  ng-controller="detallePagosCtrl" ng-init="retornaPagos('<?=base_url()?>',<?=$id_cliente?>)"  >
-                <table id="sample-table-3" class="table table-striped table-bordered table-hover">
+                <a href="<?=base_url()?>excel/pagos_clientes/export_paids_client/<?=$id_cliente?>" class="btn btn-success" style ="margin-bottom:20px;">Exportar a excel</a>
+                <a href="<?=base_url()?>cuentas/comisiones/clientes_pagos" class="btn"  style ="margin-bottom:20px;"> Regresar</a>
+                <table id="" class="table table-striped table-bordered table-hover">
                     <thead>
                         <tr>
                             <th>Empresa de retorno</th>

@@ -35,7 +35,7 @@ define('FOPEN_WRITE_CREATE',					'ab');
 define('FOPEN_READ_WRITE_CREATE',				'a+b');
 define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
-define('PATH',									'/home/omarkabadmin/public_html/alterfisc_v2');
+define('PATH',									'C:\xampp\htdocs\Alterfisc');
 define('CLAVE_CLIENT',							'7bd9a9562456b1772676c86ebe289059b951d329');
 
 

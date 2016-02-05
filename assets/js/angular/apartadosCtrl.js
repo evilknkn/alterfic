@@ -7,7 +7,7 @@ angular.module('apartados', [])
   	var getUrl = getUrl+"ws/apartados/detalle_pagos/"+id_cliente;
   	
   	$http.get(getUrl).then(function(response){
-  		console.log(JSON.stringify(response.data.pagos));
+  		console.log(response.data.pagos);
   		$scope.list_paids = response.data.pagos;
   	});
   }
