@@ -13,7 +13,7 @@
                     <div class="form-group">
                         <label class="label-control col-xs-4">Nombre</label>
                         <div class="col-xs-8">
-                            <input value="" type="text" id="edited-cheque">
+                            <input value="" type="hidden" id="edited-cheque">
                             <input class="form-control" type="text" id="name_cheque" placeholder="Nombre a quien se le entrega el cheque">
                         </div>
                     </div>
@@ -95,7 +95,7 @@
                     html+= "</tr>";
                     
                         //console.log(data.total_monto[0].monto );
-                    if(data.tipePost == 'edit'){
+                    if(data.typePost == 'edit'){
                         $("#forma_id_"+data.forma_id).remove();
                         $('#lista-retornos').append(html);
                     }else{

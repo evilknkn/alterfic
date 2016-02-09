@@ -216,13 +216,10 @@
 			detail_cheque(id_forma);
 		}
 		if(type_forma == 2){
-			detail_cheque(id_forma);
+			detail_spei(id_forma);
 		}
 		if(type_forma == 3){
-			detail_cheque(id_forma);
-		}
-		if(type_forma == 4){
-			detail_cheque(id_forma);
+			detail_efectivo(id_forma);
 		}
 	}
 

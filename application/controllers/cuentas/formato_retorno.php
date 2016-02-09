@@ -103,6 +103,7 @@ class Formato_retorno extends CI_Controller
 
 		return $this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
+	
 	public function edicion_deposito()
 	{
 		$this->load->model('tool/formato_retorno_model');
@@ -240,13 +241,13 @@ class Formato_retorno extends CI_Controller
 		
 
 		if($tipo_retorno == 'cheque' ){
-				$data_update = array('nombre' 	=> $nombre_cheque, 'monto' => $monto );
+				$data_update = array('nombre' 	=> $nombre_cheque, 'monto' => $monto, 'parametro' => $folio_cheque );
 			}
-			// else if($tipo_retorno == 'spei'){
-			// 	$data_update = array('id_cliente' 	=> $this->input->post('id_cliente') );
-			// }else{
-			// 	$data_update = array('id_cliente' 	=> $this->input->post('id_cliente') );	
-			// }
+			elseif($tipo_retorno == 'spei'){
+				$data_update = array('nombre' 	=> $nombre_cheque, 'monto' => $monto, 'parametro' => $folio_cheque );
+			}else{
+				$data_update = array('nombre' 	=> $nombre_cheque, 'monto' => $monto );	
+			}
 			
 		$array_where = array('id_formato' => $id_formato);
 
@@ -282,7 +283,7 @@ class Formato_retorno extends CI_Controller
 			
 			//$data['total_depositos'] = number_format($monto_deposito - round($total_retornos_gral[0]->monto,2), 2) ;
 			$data['total_formato'] 	= number_format($total_retornos_gral[0]->monto,2);
-			$data['tipePost'] ='edit';
+			$data['typePost'] ='edit';
 
 		}
 		return $this->output->set_content_type('application/json')->set_output(json_encode($data));
@@ -304,6 +305,15 @@ class Formato_retorno extends CI_Controller
 			$data['nombre'] = $data_retorno->nombre;
 			$data['monto'] 	= $data_retorno->monto;
 			$data['folio'] 	= $data_retorno->parametro;
+		}elseif($type_form == 'spei'){
+			$data['id_forma'] = $id_forma;
+			$data['nombre'] = $data_retorno->nombre;
+			$data['monto'] 	= $data_retorno->monto;
+			$data['clabe'] 	= $data_retorno->parametro;
+		}else{
+			$data['id_forma'] = $id_forma;
+			$data['nombre'] = $data_retorno->nombre;
+			$data['monto'] 	= $data_retorno->monto;
 		}
 		
 		return $this->output->set_content_type('application/json')->set_output(json_encode($data));
