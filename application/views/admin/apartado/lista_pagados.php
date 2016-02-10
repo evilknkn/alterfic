@@ -61,7 +61,7 @@
             </div>
 
             <div class="table-responsive">
-                <div class="row" ng-controller="apartadoPendienteAsignadosCtrl" ng-init="listaPendientes('<?=base_url()?>')">
+                <div class="row" ng-controller="apartadoPagadosCtrl" ng-init="listaPagos('<?=base_url()?>')">
                     
                     <table datatable="ng" dt-options="dtOptions" class="row-border hover">
                         <thead>
@@ -92,7 +92,7 @@
                                 </td>
                                 <td>${{ deposito.monto_deposito }}</td>
                                 <td>${{ deposito.comision }}</td>
-                                <td><a href="" class="btn btn-primary">Pagar</a></td>
+                                <td><a href="" class="btn btn-success">Pagado</a></td>
                             </tr>
                        
                         </tbody>

@@ -54,6 +54,14 @@ class Depositos extends CI_Controller
 
 	public function pagados()
 	{
+        $this->load->model('tool/eloquent_model');
+        $db = $this->eloquent_model;
+        
+        $data['lista_clientes'] = $db->get_all_query('ad_catalogo_cliente', 'nombre_cliente');
+        
+        $data['menu']       = 'menu/menu_admin';
+        $data['body']       = 'admin/apartado/lista_pagados';
 
+        $this->load->view('layer/layerout', $data);  
 	}
 }

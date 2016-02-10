@@ -1,3 +1,4 @@
+
 <!-- barra direccion-->
 <div class="breadcrumbs" id="breadcrumbs">
     <script type="text/javascript">
@@ -61,9 +62,9 @@
             </div>
 
             <div class="table-responsive">
-                <div class="row" ng-controller="apartadoGeneralCtrl" ng-init="listaGeneral('<?=base_url()?>')">
+                <div class="row" ng-controller="apartadoGeneralCtrl" ng-init="listaGeneral('<?=base_url()?>')" >
                     
-                    <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                    <table datatable="ng" dt-options="dtOptions" class="row-border hover">
                         <thead>
                             <tr>   
                                 <th>Nombre empresa</th>
@@ -79,42 +80,26 @@
                                 <th>Ver pagos</th>
                          </tr>
                         </thead>
-                         <tbody  ng-repeat="deposito in list_depositos">
+                        <tbody>
                    
-                        <tr>
-                            <td>{{ deposito.nombre_empresa }}</td>
-                            <td>{{ deposito.nombre_banco }}</td>
-                            <td>{{ deposito.fecha_deposito }}</td>
-                            <td>{{ deposito.folio }}</td>
-                            <td>{{ deposito.nombre_cliente }}</td>
-                            <td> 
-                                <select>
-                                <option value="">-Asigne un cliente -</option>
-                                <?php foreach($lista_clientes as $cliente): ?>
-
-                                    <option value="<?=$cliente->id_cliente ?>" ng-if=" deposito.id_cliente == <?=$cliente->id_cliente ?>" selected disabled><?=$cliente->nombre_cliente ?> </option>
-
-                                    <option value="<?=$cliente->id_cliente ?>" ><?=$cliente->nombre_cliente ?> </option>
-                                <?php endforeach;?>
-                                </select>
-                            </td>
-                            <td>${{ deposito.monto_deposito }}</td>
-                            <td>${{ deposito.comision }}</td>
-                            <td>
-                                <select disabled>
-                                <option value="">-Asigne un cliente -</option>
-                                </select>
-                            </td>
-                        </tr>
-                   
-                    </tbody>
+                            <tr ng-repeat="deposito in list_depositos">
+                                <td>{{ deposito.nombre_empresa }}</td>
+                                <td>{{ deposito.nombre_banco }}</td>
+                                <td>{{ deposito.fecha_deposito }}</td>
+                                <td>{{ deposito.folio }}</td>
+                                <td>{{ deposito.nombre_cliente }}</td>
+                                <td> 
+                                    <a href="" class="btn btn-info">Asignar cliente</a>
+                                </td>
+                                <td>${{ deposito.monto_deposito }}</td>
+                                <td>${{ deposito.comision }}</td>
+                                <td><a href="" class="btn btn-primary">Pagar</a></td>
+                            </tr>
+                       
+                        </tbody>
                     </table>
                 </div>
-                <div ng-controller="TodoController">
-                    <div data-pagination="" data-num-pages="numPages()" 
-                            data-current-page="currentPage" data-max-size="maxSize"  
-                            data-boundary-links="true"></div>
-                </div>
+              
             </div>   
             <!-- PAGE CONTENT ENDS -->
         </div><!-- /.col -->
