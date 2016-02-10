@@ -44,6 +44,20 @@
         </ul>
     </li>
 
+    <li class="dropdown">
+         <a class="" >
+            <i class="fa fa-dollar fa-lg" style="margin-top:10px"></i>
+            <span class="menu-item">Apartados</span>
+        </a>
+        <ul class="list-unstyled menu-item">
+            <li>&nbsp;</li>
+            <li><a href="<?=base_url('apartado/depositos/general')?>">Genera-l</a></li>
+            <li><a href="<?=base_url('apartado/depositos/pendiente_asignar')?>">Pendiente de asignar</a></li>
+            <li><a href="<?=base_url('apartado/depositos/pendiente_retorno')?>">Asignados pendientes de retorno </a></li>
+            <li><a href="<?=base_url('apartado/depositos/pagados')?>">Pagado</a></li>
+        </ul>
+    </li>
+
     <li>
         <a class="" href="<?=base_url('cuentas/deposito_persona')?>">
             <i class="fa fa-user fa-lg" style="margin-top:10px"></i>

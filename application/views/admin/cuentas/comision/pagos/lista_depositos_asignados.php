@@ -42,7 +42,7 @@
                         <tr>
                             <td>{{ paid.nombre_empresa }}</td>
                             <td>{{ paid.nombre_banco }}</td>
-                            <td class="text-center">{{ paid.monto_pago }}</td>
+                            <td class="text-center"> {{ paid.monto_pago }}</td>
                             <td>{{ paid.folio_pago }}</td>
                             <td>{{ paid.fecha_pago }}</td>
                         </tr>

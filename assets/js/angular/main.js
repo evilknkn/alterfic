@@ -1,1 +1,1 @@
-var alterfiscApp = angular.module('alterfiscApp', ['apartados']);
+var alterfiscApp = angular.module('alterfiscApp', ['apartados','pagination','ui.bootstrap']);

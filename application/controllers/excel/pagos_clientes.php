@@ -67,8 +67,8 @@ class Pagos_clientes extends CI_Controller
             $cellRespuesta->setCellValue('A'.$i, $pago->nombre_empresa);
             $cellRespuesta->setCellValue('B'.$i, $pago->nombre_banco);
             $cellRespuesta->setCellValue('C'.$i, round($pago->monto_pago, 2));
-            $cellRespuesta->setCellValue('D'.$i, formato_fecha_ddmmaaaa($pago->fecha_pago));
-            $cellRespuesta->setCellValue('E'.$i, $pago->folio_pago);
+            $cellRespuesta->setCellValue('D'.$i, $pago->folio_pago);
+            $cellRespuesta->setCellValue('E'.$i, formato_fecha_ddmmaaaa($pago->fecha_pago));
            $i++;
         endforeach;
 

@@ -12,4 +12,45 @@ angular.module('apartados', [])
   	});
   }
 
+})
+
+.controller('apartadoGeneralCtrl', function ($scope, $http) {
+  
+  $scope.listaGeneral = function(getUrl){
+  	
+  	var getUrl = getUrl+"ws/apartados/depositos_general/";
+  	
+  	$http.get(getUrl).then(function(response){
+  		
+  		$scope.list_depositos = response.data;
+  	});
+  }
+
+})
+.controller('apartadoAsignadosCtrl', function ($scope, $http) {
+  
+  $scope.listaAsignados = function(getUrl){
+    
+    var getUrl = getUrl+"ws/apartados/depositos_asignados/";
+    
+    $http.get(getUrl).then(function(response){
+      
+      $scope.list_depositos = response.data;
+    });
+  }
+
+})
+
+.controller('apartadoPendienteAsignadosCtrl', function ($scope, $http) {
+  
+  $scope.listaPendientes = function(getUrl){
+    
+    var getUrl = getUrl+"ws/apartados/depositos_pendientes_asignar/";
+    
+    $http.get(getUrl).then(function(response){
+      
+      $scope.list_depositos = response.data;
+    });
+  }
+
 });

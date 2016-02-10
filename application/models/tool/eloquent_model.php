@@ -25,9 +25,14 @@ class Eloquent_model extends CI_Model
 		return $query->result();
 	}
 
-	public function get_all_query($table)
+	public function get_all_query($table, $order=null ) 
 	{
-		$query = $this->db->get($table);
+		$this->db->from($table);
+		
+		if($order != null){
+			$this->db->order_by($order);
+		}
+		$query = $this->db->get();
 		return $query->result();
 	}
 
@@ -36,6 +41,32 @@ class Eloquent_model extends CI_Model
 		$this->db->where($array_where);
 		$this->db->update($table, $data_up);
 		
+	}
+
+	public function join_dynamic($params)
+	{	
+		if($params['select_active'] == 'true')
+		$this->db->select($params['select_fields']);
+		
+		$this->db->from($params['from']);
+		
+		$total = $params['number_joins'];
+		$inner = $params['inner_connect'];
+		
+		for($i=0; $i<$total; $i++)
+		{
+			$this->db->join($inner[$i]['table'], $inner[$i]['on_table'], $inner[$i]['type_join']);
+		}
+
+		if($params['whereIn_active'] == 'true')
+			$this->db->where_in($params['whereIn_param'][0], $params['whereIn_param'][1]);
+		
+		if($params['where_active'] == 'true')
+			$this->db->where($params['where_param']);
+
+		$query = $this->db->get();
+		return $query->result();
+
 	}
 
 	public function lista_empresas()
@@ -51,3 +82,4 @@ class Eloquent_model extends CI_Model
 		return $query->result();
 	}
 }
+

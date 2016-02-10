@@ -79,6 +79,7 @@
                         </li>
                     </ul>
                 </li>
+
             <?php endif;?>
 
 
@@ -166,12 +167,15 @@
                             </a>
                         </li>
 
-                        <li>
+                        <!-- <li>
                             <a href="<?=base_url('cuentas/caja_chica')?>">
                                 <i class="icon-double-angle-right"></i>
                                 Caja Chica
                             </a>
-                        </li>
+                        </li> -->
+
+                        
+
 
                         <!-- <li>
                             <a href="<?=base_url('cuentas/gastos_camion')?>">
@@ -182,6 +186,23 @@
                     </ul>
                 </li>
 
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-dollar "></i>
+                        <span class="menu-text"> Apartados </span>
+
+                        <b class="arrow icon-angle-down"></b>
+                    </a>
+
+                    <ul class="submenu">
+                        <li><a href="<?=base_url('apartado/depositos/general')?>">General</a></li>
+                        <li><a href="<?=base_url('apartado/depositos/pendiente_asignar')?>">Pendiente de asignar</a></li>
+                        <li><a href="<?=base_url('apartado/depositos/pendiente_retorno')?>">Asignados pendientes de retorno </a></li>
+                        <li><a href="<?=base_url('apartado/depositos/pagados')?>">Pagado</a></li>
+                        
+                    </ul>
+                </li>
+               
                  <!-- <li>
                     <a href="<?=base_url('cuentas/deposito_persona')?>">
                         <i class="icon-user"></i>
