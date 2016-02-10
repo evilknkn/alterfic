@@ -16,16 +16,23 @@ angular.module('apartados', [])
 .controller('apartadoGeneralCtrl', function ($scope, $http, DTOptionsBuilder, DTColumnDefBuilder) {
   
   $scope.listaGeneral = function(getUrl){
-  	
   	var getUrl = getUrl+"ws/apartados/depositos_general/";
   	
   	$http.get(getUrl).then(function(response){
       $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withPaginationType('full_numbers')
         .withDisplayLength(100);
-
   		$scope.list_depositos = response.data;
   	});
+  };
+
+  $scope.sentValues=function(folio){
+    console.log(folio);
+    $scope.folioDeposito = folio;
+  }
+
+  $scope.asignaCliente = function(params){
+    console.log($scope.folioDeposito);
   }
 
 })
@@ -78,4 +85,4 @@ angular.module('apartados', [])
     });
   }
 
-});
+})
