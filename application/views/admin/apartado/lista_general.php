@@ -63,7 +63,7 @@
 
             <div class="table-responsive">
                 <div class="row" ng-controller="apartadoGeneralCtrl" ng-init="listaGeneral('<?=base_url()?>')" >
-                    
+                    {{folioDeposito}}
                     <table datatable="ng" dt-options="dtOptions" class="row-border hover">
                         <thead>
                             <tr>   
@@ -82,14 +82,14 @@
                         </thead>
                         <tbody>
                    
-                            <tr ng-repeat="deposito in list_depositos">
+                            <tr ng-repeat="deposito in list_depositos" id="deposito_{{deposito.id_deposito}}">
                                 <td>{{ deposito.nombre_empresa }}</td>
                                 <td>{{ deposito.nombre_banco }}</td>
                                 <td>{{ deposito.fecha_deposito }}</td>
                                 <td>{{ deposito.folio }}</td>
                                 <td>{{ deposito.nombre_cliente }}</td>
                                 <td> 
-                                    <a href="" class="btn btn-info">Asignar cliente</a>
+                                    <a class="btn btn-info" data-toggle="modal" href="#modalAsignaCliente" data-id="{{deposito.id_deposito}}" data-title="Asignación de cliente al folio {{deposito.folio}}" >Asignar cliente</a>
                                 </td>
                                 <td>${{ deposito.monto_deposito }}</td>
                                 <td>${{ deposito.comision }}</td>
@@ -99,6 +99,7 @@
                         </tbody>
                     </table>
                 </div>
+            <?=$this->load->view('admin/apartado/modal/modal_cliente');?>
               
             </div>   
             <!-- PAGE CONTENT ENDS -->
