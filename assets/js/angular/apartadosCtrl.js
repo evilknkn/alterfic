@@ -1,7 +1,7 @@
 angular.module('apartados', [])
 
 .controller('detallePagosCtrl', function ($scope, $http) {
-  
+
   $scope.retornaPagos = function(getUrl, id_cliente){
   	
   	var getUrl = getUrl+"ws/apartados/detalle_pagos/"+id_cliente;
@@ -13,7 +13,7 @@ angular.module('apartados', [])
 
 })
 
-.controller('apartadoGeneralCtrl', function ($scope, $http, DTOptionsBuilder, DTColumnDefBuilder) {
+.controller('apartadoGeneralCtrl', function ($scope, $http, $location, DTOptionsBuilder, DTColumnDefBuilder) {
   
   $scope.listaGeneral = function(getUrl){
   	var getUrl = getUrl+"ws/apartados/depositos_general/";
@@ -26,13 +26,24 @@ angular.module('apartados', [])
   	});
   };
 
-  $scope.sentValues=function(folio){
-    console.log(folio);
-    $scope.folioDeposito = folio;
+  $scope.asignaCliente = function(params){
+    console.log($location.host());
+
   }
 
-  $scope.asignaCliente = function(params){
-    console.log($scope.folioDeposito);
+  $scope.pagarDeposito=function(id_deposito, folio)
+  {
+    console.log(id_deposito);
+    var _confirmar = confirm("¿Confirmar el pago del folio "+folio+"?");
+
+    if(_confirmar == true){
+      var _url = "/Alterfisc/ws/apartados/pagar_deposito";
+      console.log("se enviara esto ")
+      var params = {post_id_deposito: id_deposito};
+      $http.post(_url, params).success(function(data, status) {
+            console.log(data);
+        })
+    }
   }
 
 })

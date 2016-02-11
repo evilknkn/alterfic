@@ -93,7 +93,7 @@
                                 </td>
                                 <td>${{ deposito.monto_deposito }}</td>
                                 <td>${{ deposito.comision }}</td>
-                                <td><a href="" class="btn btn-primary">Pagar</a></td>
+                                <td><a href="" class="btn btn-primary" ng-click="pagarDeposito(deposito.id_deposito, deposito.folio )">Pagar</a></td>
                             </tr>
                        
                         </tbody>

@@ -240,4 +240,16 @@ class Apartados extends CI_Controller
 		}
 		return $this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
+
+	public function pagar_deposito()
+	{
+		$this->load->model('tool/eloquent_model');
+
+		$db = $this->eloquent_model;
+
+		$db->update_where_query('ad_depositos',  array('status_retorno' => 'pagado'), array('id_deposito' => $this->input->post('post_id_deposito') ) );
+		$response['succes'] = 'succes';
+
+		return $this->output->set_content_type('application/json')->set_output(json_encode($response));
+	}
 }
