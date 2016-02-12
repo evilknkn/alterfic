@@ -110,7 +110,7 @@ class Apartados extends CI_Controller
 		$inner[2]		= array('table'=> 'ad_catalogo_empresa empresa', 'on_table' => 'empresa.id_empresa = detail.id_empresa', 'type_join' => 'inner' );
 		$inner[3]		= array('table'=> 'ad_catalogo_cliente cliente', 'on_table' => 'cliente.id_cliente = deptos.id_cliente', 'type_join' => 'left' );
 		$whereIn_array	= array('detail.tipo_movimiento', array('deposito_interno', 'deposito') );
-		$where_array 	= array('fecha_movimiento >='=> $fecha_ini, 'fecha_movimiento <='=>$fecha_fin,'deptos.id_cliente !=' => 0 );
+		$where_array 	= array('fecha_movimiento >='=> $fecha_ini, 'fecha_movimiento <='=>$fecha_fin,'deptos.id_cliente !=' => 0, 'deptos.status_retorno =' => '');
 
 		$params_join = array('select_active'=> 'true', 'select_fields' => $select_param,
 							'from' => $table_from, 'number_joins' => count($inner), 'inner_connect' => $inner, 
@@ -246,9 +246,25 @@ class Apartados extends CI_Controller
 		$this->load->model('tool/eloquent_model');
 
 		$db = $this->eloquent_model;
+		$deposito= $this->input->post('id_deposito') ;
 
-		$db->update_where_query('ad_depositos',  array('status_retorno' => 'pagado'), array('id_deposito' => $this->input->post('post_id_deposito') ) );
-		$response['succes'] = 'succes';
+		$db->update_where_query('ad_depositos',  array('status_retorno' => 'pagado'), array('id_deposito' => $deposito) );
+		$response['success'] = 'true';
+
+		return $this->output->set_content_type('application/json')->set_output(json_encode($response));
+	}
+
+	public function asignar_deposito()
+	{
+		$this->load->model('tool/eloquent_model');
+
+		$db = $this->eloquent_model;
+
+		$deposito = $this->input->post('id_deposito');
+		$cliente = $this->input->post('id_cliente');
+
+		$db->update_where_query('ad_depositos',  array('id_cliente' => $cliente), array('id_deposito' => $deposito) );
+		$response['success'] = 'true';
 
 		return $this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}

@@ -77,7 +77,7 @@
                                 <?php endif;?>
                                 <th>Depósito</th>
                                 <th>Comisión </th>
-                                <th>Ver pagos</th>
+                                <th>Pagar</th>
                          </tr>
                         </thead>
                         <tbody>
@@ -89,17 +89,17 @@
                                 <td>{{ deposito.folio }}</td>
                                 <td>{{ deposito.nombre_cliente }}</td>
                                 <td> 
-                                    <a class="btn btn-info" data-toggle="modal" href="#modalAsignaCliente" data-id="{{deposito.id_deposito}}" data-title="Asignación de cliente al folio {{deposito.folio}}" >Asignar cliente</a>
+                                    <a class="btn btn-info" ng-click="asignaCliente(deposito.id_deposito, deposito.folio )"  >Asignar cliente</a>
                                 </td>
                                 <td>${{ deposito.monto_deposito }}</td>
                                 <td>${{ deposito.comision }}</td>
-                                <td><a href="" class="btn btn-primary" ng-click="pagarDeposito(deposito.id_deposito, deposito.folio )">Pagar</a></td>
+                                <td><a id="pay_depto_{{deposito_.id_deposito}}" class="btn btn-primary" ng-click="pagarDeposito(deposito.id_deposito, deposito.folio )">Pagar</a></td>
                             </tr>
                        
                         </tbody>
                     </table>
                 </div>
-            <?=$this->load->view('admin/apartado/modal/modal_cliente');?>
+                <?=$this->load->view('admin/apartado/modal/modal_cliente');?>
               
             </div>   
             <!-- PAGE CONTENT ENDS -->
