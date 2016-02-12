@@ -38,9 +38,9 @@ angular.module('apartados', [])
 
     if(_confirmar == true){
       var _url = "/Alterfisc/ws/apartados/pagar_deposito";
-      console.log("se enviara esto ")
+      
       var params = {post_id_deposito: id_deposito};
-      $http.post(_url, params).success(function(data, status) {
+      $http.post(_url, {post_id_deposito: id_deposito}).success(function(data, status) {
             console.log(data);
         })
     }
