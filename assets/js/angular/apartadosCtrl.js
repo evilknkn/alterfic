@@ -13,7 +13,7 @@ angular.module('apartados', [])
 
 })
 
-.controller('apartadoGeneralCtrl', function ($scope, $http, $location, DTOptionsBuilder, DTColumnDefBuilder) {
+.controller('apartadoGeneralCtrl', function ($scope, $http, $location, $resource, DTOptionsBuilder, DTColumnDefBuilder) {
   
   $scope.listaGeneral = function(getUrl){
   	var getUrl = getUrl+"ws/apartados/depositos_general/";
@@ -26,24 +26,19 @@ angular.module('apartados', [])
   	});
   };
 
-  $scope.asignaCliente = function(params){
-    console.log($location.host());
-
+  $scope.asignaCliente = function(id_deposito, folio)
+  {    
+    $("#id_depto").val(id_deposito);
+    $('#title-modal').html("Asignación de cliente al folio "+folio);
+    $('#modalAsignaCliente').modal('show');
   }
 
-  $scope.pagarDeposito=function(id_deposito, folio)
-  {
-    console.log(id_deposito);
-    var _confirmar = confirm("¿Confirmar el pago del folio "+folio+"?");
-
-    if(_confirmar == true){
-      var _url = "/Alterfisc/ws/apartados/pagar_deposito";
-      
-      var params = {post_id_deposito: id_deposito};
-      $http.post(_url, {post_id_deposito: id_deposito}).success(function(data, status) {
-            console.log(data);
-        })
-    }
+  
+  $scope.pagarDeposito = function(id_deposito, folio)
+  {    
+    $("#id_depto_pago").val(id_deposito);
+    $('#legend-modal').html("¿Esta seguro que desa pagar el folio "+folio+" ?");
+    $('#modalPago').modal('show');
   }
 
 })
@@ -63,6 +58,20 @@ angular.module('apartados', [])
     });
   }
 
+  $scope.asignaCliente = function(id_deposito, folio)
+  {    
+    $("#id_depto").val(id_deposito);
+    $('#title-modal').html("Asignación de cliente al folio "+folio);
+    $('#modalAsignaCliente').modal('show');
+  }
+
+  $scope.pagarDeposito = function(id_deposito, folio)
+  {    
+    $("#id_depto_pago").val(id_deposito);
+    $('#legend-modal').html("¿Esta seguro que desa pagar el folio "+folio+" ?");
+    $('#modalPago').modal('show');
+  }
+  
 })
 
 .controller('apartadoPendienteAsignadosCtrl', function ($scope, $http, DTOptionsBuilder, DTColumnDefBuilder) {
@@ -78,6 +87,20 @@ angular.module('apartados', [])
 
       $scope.list_depositos = response.data;
     });
+  }
+
+  $scope.asignaCliente = function(id_deposito, folio)
+  {    
+    $("#id_depto").val(id_deposito);
+    $('#title-modal').html("Asignación de cliente al folio "+folio);
+    $('#modalAsignaCliente').modal('show');
+  }
+
+  $scope.pagarDeposito = function(id_deposito, folio)
+  {    
+    $("#id_depto_pago").val(id_deposito);
+    $('#legend-modal').html("¿Esta seguro que desa pagar el folio "+folio+" ?");
+    $('#modalPago').modal('show');
   }
 
 })
@@ -96,4 +119,19 @@ angular.module('apartados', [])
     });
   }
 
+  $scope.pagarDeposito = function(id_deposito, folio)
+  {    
+    $("#id_depto_pago").val(id_deposito);
+    $('#legend-modal').html("¿Esta seguro que desa pagar el folio "+folio+" ?");
+    $('#modalPago').modal('show');
+  }
+
+  $scope.asignaCliente = function(id_deposito, folio)
+  {    
+    $("#id_depto").val(id_deposito);
+    $('#title-modal').html("Asignación de cliente al folio "+folio);
+    $('#modalAsignaCliente').modal('show');
+  }
+
 })
+

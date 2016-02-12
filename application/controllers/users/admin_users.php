@@ -106,7 +106,7 @@ class Admin_users extends CI_Controller
 		else:
 
 			$data['getUser']= $db->rowData('ad_usuarios' ,array('id_user' => $id_user));
-			$data['list_admin'] = $db->getData('ad_catalogo_perfiles', array());
+			$data['list_admin'] = $db->getData('ad_catalogo_perfiles', array('status'=>1));
 
 			$data['menu'] 	= 'menu/menu_admin';
 			$data['body'] 	= 'admin/users/edit_user';

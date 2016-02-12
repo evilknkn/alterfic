@@ -84,26 +84,28 @@
 
 
             <?php if($this->session->userdata('ID_PERFIL') == 6 or $this->session->userdata('ID_PERFIL') == 5 or $this->session->userdata('ID_PERFIL') == 7): ?>
-                <li>
-                    <a href="<?=base_url('catalogos/banks')?>">
-                        <i class="icon-credit-card"></i>
-                        <span class="menu-text"> Lista de bancos </span>
-                    </a>
-                </li>
+                <?php if( $this->session->userdata('ID_PERFIL') != 7): ?>
+                    <li>
+                        <a href="<?=base_url('catalogos/banks')?>">
+                            <i class="icon-credit-card"></i>
+                            <span class="menu-text"> Lista de bancos </span>
+                        </a>
+                    </li>
 
-                 <li>
-                    <a href="<?=base_url('catalogos/corps')?>">
-                        <i class="fa fa-institution bigger-140"></i>
-                        <span class="menu-text"> Lista de empresas </span>
-                    </a>
-                </li>
+                     <li>
+                        <a href="<?=base_url('catalogos/corps')?>">
+                            <i class="fa fa-institution bigger-140"></i>
+                            <span class="menu-text"> Lista de empresas </span>
+                        </a>
+                    </li>
 
-                <li>
-                    <a href="<?=base_url('users/clientes')?>">
-                        <i class="icon-list "></i>
-                        <span class="menu-text"> Clientes </span>
-                    </a>
-                </li>
+                    <li>
+                        <a href="<?=base_url('users/clientes')?>">
+                            <i class="icon-list "></i>
+                            <span class="menu-text"> Clientes </span>
+                        </a>
+                    </li>
+                <?php endif; ?>
                     <?php if($this->session->userdata('ID_PERFIL') == 1000006 or $this->session->userdata('ID_PERFIL') == 100000005): ?>
                         <li>
                            <a href="#" class="dropdown-toggle">

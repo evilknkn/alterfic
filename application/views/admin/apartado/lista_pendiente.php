@@ -76,29 +76,30 @@
                                 <?php endif;?>
                                 <th>Depósito</th>
                                 <th>Comisión </th>
-                                <th>Ver pagos</th>
+                               <!--  <th>Pagar</th> -->
                          </tr>
                         </thead>
                         <tbody>
                    
-                            <tr ng-repeat="deposito in list_depositos">
-                                <td>{{ deposito.nombre_empresa }}</td>
+                            <tr ng-repeat="deposito in list_depositos" id="deposito_{{deposito.id_deposito}}">
+                                <td>{{ deposito.nombre_empresa }}  {{deposito_.id_deposito}}</td>
                                 <td>{{ deposito.nombre_banco }}</td>
                                 <td>{{ deposito.fecha_deposito }}</td>
                                 <td>{{ deposito.folio }}</td>
                                 <td>{{ deposito.nombre_cliente }}</td>
                                 <td> 
-                                    <a href="" class="btn btn-info">Asignar cliente</a>
+                                    <a class="btn btn-info" ng-click="asignaCliente(deposito.id_deposito, deposito.folio )"  >Asignar cliente</a>
                                 </td>
                                 <td>${{ deposito.monto_deposito }}</td>
                                 <td>${{ deposito.comision }}</td>
-                                <td><a href="" class="btn btn-primary">Pagar</a></td>
+                                <!-- <td><a id="pay_depto_{{deposito.id_deposito}}" class="btn btn-primary" ng-click="pagarDeposito(deposito.id_deposito, deposito.folio )">Pagar</a></td> -->
                             </tr>
                        
                         </tbody>
                     </table>
                 </div>
-                
+                <?=$this->load->view('admin/apartado/modal/modal_cliente');?>
+                <?=$this->load->view('admin/apartado/modal/modal_pago');?>
             </div>   
             <!-- PAGE CONTENT ENDS -->
         </div><!-- /.col -->

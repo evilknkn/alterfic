@@ -1,1 +1,1 @@
-var alterfiscApp = angular.module('alterfiscApp', ['apartados', 'datatables']);
+var alterfiscApp = angular.module('alterfiscApp', ['apartados', 'datatables', 'ngResource']);
