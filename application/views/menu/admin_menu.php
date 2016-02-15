@@ -41,7 +41,7 @@
             </a>
         </li>
         <?php if($this->session->userdata('consulta') == 'active'): ?>
-            <?php if($this->session->userdata('ID_PERFIL') == 1 or $this->session->userdata('ID_PERFIL') == 2 or $this->session->userdata('ID_PERFIL') == 4): ?>
+            <?php if($this->session->userdata('ID_PERFIL') == 5 or $this->session->userdata('ID_PERFIL') == 6): ?>
                 <li>
                     <a href="#" class="dropdown-toggle">
                         <i class="icon-dollar "></i>
@@ -83,44 +83,46 @@
             <?php endif;?>
 
 
-            <?php if($this->session->userdata('ID_PERFIL') == 6 or $this->session->userdata('ID_PERFIL') == 5): ?>
-                <li>
-                    <a href="<?=base_url('catalogos/banks')?>">
-                        <i class="icon-credit-card"></i>
-                        <span class="menu-text"> Lista de bancos </span>
-                    </a>
-                </li>
-
-                 <li>
-                    <a href="<?=base_url('catalogos/corps')?>">
-                        <i class="fa fa-institution bigger-140"></i>
-                        <span class="menu-text"> Lista de empresas </span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="<?=base_url('users/clientes')?>">
-                        <i class="icon-list "></i>
-                        <span class="menu-text"> Clientes </span>
-                    </a>
-                </li>
-                    <?php if($this->session->userdata('ID_PERFIL') == 6 or $this->session->userdata('ID_PERFIL') == 5): ?>
+            <?php if($this->session->userdata('ID_PERFIL') == 6 or $this->session->userdata('ID_PERFIL') == 5 or $this->session->userdata('ID_PERFIL') == 7): ?>
+                <?php if( $this->session->userdata('ID_PERFIL') != 7): ?>
                     <li>
-                       <a href="#" class="dropdown-toggle">
-                            <i class="icon-folder-open "></i>
-                            <span class="menu-text"> Solicitudes </span>
-
-                            <b class="arrow icon-angle-down"></b>
-                        </a> 
-                        <ul class="submenu">
-                            <li>
-                                <a href="<?=base_url('cuentas/formato_retorno/getClientes')?>">
-                                    <i class="icon-double-angle-right"></i>
-                                    Formato de retorno
-                                </a>
-                            </li>
-                        </ul>
+                        <a href="<?=base_url('catalogos/banks')?>">
+                            <i class="icon-credit-card"></i>
+                            <span class="menu-text"> Lista de bancos </span>
+                        </a>
                     </li>
+
+                     <li>
+                        <a href="<?=base_url('catalogos/corps')?>">
+                            <i class="fa fa-institution bigger-140"></i>
+                            <span class="menu-text"> Lista de empresas </span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="<?=base_url('users/clientes')?>">
+                            <i class="icon-list "></i>
+                            <span class="menu-text"> Clientes </span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+                    <?php if($this->session->userdata('ID_PERFIL') == 1000006 or $this->session->userdata('ID_PERFIL') == 100000005): ?>
+                        <li>
+                           <a href="#" class="dropdown-toggle">
+                                <i class="icon-folder-open "></i>
+                                <span class="menu-text"> Solicitudes </span>
+
+                                <b class="arrow icon-angle-down"></b>
+                            </a> 
+                            <ul class="submenu">
+                                <li>
+                                    <a href="<?=base_url('cuentas/formato_retorno/getClientes')?>">
+                                        <i class="icon-double-angle-right"></i>
+                                        Formato de retorno
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     <?php endif; ?>
               
                 <li>
@@ -145,28 +147,28 @@
                                 Pendientes de retorno
                             </a>
                         </li>
+                        <?php if($this->session->userdata('ID_PERFIL') == 5 or $this->session->userdata('ID_PERFIL') == 6):?>
+                            <li>
+                                <a href="<?=base_url('cuentas/comisiones')?>">
+                                    <i class="icon-double-angle-right"></i>
+                                    Comisiones
+                                </a>
+                            </li>
 
-                        <li>
-                            <a href="<?=base_url('cuentas/comisiones')?>">
-                                <i class="icon-double-angle-right"></i>
-                                Comisiones
-                            </a>
-                        </li>
+                            <li>
+                                <a href="<?=base_url('cuentas/comisiones/clientes_pagos')?>">
+                                    <i class="icon-double-angle-right"></i>
+                                    <span class="menu-text"> Clientes lista de pagos </span>
+                                </a>
+                            </li>
 
-                        <li>
-                            <a href="<?=base_url('cuentas/comisiones/clientes_pagos')?>">
-                                <i class="icon-double-angle-right"></i>
-                                <span class="menu-text"> Clientes lista de pagos </span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="<?=base_url('cuentas/gastos')?>">
-                                <i class="icon-double-angle-right"></i>
-                                Gastos
-                            </a>
-                        </li>
-
+                            <li>
+                                <a href="<?=base_url('cuentas/gastos')?>">
+                                    <i class="icon-double-angle-right"></i>
+                                    Gastos
+                                </a>
+                            </li>
+                        <?php endif;?>
                         <!-- <li>
                             <a href="<?=base_url('cuentas/caja_chica')?>">
                                 <i class="icon-double-angle-right"></i>
@@ -209,26 +211,27 @@
                         <span class="menu-text"> Depósitos persona </span>
                     </a>
                 </li> -->
+                <?php if($this->session->userdata('ID_PERFIL') == 5 or $this->session->userdata('ID_PERFIL') == 6):?>
+                    <li>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="icon-group"></i>
+                            <span class="menu-text"> Usuarios </span>
 
-                <li>
-                    <a href="#" class="dropdown-toggle">
-                        <i class="icon-group"></i>
-                        <span class="menu-text"> Usuarios </span>
+                            <b class="arrow icon-angle-down"></b>
+                        </a>
 
-                        <b class="arrow icon-angle-down"></b>
-                    </a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="<?=base_url('users/admin_users/list_admin/1')?>">
+                                    <i class="icon-double-angle-right"></i>
+                                    Administradores
+                                </a>
+                            </li>
 
-                    <ul class="submenu">
-                        <li>
-                            <a href="<?=base_url('users/admin_users/list_admin/1')?>">
-                                <i class="icon-double-angle-right"></i>
-                                Administradores
-                            </a>
-                        </li>
-
-                      
-                    </ul>
-                </li>
+                          
+                        </ul>
+                    </li>
+                <?php endif; // fin  filtro users ?>    
             <?php endif;?>
         <?php endif;?>
     </ul><!-- /.nav-list -->

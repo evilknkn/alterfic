@@ -59,7 +59,7 @@ class Apartados extends CI_Controller
 		$inner[1]		= array('table'=> 'ad_catalogo_bancos banco', 'on_table' => 'banco.id_banco=detail.id_banco', 'type_join' => 'inner' );
 		$inner[2]		= array('table'=> 'ad_catalogo_empresa empresa', 'on_table' => 'empresa.id_empresa = detail.id_empresa', 'type_join' => 'inner' );
 		$inner[3]		= array('table'=> 'ad_catalogo_cliente cliente', 'on_table' => 'cliente.id_cliente = deptos.id_cliente', 'type_join' => 'left' );
-		$whereIn_array	= array('detail.tipo_movimiento', array('deposito_interno', 'deposito') );
+		$whereIn_array	= array('detail.tipo_movimiento', array('deposito') );
 		$where_array 	= array('fecha_movimiento >='=> $fecha_ini, 'fecha_movimiento <='=>$fecha_fin);
 
 		$params_join = array('select_active'=> 'true', 'select_fields' => $select_param,
@@ -85,7 +85,8 @@ class Apartados extends CI_Controller
 								"folio"			=> $depto->folio_depto,
 								"nombre_cliente"=> $depto->nombre_cliente,
 								"monto_deposito"=> number_format($depto->monto_deposito,2),
-								"comision" 		=> number_format($comision_empresa,2) );
+								"comision" 		=> number_format($comision_empresa,2),
+								"status_pago"   => $depto->status_retorno );
 		}
 		return $this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
@@ -109,7 +110,10 @@ class Apartados extends CI_Controller
 		$inner[1]		= array('table'=> 'ad_catalogo_bancos banco', 'on_table' => 'banco.id_banco=detail.id_banco', 'type_join' => 'inner' );
 		$inner[2]		= array('table'=> 'ad_catalogo_empresa empresa', 'on_table' => 'empresa.id_empresa = detail.id_empresa', 'type_join' => 'inner' );
 		$inner[3]		= array('table'=> 'ad_catalogo_cliente cliente', 'on_table' => 'cliente.id_cliente = deptos.id_cliente', 'type_join' => 'left' );
-		$whereIn_array	= array('detail.tipo_movimiento', array('deposito_interno', 'deposito') );
+		
+		$whereIn_array	= array('detail.tipo_movimiento', array( 'deposito') );
+		//$whereIn_array	= array('deptos.status_retorno', array('no pagado', '') );
+
 		$where_array 	= array('fecha_movimiento >='=> $fecha_ini, 'fecha_movimiento <='=>$fecha_fin,'deptos.id_cliente ' => 0 );
 
 		$params_join = array('select_active'=> 'true', 'select_fields' => $select_param,
@@ -135,7 +139,8 @@ class Apartados extends CI_Controller
 								"folio"			=> $depto->folio_depto,
 								"nombre_cliente"=> $depto->nombre_cliente,
 								"monto_deposito"=> number_format($depto->monto_deposito,2),
-								"comision" 		=> number_format($comision_empresa,2) );
+								"comision" 		=> number_format($comision_empresa,2),
+								"status_pago"   => $depto->status_retorno );
 		}
 		return $this->output->set_content_type('application/json')->set_output(json_encode($response));
 	
@@ -160,8 +165,10 @@ class Apartados extends CI_Controller
 		$inner[1]		= array('table'=> 'ad_catalogo_bancos banco', 'on_table' => 'banco.id_banco=detail.id_banco', 'type_join' => 'inner' );
 		$inner[2]		= array('table'=> 'ad_catalogo_empresa empresa', 'on_table' => 'empresa.id_empresa = detail.id_empresa', 'type_join' => 'inner' );
 		$inner[3]		= array('table'=> 'ad_catalogo_cliente cliente', 'on_table' => 'cliente.id_cliente = deptos.id_cliente', 'type_join' => 'left' );
-		$whereIn_array	= array('detail.tipo_movimiento', array('deposito_interno', 'deposito') );
-		$where_array 	= array('fecha_movimiento >='=> $fecha_ini, 'fecha_movimiento <='=>$fecha_fin,'deptos.id_cliente !=' => 0, 'deptos.status_retorno_ =' => '');
+		//$whereIn_array	= array('detail.tipo_movimiento', array('deposito_interno', 'deposito') );
+		$whereIn_array	= array('deptos.status_retorno', array('no pagado', '') );
+
+		$where_array 	= array('fecha_movimiento >='=> $fecha_ini, 'fecha_movimiento <='=>$fecha_fin,'deptos.id_cliente !=' => 0, 'detail.tipo_movimiento =' => 'deposito');
 
 		$params_join = array('select_active'=> 'true', 'select_fields' => $select_param,
 							'from' => $table_from, 'number_joins' => count($inner), 'inner_connect' => $inner, 
@@ -186,7 +193,8 @@ class Apartados extends CI_Controller
 								"folio"			=> $depto->folio_depto,
 								"nombre_cliente"=> $depto->nombre_cliente,
 								"monto_deposito"=> number_format($depto->monto_deposito,2),
-								"comision" 		=> number_format($comision_empresa,2) );
+								"comision" 		=> number_format($comision_empresa,2),
+								"status_pago"   => $depto->status_retorno );
 		}
 		return $this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
@@ -210,8 +218,8 @@ class Apartados extends CI_Controller
 		$inner[1]		= array('table'=> 'ad_catalogo_bancos banco', 'on_table' => 'banco.id_banco=detail.id_banco', 'type_join' => 'inner' );
 		$inner[2]		= array('table'=> 'ad_catalogo_empresa empresa', 'on_table' => 'empresa.id_empresa = detail.id_empresa', 'type_join' => 'inner' );
 		$inner[3]		= array('table'=> 'ad_catalogo_cliente cliente', 'on_table' => 'cliente.id_cliente = deptos.id_cliente', 'type_join' => 'left' );
-		$whereIn_array	= array('detail.tipo_movimiento', array('deposito_interno', 'deposito') );
-		$where_array 	= array('fecha_movimiento >='=> $fecha_ini, 'fecha_movimiento <='=>$fecha_fin,'deptos.status_retorno' => 'pagado' );
+		$whereIn_array	= array('deptos.status_retorno', array('pagado') );
+		$where_array 	= array('fecha_movimiento >='=> $fecha_ini, 'fecha_movimiento <='=>$fecha_fin,'detail.tipo_movimiento' => 'deposito' );
 
 		$params_join = array('select_active'=> 'true', 'select_fields' => $select_param,
 							'from' => $table_from, 'number_joins' => count($inner), 'inner_connect' => $inner, 
@@ -236,7 +244,8 @@ class Apartados extends CI_Controller
 								"folio"			=> $depto->folio_depto,
 								"nombre_cliente"=> $depto->nombre_cliente,
 								"monto_deposito"=> number_format($depto->monto_deposito,2),
-								"comision" 		=> number_format($comision_empresa,2) );
+								"comision" 		=> number_format($comision_empresa,2),
+								"status_pago"   => $depto->status_retorno );
 		}
 		return $this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}

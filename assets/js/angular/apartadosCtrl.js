@@ -41,6 +41,19 @@ angular.module('apartados', [])
     $('#modalPago').modal('show');
   }
 
+  $scope.class_tr = function(id_deposito, id_cliente, status_retorno)
+  {
+      if( id_cliente != null){
+        if(status_retorno == 'pagado'){
+          $( "#deposito_"+id_deposito ).addClass( "label-success");
+        $( "#deposito_"+id_deposito ).css( "color","#ffffff");
+        }else{
+          $( "#deposito_"+id_deposito ).addClass( "label-info");
+          $( "#deposito_"+id_deposito ).css( "color","#ffffff");  
+        }
+      }
+  }
+
 })
 .controller('apartadoAsignadosCtrl', function ($scope, $http, DTOptionsBuilder, DTColumnDefBuilder) {
   
@@ -131,6 +144,19 @@ angular.module('apartados', [])
     $("#id_depto").val(id_deposito);
     $('#title-modal').html("Asignación de cliente al folio "+folio);
     $('#modalAsignaCliente').modal('show');
+  }
+
+  $scope.class_tr = function(id_deposito, id_cliente, status_retorno)
+  {
+      if( id_cliente != null){
+        if(status_retorno == 'pagado'){
+          $( "#deposito_"+id_deposito ).addClass( "label-success");
+        $( "#deposito_"+id_deposito ).css( "color","#ffffff");
+        }else{
+          $( "#deposito_"+id_deposito ).addClass( "label-info");
+          $( "#deposito_"+id_deposito ).css( "color","#ffffff");  
+        }
+      }
   }
 
 })

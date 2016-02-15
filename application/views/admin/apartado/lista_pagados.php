@@ -81,7 +81,7 @@
                         </thead>
                         <tbody>
                    
-                            <tr ng-repeat="deposito in list_depositos" id="deposito_{{deposito.id_deposito}}" >
+                            <tr ng-repeat="deposito in list_depositos" id="deposito_{{deposito.id_deposito}}" ng-style="class_tr(deposito.id_deposito, deposito.nombre_cliente, deposito.status_pago)" >
                                 <td>{{ deposito.nombre_empresa }}</td>
                                 <td>{{ deposito.nombre_banco }}</td>
                                 <td>{{ deposito.fecha_deposito }}</td>
