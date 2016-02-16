@@ -61,6 +61,9 @@
             </div>
 
             <div class="table-responsive">
+                <div class="row " style="margin-bottom:20px;">
+                    <a href="<?=base_url()?>excel/apartados/info/pendientesAsignar"  class="btn btn-success" > Exportar a Excel </a>
+                </div>
                 <div class="row" ng-controller="apartadoPendienteAsignadosCtrl" ng-init="listaPendientes('<?=base_url()?>')">
                     
                     <table datatable="ng" dt-options="dtOptions" class="row-border hover">

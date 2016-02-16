@@ -31,8 +31,29 @@ class Apartados extends CI_Controller
 		$inner[1]		= array('table'=> 'ad_catalogo_bancos banco', 'on_table' => 'banco.id_banco=detail.id_banco', 'type_join' => 'inner' );
 		$inner[2]		= array('table'=> 'ad_catalogo_empresa empresa', 'on_table' => 'empresa.id_empresa = detail.id_empresa', 'type_join' => 'inner' );
 		$inner[3]		= array('table'=> 'ad_catalogo_cliente cliente', 'on_table' => 'cliente.id_cliente = deptos.id_cliente', 'type_join' => 'left' );
-		$whereIn_array	= array('detail.tipo_movimiento', array('deposito') );
-		$where_array 	= array('fecha_movimiento >='=> $fecha_ini, 'fecha_movimiento <='=>$fecha_fin);
+		//$whereIn_array	= array('detail.tipo_movimiento', array('deposito') );
+		if( $tipo_excel=='general')
+		{
+			$whereIn_array	= array('detail.tipo_movimiento', array('deposito') );
+			$where_array 	= array('fecha_movimiento >='=> $fecha_ini, 'fecha_movimiento <='=>$fecha_fin);
+			$headers 	= array('Nombre Empresa', 'Banco', 'Fecha depósito', 'Folio', 'Nombre cliente', 'Depósito', 'Comisión'); 
+
+		}else if( $tipo_excel=='pendientesAsignar'){
+			$whereIn_array	= array('detail.tipo_movimiento', array( 'deposito') );
+			$where_array 	= array('fecha_movimiento >='=> $fecha_ini, 'fecha_movimiento <='=>$fecha_fin,'deptos.id_cliente ' => 0 );
+			$headers 	= array('Nombre Empresa', 'Banco', 'Fecha depósito', 'Folio', 'Nombre cliente', 'Depósito', 'Comisión');
+
+		}else if($tipo_excel =='noPagado'){
+			$whereIn_array	= array('deptos.status_retorno', array('no pagado', '') );
+			$where_array 	= array('fecha_movimiento >='=> $fecha_ini, 'fecha_movimiento <='=>$fecha_fin,'deptos.id_cliente !=' => 0, 'detail.tipo_movimiento =' => 'deposito');
+			$headers 	= array('Nombre Empresa', 'Banco', 'Fecha depósito', 'Folio', 'Nombre cliente', 'Depósito', 'Comisión');
+
+		}else if($tipo_excel =='Pagado'){
+			$whereIn_array	= array('deptos.status_retorno', array('pagado') );
+			$where_array 	= array('fecha_movimiento >='=> $fecha_ini, 'fecha_movimiento <='=>$fecha_fin,'detail.tipo_movimiento' => 'deposito' );
+			$headers 	= array('Nombre Empresa', 'Banco', 'Fecha depósito', 'Folio', 'Nombre cliente', 'Depósito', 'Comisión');
+		}
+		
 
 		$params_join = array('select_active'=> 'true', 'select_fields' => $select_param,
 							'from' => $table_from, 'number_joins' => count($inner), 'inner_connect' => $inner, 
@@ -41,6 +62,7 @@ class Apartados extends CI_Controller
 		
 		$lista_deptos = $db->join_dynamic($params_join);
 
+		//print_r(count($headers));exit;
 
 
 		error_reporting(E_ALL);
@@ -65,39 +87,59 @@ class Apartados extends CI_Controller
 									 ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
 									 ->setKeywords("office 2007 openxml php")
 									 ->setCategory("Test result file");
+		$total_columns 	= 65 + count($headers);		
+		$leter 		= array();		
 
-
-		// Add some data
-		$objPHPExcel->setActiveSheetIndex(0)
-		            ->setCellValue('A1', strtoupper('Fecha depósito'))
-		            ->setCellValue('B1', strtoupper('Monto del depósito'))
-		            ->setCellValue('C1', strtoupper('Comisión'))
-		            ->setCellValue('D1', strtoupper('Folio'))
-		            ->setCellValue('E1', strtoupper('Empresa'))
-		            ->setCellValue('F1', strtoupper('Banco'));
-
-
-		$objPHPExcel->getActiveSheet()->getColumnDimension( 'A' )->setAutoSize(true);
-		$objPHPExcel->getActiveSheet()->getColumnDimension( 'B' )->setAutoSize(true);
-		$objPHPExcel->getActiveSheet()->getColumnDimension( 'C' )->setAutoSize(true);
-		$objPHPExcel->getActiveSheet()->getColumnDimension( 'D' )->setAutoSize(true);
-		$objPHPExcel->getActiveSheet()->getColumnDimension( 'E' )->setAutoSize(true);
-		$objPHPExcel->getActiveSheet()->getColumnDimension( 'F' )->setAutoSize(true);
+ 		for($i=65; $i<$total_columns; $i++) 
+		{  
+			$leter[] = chr($i);  
+			
+		}  
+		
+		$Column = $objPHPExcel->setActiveSheetIndex(0);
+		
+		for($i=0; $i< count($leter);$i++){
+			$Column->setCellValue($leter[$i].'1', strtoupper($headers[$i]));
+		}
+		
+		for($i=0; $i< count($leter);$i++){
+			$objPHPExcel->getActiveSheet()->getColumnDimension( $leter[$i] )->setAutoSize(true);
+		}   
+		
 
 		$cellRespuesta=  $objPHPExcel->setActiveSheetIndex(0);
 		
         $i=2;
-		foreach($depositos as $deposito): 
-          	$comision = (($deposito->monto_deposito / 1.16 ) * $cliente->comision);
+        
+        for($x=0; $x<count($lista_deptos);$x++){
 
-            $cellRespuesta->setCellValue('A'.$i, formato_fecha_ddmmaaaa($deposito->fecha_deposito));
-            $cellRespuesta->setCellValue('B'.$i, round($deposito->monto_deposito,2));
-            $cellRespuesta->setCellValue('C'.$i, round($comision, 2));
-            $cellRespuesta->setCellValue('D'.$i, $deposito->folio_depto);
-            $cellRespuesta->setCellValue('E'.$i, $deposito->nombre_empresa);
-            $cellRespuesta->setCellValue('F'.$i, $deposito->nombre_banco);
-           $i++;
-        endforeach;
+			
+			$comision_empresa= round(($lista_deptos[$x]->monto_deposito / 1.16) * $lista_deptos[$x]->comision, 2);
+
+			for($c=0; $c< count($leter);$c++){
+				
+				$cellRespuesta->setCellValue($leter[$c].$i, $lista_deptos[$x]->nombre_empresa );
+				//$cellRespuesta->setCellValue($leter[$c].$i, 'sksdkfmsd');
+				$cellRespuesta->setCellValue($leter[$c].$i, $lista_deptos[$x]->nombre_banco);
+				$cellRespuesta->setCellValue($leter[$c].$i, formato_fecha_ddmmaaaa($lista_deptos[$x]->fecha_deposito));
+				$cellRespuesta->setCellValue($leter[$c].$i, $lista_deptos[$x]->folio_depto );
+				$cellRespuesta->setCellValue($leter[$c].$i, $lista_deptos[$x]->nombre_cliente );
+				$cellRespuesta->setCellValue($leter[$c].$i, number_format($lista_deptos[$x]->monto_deposito,2));
+				$cellRespuesta->setCellValue($leter[$c].$i, number_format($comision_empresa, 2) );
+			}
+			$i++;
+		}
+		// foreach($depositos as $deposito): 
+  //         	$comision = (($deposito->monto_deposito / 1.16 ) * $cliente->comision);
+
+  //           $cellRespuesta->setCellValue('A'.$i, formato_fecha_ddmmaaaa($deposito->fecha_deposito));
+  //           $cellRespuesta->setCellValue('B'.$i, round($deposito->monto_deposito,2));
+  //           $cellRespuesta->setCellValue('C'.$i, round($comision, 2));
+  //           $cellRespuesta->setCellValue('D'.$i, $deposito->folio_depto);
+  //           $cellRespuesta->setCellValue('E'.$i, $deposito->nombre_empresa);
+  //           $cellRespuesta->setCellValue('F'.$i, $deposito->nombre_banco);
+  //          $i++;
+  //       endforeach;
 		
 		 // Rename worksheet
 		$objPHPExcel->getActiveSheet()->setTitle('Reporte de comisión');
