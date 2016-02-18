@@ -114,33 +114,18 @@ class Apartados extends CI_Controller
         for($x=0; $x<count($lista_deptos);$x++){
 
 			
-			$comision_empresa= round(($lista_deptos[$x]->monto_deposito / 1.16) * $lista_deptos[$x]->comision, 2);
-
-			for($c=0; $c< count($leter);$c++){
-				
-				$cellRespuesta->setCellValue($leter[$c].$i, $lista_deptos[$x]->nombre_empresa );
-				//$cellRespuesta->setCellValue($leter[$c].$i, 'sksdkfmsd');
-				$cellRespuesta->setCellValue($leter[$c].$i, $lista_deptos[$x]->nombre_banco);
-				$cellRespuesta->setCellValue($leter[$c].$i, formato_fecha_ddmmaaaa($lista_deptos[$x]->fecha_deposito));
-				$cellRespuesta->setCellValue($leter[$c].$i, $lista_deptos[$x]->folio_depto );
-				$cellRespuesta->setCellValue($leter[$c].$i, $lista_deptos[$x]->nombre_cliente );
-				$cellRespuesta->setCellValue($leter[$c].$i, number_format($lista_deptos[$x]->monto_deposito,2));
-				$cellRespuesta->setCellValue($leter[$c].$i, number_format($comision_empresa, 2) );
-			}
+			$comision_empresa= round(($lista_deptos[$x]->monto_deposito / 1.16) * $lista_deptos[$x]->comision, 2);	
+				$cellRespuesta->setCellValue('A'.$i, $lista_deptos[$x]->nombre_empresa );
+				$cellRespuesta->setCellValue('B'.$i , $lista_deptos[$x]->nombre_banco);
+				$cellRespuesta->setCellValue('C'.$i , formato_fecha_ddmmaaaa($lista_deptos[$x]->fecha_deposito));
+				$cellRespuesta->setCellValue('D'.$i , $lista_deptos[$x]->folio_depto );
+				$cellRespuesta->setCellValue('E'.$i , $lista_deptos[$x]->nombre_cliente );
+				$cellRespuesta->setCellValue('F'.$i , round($lista_deptos[$x]->monto_deposito,2));
+				$cellRespuesta->setCellValue('G'.$i , round($comision_empresa, 2) );
+			 
 			$i++;
-		}
-		// foreach($depositos as $deposito): 
-  //         	$comision = (($deposito->monto_deposito / 1.16 ) * $cliente->comision);
+		} 
 
-  //           $cellRespuesta->setCellValue('A'.$i, formato_fecha_ddmmaaaa($deposito->fecha_deposito));
-  //           $cellRespuesta->setCellValue('B'.$i, round($deposito->monto_deposito,2));
-  //           $cellRespuesta->setCellValue('C'.$i, round($comision, 2));
-  //           $cellRespuesta->setCellValue('D'.$i, $deposito->folio_depto);
-  //           $cellRespuesta->setCellValue('E'.$i, $deposito->nombre_empresa);
-  //           $cellRespuesta->setCellValue('F'.$i, $deposito->nombre_banco);
-  //          $i++;
-  //       endforeach;
-		
 		 // Rename worksheet
 		$objPHPExcel->getActiveSheet()->setTitle('Reporte de comisión');
 
@@ -151,7 +136,7 @@ class Apartados extends CI_Controller
 
 		// Redirect output to a client’s web browser (Excel5)
 		header('Content-Type: application/vnd.ms-excel');
-		header('Content-Disposition: attachment;filename="reporte_comision_'.date('d-m-Y').'.xls"');
+		header('Content-Disposition: attachment;filename="'.$tipo_excel.date('d-m-Y_His').'.xls"');
 		header('Cache-Control: max-age=0');
 		// If you're serving to IE 9, then the following may be needed
 		header('Cache-Control: max-age=1');

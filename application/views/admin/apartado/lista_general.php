@@ -62,6 +62,10 @@
             </div>
 
             <div class="table-responsive">
+                <div class="row " style="margin-bottom:20px;">
+                    <a href="<?=base_url()?>excel/apartados/info/general"  class="btn btn-success" > Exportar a Excel </a>
+                </div>
+
                 <div class="row" ng-controller="apartadoGeneralCtrl" ng-init="listaGeneral('<?=base_url()?>')" >
                     {{folioDeposito}}
                     <table datatable="ng" dt-options="dtOptions" class="row-border hover">
