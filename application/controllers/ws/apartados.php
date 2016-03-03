@@ -40,8 +40,9 @@ class Apartados extends CI_Controller
 		return $this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
 
-	public function depositos_general()
-	{
+	public function depositos_general($ini=null, $end = null)
+	{	
+		
 		$this->load->model('tool/eloquent_model');
 		$this->load->helper('utilerias');
 		$this->load->helper('funciones_externas');
@@ -50,8 +51,8 @@ class Apartados extends CI_Controller
 
 		$fecha = fechas_rango_inicio(date('m'));
 
-		$fecha_ini = ($this->input->post('fecha_inicio')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_inicio')) : $fecha['fecha_inicio'] ;
-		$fecha_fin = ($this->input->post('fecha_final')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_final')) : $fecha['fecha_fin'] ;
+		$fecha_ini = ($ini != null) ? formato_fecha_ddmmaaaa($ini) : $fecha['fecha_inicio'] ;
+		$fecha_fin = ($end != null) ? formato_fecha_ddmmaaaa($end) : $fecha['fecha_fin'] ;
 
 		$select_param 	= 'deptos.status_retorno, deptos.id_deposito, deptos.fecha_deposito, deptos.monto_deposito, deptos.id_cliente, deptos.folio_depto, detail.id_empresa, detail.id_banco, cliente.nombre_cliente, cliente.comision, empresa.nombre_empresa, banco.nombre_banco';
 		$table_from 	= "ad_depositos deptos";
@@ -91,7 +92,7 @@ class Apartados extends CI_Controller
 		return $this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
 
-	public function depositos_pendientes_asignar()
+	public function depositos_pendientes_asignar($ini=null, $end = null)
 	{
 		$this->load->model('tool/eloquent_model');
 		$this->load->helper('utilerias');
@@ -101,8 +102,8 @@ class Apartados extends CI_Controller
 
 		$fecha = fechas_rango_inicio(date('m'));
 
-		$fecha_ini = ($this->input->post('fecha_inicio')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_inicio')) : $fecha['fecha_inicio'] ;
-		$fecha_fin = ($this->input->post('fecha_final')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_final')) : $fecha['fecha_fin'] ;
+		$fecha_ini = ($ini != null) ? formato_fecha_ddmmaaaa($ini) : $fecha['fecha_inicio'] ;
+		$fecha_fin = ($end != null) ? formato_fecha_ddmmaaaa($end) : $fecha['fecha_fin'] ;
 
 		$select_param 	= 'deptos.status_retorno, deptos.id_deposito, deptos.fecha_deposito, deptos.monto_deposito, deptos.id_cliente, deptos.folio_depto, detail.id_empresa, detail.id_banco, cliente.nombre_cliente, cliente.comision, empresa.nombre_empresa, banco.nombre_banco';
 		$table_from 	= "ad_depositos deptos";
@@ -146,7 +147,7 @@ class Apartados extends CI_Controller
 	
 	}
 
-	public function depositos_asignados()
+	public function depositos_asignados($ini=null, $end = null)
 	{
 		$this->load->model('tool/eloquent_model');
 		$this->load->helper('utilerias');
@@ -156,8 +157,8 @@ class Apartados extends CI_Controller
 
 		$fecha = fechas_rango_inicio(date('m'));
 
-		$fecha_ini = ($this->input->post('fecha_inicio')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_inicio')) : $fecha['fecha_inicio'] ;
-		$fecha_fin = ($this->input->post('fecha_final')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_final')) : $fecha['fecha_fin'] ;
+		$fecha_ini = ($ini != null) ? formato_fecha_ddmmaaaa($ini) : $fecha['fecha_inicio'] ;
+		$fecha_fin = ($end != null) ? formato_fecha_ddmmaaaa($end) : $fecha['fecha_fin'] ;
 
 		$select_param 	= 'deptos.status_retorno, deptos.id_deposito, deptos.fecha_deposito, deptos.monto_deposito, deptos.id_cliente, deptos.folio_depto, detail.id_empresa, detail.id_banco, cliente.nombre_cliente, cliente.comision, empresa.nombre_empresa, banco.nombre_banco';
 		$table_from 	= "ad_depositos deptos";
@@ -199,7 +200,7 @@ class Apartados extends CI_Controller
 		return $this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
 
-	public function depositos_pagados()
+	public function depositos_pagados($ini=null, $end = null)
 	{
 		$this->load->model('tool/eloquent_model');
 		$this->load->helper('utilerias');
@@ -209,9 +210,9 @@ class Apartados extends CI_Controller
 
 		$fecha = fechas_rango_inicio(date('m'));
 
-		$fecha_ini = ($this->input->post('fecha_inicio')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_inicio')) : $fecha['fecha_inicio'] ;
-		$fecha_fin = ($this->input->post('fecha_final')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_final')) : $fecha['fecha_fin'] ;
-
+		$fecha_ini = ($ini != null) ? formato_fecha_ddmmaaaa($ini) : $fecha['fecha_inicio'] ;
+		$fecha_fin = ($end != null) ? formato_fecha_ddmmaaaa($end) : $fecha['fecha_fin'] ;
+		
 		$select_param 	= 'deptos.status_retorno, deptos.id_deposito, deptos.fecha_deposito, deptos.monto_deposito, deptos.id_cliente, deptos.folio_depto, detail.id_empresa, detail.id_banco, cliente.nombre_cliente, cliente.comision, empresa.nombre_empresa, banco.nombre_banco';
 		$table_from 	= "ad_depositos deptos";
 		$inner[0]		= array('table'=> 'ad_detalle_cuenta detail', 'on_table' => 'deptos.id_deposito = detail.id_movimiento', 'type_join' => 'inner' );

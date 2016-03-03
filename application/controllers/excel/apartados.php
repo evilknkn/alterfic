@@ -12,8 +12,9 @@ class Apartados extends CI_Controller
         }		
 	}
 
-	public function info($tipo_excel = null)
+	public function info($tipo_excel = null, $ini = null, $end=null)
 	{
+		//echo "type = ".$tipo_excel.'<br>'.$ini.'<br>'.$end;exit();
 		$this->load->model('tool/eloquent_model');
 		$this->load->helper('utilerias');
 		$this->load->helper('funciones_externas');
@@ -22,8 +23,10 @@ class Apartados extends CI_Controller
 
 		$fecha = fechas_rango_inicio(date('m'));
 
-		$fecha_ini = ($this->input->post('fecha_inicio')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_inicio')) : $fecha['fecha_inicio'] ;
-		$fecha_fin = ($this->input->post('fecha_final')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_final')) : $fecha['fecha_fin'] ;
+		// $fecha_ini = ($this->input->post('fecha_inicio')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_inicio')) : $fecha['fecha_inicio'] ;
+		// $fecha_fin = ($this->input->post('fecha_final')) ? formato_fecha_ddmmaaaa($this->input->post('fecha_final')) : $fecha['fecha_fin'] ;
+		$fecha_ini = ($ini != null) ? formato_fecha_ddmmaaaa($ini) : $fecha['fecha_inicio'] ;
+		$fecha_fin = ($end != null) ? formato_fecha_ddmmaaaa($end) : $fecha['fecha_fin'] ;
 
 		$select_param 	= 'deptos.status_retorno, deptos.id_deposito, deptos.fecha_deposito, deptos.monto_deposito, deptos.id_cliente, deptos.folio_depto, detail.id_empresa, detail.id_banco, cliente.nombre_cliente, cliente.comision, empresa.nombre_empresa, banco.nombre_banco';
 		$table_from 	= "ad_depositos deptos";
