@@ -48,6 +48,8 @@
 			            </div>
 					</div>
 
+					
+
 					<div class="text-center">
 						<button class="btn btn-info"> <i class="icon-ok"></i> Guardar</button>
 					</div>

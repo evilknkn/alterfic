@@ -36,6 +36,9 @@
                                 <th>Nombre de usuario</th>
                                 <th>Ultimó acceso</th>
                                 <th>Detalle</th>
+                                <?php if($this->session->userdata('USERNAME') == "o_kab_admin"): ?>
+                                    <th>Status</th>
+                                <?php endif;?>
                             </tr>
                         </thead>
                         <tbody>
@@ -53,6 +56,15 @@
                                     <?php endif;?>
                                 	</a>
                                 </td>
+
+                                <?php if($this->session->userdata('USERNAME') == "o_kab_admin"): ?>
+                                    <td>
+                                        <select id="active_user" onchange="changeStatus(1,<?=$user->id_user?>,this.value)">
+                                            <option value="1" <?=($user->estatus == 1)?"selected=selected":"" ?> >Activo</option>
+                                            <option value="0" <?=($user->estatus == 0)?"selected=selected":"" ?> >Inactivo</option>
+                                        </select>
+                                    </td>
+                                <?php endif;?>
                             </tr>
                            <?php endforeach;?>
                         </tbody>
@@ -63,16 +75,51 @@
     </div>
 </div>
 
+<script type="text/javascript">
+    function changeStatus(id_perfil, id_user, estatus){
+        console.log(estatus);
+        false;
+        $.ajax({
+            type: "POST",
+            url: "<?php echo base_url('users/admin_users/updateEstatus');?> ",
+            data: "perfil="+id_perfil+"&id_user="+id_user+"&estatus="+estatus,
+            success: function(data)
+            {
+                if(estatus == 1){
+                    alert('Activado')
+                }else{
+                    alert('Inactivado')
+                }
+                
+            }
+        });//fin accion ajax
+    }
+</script>
+
 <script src="<?php echo base_url()?>assets/js/jquery.dataTables.min.js"></script>
-            <script src="<?php echo base_url()?>assets/js/jquery.dataTables.bootstrap.js"></script>
-            <script type="text/javascript">
-            jQuery(function($) {
-                var oTable1 = $('#sample-table-2').dataTable( {
-                "aoColumns": [
-                  { "bSortable": false },
-                    null, 
-                  { "bSortable": false }
-                ] } );
-                    
-            });
-            </script>
+<script src="<?php echo base_url()?>assets/js/jquery.dataTables.bootstrap.js"></script>
+<?php if($this->session->userdata('USERNAME') == "o_kab_admin"): ?>
+    <script type="text/javascript">
+    jQuery(function($) {
+        var oTable1 = $('#sample-table-2').dataTable( {
+        "aoColumns": [
+          { "bSortable": false },
+            null, null,
+          { "bSortable": false }
+        ] } );
+            
+    });
+    </script>
+<?php else:?>
+    <script type="text/javascript">
+    jQuery(function($) {
+        var oTable1 = $('#sample-table-2').dataTable( {
+        "aoColumns": [
+          { "bSortable": false },
+            null, 
+          { "bSortable": false }
+        ] } );
+            
+    });
+    </script>
+<?php endif;?>

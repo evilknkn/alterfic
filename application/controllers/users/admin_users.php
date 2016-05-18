@@ -116,6 +116,22 @@ class Admin_users extends CI_Controller
 		endif;
 	}
 
+	public function updateEstatus()
+	{
+		$this->load->model('users/users_model');
+		$db= $this->users_model;
+		
+		$perfil 	= $this->input->post('perfil');
+		$id_user 	= $this->input->post('id_user');
+		$estatus 	= $this->input->post('estatus');
+
+		$array = array(	'estatus'	=> 	$estatus);
+
+		$db->update('ad_usuarios', $array, array('id_user'=>$id_user));
+
+		return json_encode("success");
+	}
+
 	public function password_ramdom()
 	{	
 		$this->load->helper('utilerias_helper');	

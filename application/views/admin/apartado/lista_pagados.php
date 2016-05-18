@@ -64,7 +64,7 @@
 
             <div class="table-responsive">
                 <div class="row " style="margin-bottom:20px;">
-                    <a href="<?=base_url()?>excel/apartados/info/Pagado"  class="btn btn-success" > Exportar a Excel </a>
+                    <a href="<?=base_url()?>excel/apartados/info/Pagado" id="exportar-general" class="btn btn-success" > Exportar a Excel </a>
                 </div>
                 <div class="row"  ng-init="listaPagos('<?=base_url()?>')">
                     

@@ -81,58 +81,6 @@ angular.module('apartados', [])
   }
 
 })
-.controller('apartadoAsignadosCtrl', function ($scope, $http, $resource, DTOptionsBuilder, DTColumnDefBuilder) {
-  
-  $scope.getUrl = '';
-  $scope.listaAsignados = function(getUrl){
-    $scope.getUrl = getUrl;
-    var getUrl = getUrl+"ws/apartados/depositos_asignados/";
-    
-    var vm = this;
-    $resource(getUrl).query().$promise.then(function(list_depositos) {
-        vm.list_depositos = list_depositos;
-    });
-
-    // $http.get(getUrl).then(function(response){
-    //   $scope.dtOptions = DTOptionsBuilder.newOptions()
-    //     .withPaginationType('full_numbers')
-    //     .withDisplayLength(100);
-        
-
-    //   $scope.list_depositos = response.data;
-    // });
-  }
-
-  $scope.listaGeneralFiltro = function(){
-    
-    var caja1 = $( "input[name='fecha_ini']" ).val();
-    var caja2 = $( "input[name='fecha_fin']" ).val();
-
-    var getUrl = $scope.getUrl+"ws/apartados/depositos_asignados/"+caja1+"/"+caja2;
-    //console.log(getUrl);
-    $("#exportar-general").attr("href", $scope.getUrl+"excel/apartados/info/genera/"+caja1+"/"+caja2 );
-    var vm = this;
-    $resource(getUrl).query().$promise.then(function(list_depositos) {
-        vm.list_depositos = list_depositos;
-    });
-
-  }
-
-  $scope.asignaCliente = function(id_deposito, folio)
-  {    
-    $("#id_depto").val(id_deposito);
-    $('#title-modal').html("Asignación de cliente al folio "+folio);
-    $('#modalAsignaCliente').modal('show');
-  }
-
-  $scope.pagarDeposito = function(id_deposito, folio)
-  {    
-    $("#id_depto_pago").val(id_deposito);
-    $('#legend-modal').html("¿Esta seguro que desa pagar el folio "+folio+" ?");
-    $('#modalPago').modal('show');
-  }
-  
-})
 
 .controller('apartadoPendienteAsignadosCtrl', function ($scope, $http, $resource, DTOptionsBuilder, DTColumnDefBuilder) {
   
@@ -185,6 +133,58 @@ angular.module('apartados', [])
   }
 
 })
+.controller('apartadoAsignadosCtrl', function ($scope, $http, $resource, DTOptionsBuilder, DTColumnDefBuilder) {
+  
+  $scope.getUrl = '';
+  $scope.listaAsignados = function(getUrl){
+    $scope.getUrl = getUrl;
+    var getUrl = getUrl+"ws/apartados/depositos_asignados/";
+    
+    var vm = this;
+    $resource(getUrl).query().$promise.then(function(list_depositos) {
+        vm.list_depositos = list_depositos;
+    });
+
+    // $http.get(getUrl).then(function(response){
+    //   $scope.dtOptions = DTOptionsBuilder.newOptions()
+    //     .withPaginationType('full_numbers')
+    //     .withDisplayLength(100);
+        
+
+    //   $scope.list_depositos = response.data;
+    // });
+  }
+
+  $scope.listaGeneralFiltro = function(){
+    
+    var caja1 = $( "input[name='fecha_ini']" ).val();
+    var caja2 = $( "input[name='fecha_fin']" ).val();
+
+    var getUrl = $scope.getUrl+"ws/apartados/depositos_asignados/"+caja1+"/"+caja2;
+    //console.log(getUrl);
+    $("#exportar-general").attr("href", $scope.getUrl+"excel/apartados/info/noPagado/"+caja1+"/"+caja2 );
+    var vm = this;
+    $resource(getUrl).query().$promise.then(function(list_depositos) {
+        vm.list_depositos = list_depositos;
+    });
+
+  }
+
+  $scope.asignaCliente = function(id_deposito, folio)
+  {    
+    $("#id_depto").val(id_deposito);
+    $('#title-modal').html("Asignación de cliente al folio "+folio);
+    $('#modalAsignaCliente').modal('show');
+  }
+
+  $scope.pagarDeposito = function(id_deposito, folio)
+  {    
+    $("#id_depto_pago").val(id_deposito);
+    $('#legend-modal').html("¿Esta seguro que desa pagar el folio "+folio+" ?");
+    $('#modalPago').modal('show');
+  }
+  
+})
 .controller('apartadoPagadosCtrl', function ($scope, $http, $resource, DTOptionsBuilder, DTColumnDefBuilder) {
   
   $scope.getUrl = '';
@@ -211,9 +211,9 @@ angular.module('apartados', [])
     var caja1 = $( "input[name='fecha_ini']" ).val();
     var caja2 = $( "input[name='fecha_fin']" ).val();
 
-    var getUrl = $scope.getUrl+"ws/apartados/depositos_general/"+caja1+"/"+caja2;
+    var getUrl = $scope.getUrl+"ws/apartados/depositos_pagados/"+caja1+"/"+caja2;
     //console.log(getUrl);
-
+    $("#exportar-general").attr("href", $scope.getUrl+"excel/apartados/info/Pagado/"+caja1+"/"+caja2 );
     var vm = this;
     $resource(getUrl).query().$promise.then(function(list_depositos) {
         vm.list_depositos = list_depositos;

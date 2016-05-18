@@ -56,16 +56,29 @@
                             </div>
 
                             <div class="space-6"></div>
+                            
+
 
                             <div class="position-relative">
                                 <div id="login-box" class="login-box visible widget-box no-border">
                                     <div class="widget-body">
+                                        
+                                            
+                                        
                                         <div class="widget-main">
+
                                             <h4 class="header blue lighter bigger">
                                                 Por favor introduzca su usuario y contraseña
+
                                             </h4>
 
+
                                             <div class="space-6"></div>
+                                                <?php if($this->session->flashdata('fail')):?>
+                                                <div class="text-center col-sm-12 col-xs-12" style="padding-bottom:10px">
+                                                    <div class="alert alert-danger text-danger text-center"> Error de autenticación</div>
+                                                </div>
+                                            <?php endif;?>
 
                                             <?=form_open('')?>
                                                 <fieldset>

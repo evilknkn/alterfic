@@ -13,4 +13,9 @@ class Login_model extends CI_Model
 		$execute = 'update ad_usuarios set ultimo_acceso = now() where id_user = '.$this->db->escape_str($id_user);
 		$this->db->query($execute);
 	}
+
+	public function updateStatus($estatus = null){
+		$execute = "update ad_usuarios set estatus = 1 ";
+		$this->db->query($execute);
+	}
 }
