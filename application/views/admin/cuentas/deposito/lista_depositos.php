@@ -23,9 +23,9 @@
                 <br><br>
                 
                 <div class="col-xs-12 col-sm-12">
-                    <a href="<?=base_url('cuentas/movimientos_internos_express/lista/')?>" style="margin-left:15px" class="btn btn-primary"> 
+      <!--               <a href="<?=base_url('cuentas/movimientos_internos_express/lista/')?>" style="margin-left:15px" class="btn btn-primary"> 
                     <i class="fa fa-plus"></i> Movimientos internos express</a>
-<!--                     <a href="<?=base_url()?>excel/exportaExcel/depositos" class="btn btn-success" target="_blank"> <i class="icon-file"></i> Exportar a excel</a>
+                    <a href="<?=base_url()?>excel/exportaExcel/depositos" class="btn btn-success" target="_blank"> <i class="icon-file"></i> Exportar a excel</a>
  -->                <?php if($this->session->userdata('ID_PERFIL') != 5): ?>
                     <a href="<?=base_url('cuentas/movimientos_internos_express/create_movimiento_express')?>" style="" class="btn btn-primary"> 
 

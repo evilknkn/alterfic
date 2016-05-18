@@ -147,6 +147,7 @@ class Movimientos_internos_express extends CI_Controller
 		$this->form_validation->set_rules('folio_entrada', 'folio de entrada', 'required|callback_unique_folio');
 		$this->form_validation->set_rules('folio_salida', 'folio de salida', 'required|callback_unique_folio');
     	
+    	print_r($_POST);exit;
     	if($this->form_validation->run()):
     		
     		$folio_salida 	= $this->input->post('folio_salida');

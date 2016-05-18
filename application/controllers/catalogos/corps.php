@@ -52,7 +52,8 @@ class Corps extends CI_Controller
 			$this->form_validation->set_rules('clave_movimiento', 'clave de movimiento', 'required');
 		endif;	
 		$this->form_validation->set_message('required', 'El campo %s es requerido');
-	
+		
+		
 		if($this->form_validation->run()):
 			$where_array = array('id_banco' => $this->input->post('id_banco') ) ;
 			$banco_detail = $this->db_banco->datos_banco($where_array);
@@ -93,13 +94,18 @@ class Corps extends CI_Controller
 	public function add_banco()
 	{
 		$this->load->model('catalogo/empresas_model');
+		$this->load->model('catalogo/catalogo_banco_model');
+
+		$dataBank = $this->catalogo_banco_model->datos_banco(array('id_banco'=>$this->input->post('id_banco')));
 
 		$filtro = array('id_empresa' => $this->input->post('id_empresa'));
 		$detail_empresa = $this->empresas_model->empresa($filtro);
 
+		
+
 		$datos = array('id_banco' 		=>	$this->input->post('id_banco'),
 						'id_empresa'	=>	$this->input->post('id_empresa'),
-						'clave' 		=>  $detail_empresa->clave_cta,
+						'clave' 		=>  $detail_empresa->clave_cta.$dataBank->clave_banco,
 						'status_cta' 	=> 1);
 
 		$this->empresas_model->create_vinculo($datos);
